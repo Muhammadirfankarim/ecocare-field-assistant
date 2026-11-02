@@ -12,29 +12,29 @@ export type SegmenGedung =
 export type HariAktif = '5 Hari Kerja' | '7 Hari Kerja';
 
 export type KondisiPipa =
-  | 'PIPA_MANUAL' // Pipa Manual Biasa - Bisa Dibor & Ada Tekanan Air
-  | 'PIPA_TANAM'; // Pipa Tanam / Sensor Autoflush / Marmer - Tidak Boleh Dibor
+  | 'PIPA_MANUAL' // Pipa Luar Biasa (Bisa Dibor)
+  | 'PIPA_TANAM'; // Pipa Tanam / Sensor / Marmer (Dilarang Bor)
 
 export type TipeWastafel =
-  | 'TRAFIK_PADAT' // Wastafel Publik Trafik Padat >1.000 org/hari
-  | 'TRAFIK_GREEN'; // Wastafel Perkantoran / Konsep Green Hemat Air
+  | 'TRAFIK_PADAT' // Pengunjung Ramai (>1.000 org/hari)
+  | 'TRAFIK_GREEN'; // Area Kantor / Hemat Air
 
 export type KondisiLobi =
-  | 'NONE' // Tidak Butuh Scenting Lobi
-  | 'STANDALONE_300' // Lobi Sedang / Resepsionis s/d 300 m3 (Tanpa AC Sentral / Stand Alone)
-  | 'HVAC_LUAS'; // Lobi Gedung Luas >300 m3 (Tersedia Koneksi AHU / AC Sentral HVAC)
+  | 'NONE' // Tidak Perlu Pengharum Lobi
+  | 'STANDALONE_300' // Lobi Sedang (Pengharum Mandiri)
+  | 'HVAC_LUAS'; // Lobi Luas (Tersambung AC Sentral Gedung)
 
 export interface SurveyObservationInput {
-  // Profil Umum
+  // Informasi Gedung
   namaGedung: string;
   alamatLokasi?: string;
   picNama?: string;
   surveyType: SurveyType;
   segmen: SegmenGedung;
   hariAktif: HariAktif;
-  jamOperasional: number; // e.g. 11, 13, 14, 24 jam/hari
+  jamOperasional: number; // Jam operasional per hari (1-24)
 
-  // ZONA 1: Restroom / Toilet (Kubikal, Urinoir, & Wastafel)
+  // Area 1: Toilet & Kamar Mandi
   kondisiPipa: KondisiPipa;
   tipeWastafel: TipeWastafel;
   khawatirBakteriKloset: boolean;
@@ -44,17 +44,17 @@ export interface SurveyObservationInput {
   jumlahWastafel: number;
   jumlahKubikalWanita: number;
 
-  // ZONA 2: Pintu Masuk & Lobi Utama (First Impression)
+  // Area 2: Pintu Masuk & Lobi Utama
   pintuMasukLicinDebu: boolean;
   kondisiLobi: KondisiLobi;
 
-  // ZONA 3: Koridor, Lift, & Ruang Rapat (Enclosed Area)
+  // Area 3: Koridor, Lift, & Ruang Rapat
   ruangSempitLift: boolean;
   koridorPublikTerbuka: boolean;
   areaSensitifKlinik: boolean;
   ruangRapatVip: boolean;
 
-  // ZONA 4: Pantry, Kantin, & Area Belakang
+  // Area 4: Dapur, Kantin, & Pantry
   masalahLalatKantin: boolean;
   sabunPantryEkonomis: boolean;
 
@@ -63,21 +63,21 @@ export interface SurveyObservationInput {
 }
 
 export type HygieneCategory =
-  | 'Main Restroom'
-  | 'Secondary Products'
-  | 'Smart Scenting';
+  | 'Toilet & Sanitasi Utama'
+  | 'Pengharum & Kebersihan Lantai'
+  | 'Pengharum Premium (Smart Scenting)';
 
 export interface HygieneProductRecommendation {
   id: string;
   kodeUnit: string;
   namaUnit: string;
   kategori: HygieneCategory;
-  matchScore: number; // e.g. 96
-  alasanTeknis: string; // Instruksi teknisi agar tidak salah bawa barang
-  nilaiBisnis: string; // Argumen pitching quotation
+  matchScore: number; // Persentase kecocokan
+  petunjukPemasangan: string; // Instruksi pemasangan sederhana
+  keunggulanGedung: string; // Manfaat mudah dipahami untuk klien/BOD
   estimasiUnit: string;
-  badgeTeknis: string;
-  warningTeknis?: string;
+  keteranganTipe: string;
+  catatanKhusus?: string;
   intervalSprayDetail?: string;
 }
 
@@ -88,7 +88,7 @@ export interface DiagnosticResult {
   surveyType: SurveyType;
   segmen: SegmenGedung;
   totalUnitRekomendasi: number;
-  kategori1_MainRestroom: HygieneProductRecommendation[];
+  kategori1_Restroom: HygieneProductRecommendation[];
   kategori2_Secondary: HygieneProductRecommendation[];
   kategori3_SmartScenting: HygieneProductRecommendation[];
   sprayerIntervalMinutes: number | null;

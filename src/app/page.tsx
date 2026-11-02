@@ -10,31 +10,25 @@ import {
   Save,
   History,
   ClipboardCheck,
-  TrendingUp,
   ArrowRight,
   Trash2,
   MapPin,
   Clock,
   RotateCcw,
-  Download,
   Search,
   ChevronRight,
-  Award,
   Layers,
-  MessageSquareQuote,
   ShieldCheck,
   Send,
   Droplets,
   Wind,
-  Flame,
-  Wrench,
   Check,
   Copy,
   ExternalLink,
   ChevronDown,
   Info,
   SlidersHorizontal,
-  FileSpreadsheet,
+  FileText,
 } from 'lucide-react';
 import {
   DiagnosticResult,
@@ -50,12 +44,12 @@ import {
   validateSurveyInput,
 } from '@/lib/scoringEngine';
 
-const STORAGE_KEY = 'ecocare_hygiene_diagnostic_v2';
+const STORAGE_KEY = 'ecocare_hygiematch_records_v1';
 
 // -------------------------------------------------------------
-// 3 SKENARIO PRESET DEMO CEPAT (1-KLIK)
+// 3 SKENARIO CONTOH UNTUK DEMO PRESENTASI
 // -------------------------------------------------------------
-const PRESET_KANTOR: SurveyObservationInput = {
+const CONTOH_KANTOR: SurveyObservationInput = {
   namaGedung: 'Menara Astra Ventura (Tower 1)',
   alamatLokasi: 'Jl. Jend. Sudirman Kav. 5-6, Jakarta Pusat',
   picNama: 'Ibu Ratna (Building Facility Manager)',
@@ -63,7 +57,7 @@ const PRESET_KANTOR: SurveyObservationInput = {
   segmen: 'Office Tower',
   hariAktif: '5 Hari Kerja',
   jamOperasional: 11,
-  // Zona 1
+  // Area 1: Toilet
   kondisiPipa: 'PIPA_TANAM',
   tipeWastafel: 'TRAFIK_GREEN',
   khawatirBakteriKloset: true,
@@ -72,29 +66,29 @@ const PRESET_KANTOR: SurveyObservationInput = {
   jumlahUrinoirKloset: 14,
   jumlahWastafel: 8,
   jumlahKubikalWanita: 8,
-  // Zona 2
+  // Area 2: Pintu Masuk & Lobi
   pintuMasukLicinDebu: true,
   kondisiLobi: 'STANDALONE_300',
-  // Zona 3
+  // Area 3: Koridor & Ruangan
   ruangSempitLift: true,
   koridorPublikTerbuka: false,
   areaSensitifKlinik: false,
   ruangRapatVip: true,
-  // Zona 4
+  // Area 4: Dapur & Staf
   masalahLalatKantin: false,
   sabunPantryEkonomis: true,
-  catatanTeknis: 'Dinding toilet full marmer Italia. Manajemen tidak mengizinkan pengeboran pipa apapun.',
+  catatanTeknis: 'Dinding toilet marmer mewah. Pengelola gedung menghendaki unit tanpa bor dinding.',
 };
 
-const PRESET_MALL: SurveyObservationInput = {
-  namaGedung: 'Grand Metropolitan Mall & Promenade',
+const CONTOH_MALL: SurveyObservationInput = {
+  namaGedung: 'Grand Metropolitan Promenade & Mall',
   alamatLokasi: 'Kawasan Bisnis Boulevard No. 88, Bekasi Barat',
-  picNama: 'Bpk. Fajar (Head of Operations & Maintenance)',
+  picNama: 'Bpk. Fajar (Head of Building Operations)',
   surveyType: 'RENEWAL',
   segmen: 'Mall/Public Area',
   hariAktif: '7 Hari Kerja',
   jamOperasional: 14,
-  // Zona 1
+  // Area 1: Toilet
   kondisiPipa: 'PIPA_MANUAL',
   tipeWastafel: 'TRAFIK_PADAT',
   khawatirBakteriKloset: true,
@@ -103,29 +97,29 @@ const PRESET_MALL: SurveyObservationInput = {
   jumlahUrinoirKloset: 32,
   jumlahWastafel: 20,
   jumlahKubikalWanita: 24,
-  // Zona 2
+  // Area 2: Pintu Masuk & Lobi
   pintuMasukLicinDebu: true,
   kondisiLobi: 'HVAC_LUAS',
-  // Zona 3
+  // Area 3: Koridor & Ruangan
   ruangSempitLift: true,
   koridorPublikTerbuka: true,
   areaSensitifKlinik: false,
   ruangRapatVip: false,
-  // Zona 4
+  // Area 4: Dapur & Staf
   masalahLalatKantin: true,
   sabunPantryEkonomis: true,
-  catatanTeknis: 'Trafik akhir pekan >10.000 pengunjung/hari. Lobi utama terkoneksi ducting suplai AHU.',
+  catatanTeknis: 'Pengunjung sangat ramai di akhir pekan. Lobi utama tersambung dengan sistem pendingin sentral (AC Ducting).',
 };
 
-const PRESET_RS: SurveyObservationInput = {
+const CONTOH_RS: SurveyObservationInput = {
   namaGedung: 'RS Hermina Premier Health Care',
   alamatLokasi: 'Jl. Pemuda No. 12, Pulo Gadung, Jakarta Timur',
-  picNama: 'dr. Haryo, Sp.A (Komite PPI / K3RS)',
+  picNama: 'dr. Haryo, Sp.A (Komite PPI / K3 Gedung)',
   surveyType: 'NEW_CUSTOMER',
   segmen: 'RS/Klinik',
   hariAktif: '7 Hari Kerja',
   jamOperasional: 24,
-  // Zona 1
+  // Area 1: Toilet
   kondisiPipa: 'PIPA_TANAM',
   tipeWastafel: 'TRAFIK_GREEN',
   khawatirBakteriKloset: true,
@@ -134,24 +128,24 @@ const PRESET_RS: SurveyObservationInput = {
   jumlahUrinoirKloset: 10,
   jumlahWastafel: 12,
   jumlahKubikalWanita: 10,
-  // Zona 2
+  // Area 2: Pintu Masuk & Lobi
   pintuMasukLicinDebu: true,
   kondisiLobi: 'STANDALONE_300',
-  // Zona 3
+  // Area 3: Koridor & Ruangan
   ruangSempitLift: true,
   koridorPublikTerbuka: false,
   areaSensitifKlinik: true,
   ruangRapatVip: false,
-  // Zona 4
+  // Area 4: Dapur & Staf
   masalahLalatKantin: false,
   sabunPantryEkonomis: true,
-  catatanTeknis: 'Area poli anak dan rawat inap sensitif alergi alkohol/propelan aerosol. Wajib waterbase.',
+  catatanTeknis: 'Area poli anak dan kamar rawat sensitif aroma tajam. Diutamakan formula berbahan dasar air (waterbase).',
 };
 
-export default function EcoCareSmartDiagnosticPage() {
+export default function EcoCareHygieMatchPage() {
   const [activeTab, setActiveTab] = useState<'survey' | 'riwayat'>('survey');
   const [activeZoneAccordion, setActiveZoneAccordion] = useState<number>(1);
-  const [formData, setFormData] = useState<SurveyObservationInput>(PRESET_KANTOR);
+  const [formData, setFormData] = useState<SurveyObservationInput>(CONTOH_KANTOR);
   const [diagnosticResult, setDiagnosticResult] = useState<DiagnosticResult | null>(null);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [savedRecords, setSavedRecords] = useState<SavedDiagnosticRecord[]>([]);
@@ -159,11 +153,11 @@ export default function EcoCareSmartDiagnosticPage() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filterSegmen, setFilterSegmen] = useState<string>('ALL');
   const [isQuotationModalOpen, setIsQuotationModalOpen] = useState<boolean>(false);
-  const [copiedPayload, setCopiedPayload] = useState<boolean>(false);
+  const [copiedSummary, setCopiedSummary] = useState<boolean>(false);
 
   const resultPanelRef = useRef<HTMLDivElement | null>(null);
 
-  // Load records from LocalStorage
+  // Ambil riwayat dari LocalStorage saat pertama buka
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
@@ -174,7 +168,7 @@ export default function EcoCareSmartDiagnosticPage() {
         }
       }
     } catch (err) {
-      console.error('[EcoCare Storage] Gagal membaca riwayat survei lokal:', err);
+      console.error('[EcoCare Storage] Catatan lokal belum ada:', err);
     }
   }, []);
 
@@ -186,7 +180,7 @@ export default function EcoCareSmartDiagnosticPage() {
       ...prev,
       [field]: value,
     }));
-    // Reset output diagnosis agar hanya muncul ketika tombol Analisis diklik
+    // Reset output agar user mengklik tombol Analisis
     setDiagnosticResult(null);
   };
 
@@ -229,7 +223,7 @@ export default function EcoCareSmartDiagnosticPage() {
     setSavedRecords(updated);
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      setSaveToast(`Lampiran Teknis & Hasil Survei "${formData.namaGedung}" berhasil disimpan.`);
+      setSaveToast(`Data rekomendasi untuk "${formData.namaGedung}" berhasil disimpan.`);
       setTimeout(() => setSaveToast(null), 4000);
     } catch (err) {
       console.error('Gagal menyimpan ke LocalStorage:', err);
@@ -253,54 +247,46 @@ export default function EcoCareSmartDiagnosticPage() {
     setActiveTab('survey');
   };
 
-  const handleCopyQuotationPayload = () => {
+  // Format teks rapi dan mudah dibaca untuk WhatsApp / Email / Presentasi
+  const handleCopyCleanSummary = () => {
     if (!diagnosticResult) return;
-    const payload = {
-      stage: 'Stage 5 - Pricing & Quotation',
-      sourceSystem: 'EcoCare Super Sales App (Stage 4 Site Survey)',
-      targetEndpoint: 'https://pricing.ecocare.id/api/v1/quotation/draft',
-      client: {
-        namaGedung: formData.namaGedung,
-        alamat: formData.alamatLokasi,
-        pic: formData.picNama,
-        surveyType: formData.surveyType,
-        segmen: formData.segmen,
-        hariKerjaPerMinggu: formData.hariAktif,
-        jamOperasionalPerHari: formData.jamOperasional,
-      },
-      recommendedUnits: [
-        ...diagnosticResult.kategori1_MainRestroom.map((u) => ({
-          kode: u.kodeUnit,
-          nama: u.namaUnit,
-          kategori: u.kategori,
-          estimasi: u.estimasiUnit,
-          matchScore: `${u.matchScore}%`,
-        })),
-        ...diagnosticResult.kategori2_Secondary.map((u) => ({
-          kode: u.kodeUnit,
-          nama: u.namaUnit,
-          kategori: u.kategori,
-          estimasi: u.estimasiUnit,
-          matchScore: `${u.matchScore}%`,
-        })),
-        ...diagnosticResult.kategori3_SmartScenting.map((u) => ({
-          kode: u.kodeUnit,
-          nama: u.namaUnit,
-          kategori: u.kategori,
-          estimasi: u.estimasiUnit,
-          matchScore: `${u.matchScore}%`,
-        })),
-      ],
-      technicianNotes: formData.catatanTeknis,
-      evaluatedAtUtc: diagnosticResult.evaluatedAtUtc,
-    };
 
-    navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
-    setCopiedPayload(true);
-    setTimeout(() => setCopiedPayload(false), 3000);
+    const allUnits = [
+      ...diagnosticResult.kategori1_Restroom,
+      ...diagnosticResult.kategori2_Secondary,
+      ...diagnosticResult.kategori3_SmartScenting,
+    ];
+
+    const unitLines = allUnits
+      .map(
+        (u, idx) =>
+          `${idx + 1}. ${u.namaUnit} (${u.estimasiUnit})\n   - Keunggulan: ${u.keunggulanGedung}`
+      )
+      .join('\n');
+
+    const summaryText = `*PROPOSAL REKOMENDASI SOLUSI KEBERSIHAN GEDUNG*
+*EcoCare HygieMatch™ - PT EcoCare Indo Pasifik Tbk*
+--------------------------------------------------
+*Gedung:* ${formData.namaGedung}
+*Alamat:* ${formData.alamatLokasi || '-'}
+*PIC:* ${formData.picNama || '-'}
+*Kategori:* ${formData.segmen}
+*Operasional:* ${formData.hariAktif} (${formData.jamOperasional} Jam/Hari)
+*Tipe Layanan:* ${formData.surveyType === 'NEW_CUSTOMER' ? 'Pelanggan Baru' : 'Pembaruan Kontrak'}
+
+*DAFTAR REKOMENDASI PRODUK (${diagnosticResult.totalUnitRekomendasi} Macam):*
+${unitLines}
+
+${formData.catatanTeknis ? `*Catatan Khusus Lapangan:*\n${formData.catatanTeknis}\n` : ''}
+--------------------------------------------------
+_Dianalisis menggunakan sistem EcoCare HygieMatch™_`;
+
+    navigator.clipboard.writeText(summaryText);
+    setCopiedSummary(true);
+    setTimeout(() => setCopiedSummary(false), 3000);
   };
 
-  // Kalkulasi estimasi interval LCD Sprayer secara live untuk informasi sales
+  // Kalkulasi estimasi interval timer LCD Sprayer untuk informasi user
   const liveDays = formData.hariAktif === '5 Hari Kerja' ? 5 : 7;
   const liveInterval = Number(
     ((formData.jamOperasional * 60 * liveDays * 8) / 6000).toFixed(1)
@@ -321,49 +307,30 @@ export default function EcoCareSmartDiagnosticPage() {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
       {/* ------------------------------------------------------------- */}
-      {/* CORPORATE APP HEADER & SALES KPI BAR                          */}
+      {/* HEADER UTAMA: ECOCARE HYGIEMATCH™                             */}
       {/* ------------------------------------------------------------- */}
-      <header className="sticky top-0 z-30 bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-900 text-white shadow-lg border-b border-emerald-800/60">
-        {/* Top Operational KPI Status Bar */}
-        <div className="bg-emerald-950/80 px-4 sm:px-8 py-1.5 border-b border-emerald-800/40 text-[11px] sm:text-xs flex flex-wrap items-center justify-between gap-2 text-emerald-200">
-          <div className="flex items-center gap-2 font-medium">
-            <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-semibold text-white">Sales Hygiene KPI Live:</span>
-            <span>Target: 7 Visit/Hari</span>
-            <span className="text-emerald-500">•</span>
-            <span>2 Presentasi Baru</span>
-            <span className="text-emerald-500">•</span>
-            <span className="text-amber-300 font-bold">Target Quotation: 25/Bulan</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-md bg-emerald-800/80 text-emerald-100 font-mono text-[10px] border border-emerald-700/50">
-              Module: Fitur 3 Survey (Stage 4)
-            </span>
-          </div>
-        </div>
-
-        {/* Main Header Brand & Tabs */}
+      <header className="sticky top-0 z-30 bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-900 text-white shadow-md border-b border-emerald-800/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-xl bg-emerald-500/20 backdrop-blur-sm border border-emerald-400/30 flex items-center justify-center shadow-inner">
-              <Sparkles className="h-5 w-5 text-emerald-300" />
+              <ShieldCheck className="h-6 w-6 text-emerald-300" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-base sm:text-lg font-bold tracking-tight text-white">
-                  EcoCare Super Sales App — Smart Survey Diagnostic
+                  EcoCare HygieMatch™
                 </h1>
-                <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-400/20 text-teal-200 border border-teal-300/30">
-                  Hygiene Line Only
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-400/20 text-emerald-200 border border-emerald-300/30">
+                  Solusi Kebersihan Gedung
                 </span>
               </div>
-              <p className="text-xs text-emerald-100/75">
-                PT EcoCare Indo Pasifik Tbk • Unit Matchmaking, Alasan Teknis Instalasi & Nilai Bisnis Klien
+              <p className="text-xs text-emerald-100/80">
+                PT EcoCare Indo Pasifik Tbk • Rekomendasi Produk Tepat Sesuai Kebutuhan Fasilitas
               </p>
             </div>
           </div>
 
-          {/* Navigation Mode Tabs */}
+          {/* Tab Navigasi Sederhana */}
           <div className="flex items-center bg-emerald-950/60 p-1 rounded-xl border border-white/10 self-start sm:self-auto">
             <button
               type="button"
@@ -375,7 +342,7 @@ export default function EcoCareSmartDiagnosticPage() {
               }`}
             >
               <ClipboardCheck className="h-4 w-4" />
-              <span>Survei 4 Zona & Matchmaking</span>
+              <span>Form Survei & Solusi</span>
             </button>
             <button
               type="button"
@@ -387,7 +354,7 @@ export default function EcoCareSmartDiagnosticPage() {
               }`}
             >
               <History className="h-4 w-4" />
-              <span>Draft Lapangan Tersimpan</span>
+              <span>Data Tersimpan</span>
               <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500 text-white font-bold">
                 {savedRecords.length}
               </span>
@@ -396,7 +363,7 @@ export default function EcoCareSmartDiagnosticPage() {
         </div>
       </header>
 
-      {/* TOAST NOTIFICATION */}
+      {/* NOTIFIKASI TOAST */}
       {saveToast && (
         <div className="bg-emerald-700 text-white px-4 py-2 text-center text-xs sm:text-sm font-medium flex items-center justify-center gap-2 shadow-md">
           <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-200" />
@@ -405,53 +372,53 @@ export default function EcoCareSmartDiagnosticPage() {
       )}
 
       {/* ------------------------------------------------------------- */}
-      {/* MAIN CONTAINER                                                */}
+      {/* KONTEN UTAMA                                                  */}
       {/* ------------------------------------------------------------- */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {activeTab === 'survey' ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* --------------------------------------------------------- */}
-            {/* LEFT COLUMN: 4 ZONA SURVEY OBSERVATION FORM (7 COLS)      */}
+            {/* KOLOM KIRI: FORM SURVEI (7 KOLOM)                         */}
             {/* --------------------------------------------------------- */}
             <div className="lg:col-span-7 space-y-5">
-              {/* Skenario Demo Cepat (1-Klik) */}
+              {/* Contoh Skenario Demo Cepat */}
               <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-sm">
                 <div className="flex items-center justify-between mb-2.5">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
                     <SlidersHorizontal className="h-3.5 w-3.5 text-teal-600" />
-                    Pilih Skenario Demo Lapangan (1-Klik Isi Cepat):
+                    Pilih Contoh Skenario Gedung (1-Klik untuk Demo):
                   </span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <button
                     type="button"
-                    onClick={() => handleApplyPreset(PRESET_KANTOR)}
+                    onClick={() => handleApplyPreset(CONTOH_KANTOR)}
                     className="text-left px-3 py-2 rounded-xl border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-100/70 transition flex items-center justify-between group"
                   >
                     <div>
                       <div className="text-xs font-bold text-emerald-950">1. Gedung Kantor</div>
-                      <div className="text-[11px] text-emerald-700">Pipa Tanam & Green Concept</div>
+                      <div className="text-[11px] text-emerald-700">Dinding Marmer & Konsep Ramah Lingkungan</div>
                     </div>
                     <ChevronRight className="h-4 w-4 text-emerald-600 group-hover:translate-x-0.5 transition" />
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleApplyPreset(PRESET_MALL)}
+                    onClick={() => handleApplyPreset(CONTOH_MALL)}
                     className="text-left px-3 py-2 rounded-xl border border-teal-200 bg-teal-50/60 hover:bg-teal-100/70 transition flex items-center justify-between group"
                   >
                     <div>
                       <div className="text-xs font-bold text-teal-950">2. Mall Besar</div>
-                      <div className="text-[11px] text-teal-700">Trafik Padat & Lobi HVAC</div>
+                      <div className="text-[11px] text-teal-700">Pengunjung Ramai & Lobi AC Sentral</div>
                     </div>
                     <ChevronRight className="h-4 w-4 text-teal-600 group-hover:translate-x-0.5 transition" />
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleApplyPreset(PRESET_RS)}
+                    onClick={() => handleApplyPreset(CONTOH_RS)}
                     className="text-left px-3 py-2 rounded-xl border border-cyan-200 bg-cyan-50/60 hover:bg-cyan-100/70 transition flex items-center justify-between group"
                   >
                     <div>
-                      <div className="text-xs font-bold text-cyan-950">3. RS / Klinik</div>
+                      <div className="text-xs font-bold text-cyan-950">3. Rumah Sakit</div>
                       <div className="text-[11px] text-cyan-700">Sensitif Alergi & Bebas Alkohol</div>
                     </div>
                     <ChevronRight className="h-4 w-4 text-cyan-600 group-hover:translate-x-0.5 transition" />
@@ -459,12 +426,12 @@ export default function EcoCareSmartDiagnosticPage() {
                 </div>
               </div>
 
-              {/* Validation Alert */}
+              {/* Peringatan Validasi jika ada yang belum terisi */}
               {validationErrors.length > 0 && (
                 <div className="bg-red-50 border border-red-200 rounded-2xl p-4 text-red-800 text-xs sm:text-sm space-y-1">
                   <div className="font-bold flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-red-600" />
-                    <span>Lengkapi data wajib survei sebelum menjalankan diagnostik:</span>
+                    <span>Mohon lengkapi data berikut:</span>
                   </div>
                   <ul className="list-disc list-inside pl-1">
                     {validationErrors.map((err, idx) => (
@@ -476,7 +443,7 @@ export default function EcoCareSmartDiagnosticPage() {
 
               <form onSubmit={handleRunDiagnostic} className="space-y-4">
                 {/* ----------------------------------------------------- */}
-                {/* PROFIL UMUM & SURVEY TYPE                             */}
+                {/* PROFIL GEDUNG & STATUS PELANGGAN                      */}
                 {/* ----------------------------------------------------- */}
                 <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-4 sm:p-5 space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100 pb-3.5">
@@ -486,15 +453,15 @@ export default function EcoCareSmartDiagnosticPage() {
                       </div>
                       <div>
                         <h2 className="text-sm sm:text-base font-bold text-slate-900">
-                          Profil Prospek & Tipe Penugasan Survei
+                          Profil Gedung & Kebutuhan Kunjungan
                         </h2>
                         <p className="text-xs text-slate-500">
-                          Stage 4: On-Site Visual Inspection & Technical Matchmaking
+                          Data dasar gedung untuk menentukan pilihan paket kebersihan terbaik
                         </p>
                       </div>
                     </div>
 
-                    {/* Survey Type Toggle */}
+                    {/* Toggle Status Pelanggan */}
                     <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
                       <button
                         type="button"
@@ -505,7 +472,7 @@ export default function EcoCareSmartDiagnosticPage() {
                             : 'text-slate-600 hover:text-slate-900'
                         }`}
                       >
-                        New Customer
+                        Pelanggan Baru
                       </button>
                       <button
                         type="button"
@@ -516,7 +483,7 @@ export default function EcoCareSmartDiagnosticPage() {
                             : 'text-slate-600 hover:text-slate-900'
                         }`}
                       >
-                        Renewal / Upselling
+                        Pembaruan Kontrak
                       </button>
                     </div>
                   </div>
@@ -538,7 +505,7 @@ export default function EcoCareSmartDiagnosticPage() {
 
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Alamat / Kawasan Gedung
+                        Alamat / Lokasi Gedung
                       </label>
                       <div className="relative">
                         <MapPin className="h-4 w-4 text-slate-400 absolute left-3 top-3" />
@@ -554,20 +521,20 @@ export default function EcoCareSmartDiagnosticPage() {
 
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        PIC Ditemui (Purchasing / Facility / GA)
+                        Nama PIC yang Ditemui
                       </label>
                       <input
                         type="text"
                         value={formData.picNama || ''}
                         onChange={(e) => handleFieldChange('picNama', e.target.value)}
-                        placeholder="Nama & Kontak PIC"
+                        placeholder="Nama Manajer Gedung / Purchasing"
                         className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-emerald-600 outline-none"
                       />
                     </div>
 
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Segmen Industri Gedung
+                        Jenis Gedung / Segmen
                       </label>
                       <select
                         value={formData.segmen}
@@ -579,18 +546,18 @@ export default function EcoCareSmartDiagnosticPage() {
                         }
                         className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:border-emerald-600 outline-none font-medium"
                       >
-                        <option value="Office Tower">Office Tower (Perkantoran)</option>
-                        <option value="Mall/Public Area">Mall / Area Publik Komersial</option>
-                        <option value="Hotel">Hotel & Hospitality</option>
-                        <option value="RS/Klinik">RS / Klinik / Fasilitas Kesehatan</option>
-                        <option value="Resto/F&B">Resto / Cafe F&B</option>
+                        <option value="Office Tower">Gedung Perkantoran (Office Tower)</option>
+                        <option value="Mall/Public Area">Pusat Perbelanjaan / Mall / Publik</option>
+                        <option value="Hotel">Hotel & Akomodasi</option>
+                        <option value="RS/Klinik">Rumah Sakit / Fasilitas Kesehatan</option>
+                        <option value="Resto/F&B">Restoran & Kafe F&B</option>
                       </select>
                     </div>
 
                     <div className="grid grid-cols-2 gap-2">
                       <div>
                         <label className="block text-xs font-semibold text-slate-700 mb-1">
-                          Hari Kerja Aktif
+                          Hari Operasional
                         </label>
                         <select
                           value={formData.hariAktif}
@@ -602,14 +569,14 @@ export default function EcoCareSmartDiagnosticPage() {
                           }
                           className="w-full rounded-xl border border-slate-300 px-2.5 py-2.5 text-sm bg-white focus:border-emerald-600 outline-none font-medium"
                         >
-                          <option value="5 Hari Kerja">5 Hari Kerja</option>
-                          <option value="7 Hari Kerja">7 Hari Kerja</option>
+                          <option value="5 Hari Kerja">5 Hari Kerja (Senin - Jumat)</option>
+                          <option value="7 Hari Kerja">7 Hari Kerja (Setiap Hari)</option>
                         </select>
                       </div>
 
                       <div>
                         <label className="block text-xs font-semibold text-slate-700 mb-1">
-                          Jam Operasional
+                          Jam Buka / Hari
                         </label>
                         <div className="relative">
                           <Clock className="h-4 w-4 text-slate-400 absolute left-2.5 top-3" />
@@ -630,10 +597,10 @@ export default function EcoCareSmartDiagnosticPage() {
                 </div>
 
                 {/* ----------------------------------------------------- */}
-                {/* 4 ZONA OBSERVASI ACCORDION SECTION                    */}
+                {/* 4 AREA OBSERVASI GEDUNG                               */}
                 {/* ----------------------------------------------------- */}
                 <div className="space-y-3">
-                  {/* ZONA 1: RESTROOM / TOILET */}
+                  {/* AREA 1: TOILET & KAMAR MANDI */}
                   <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
                     <button
                       type="button"
@@ -644,14 +611,14 @@ export default function EcoCareSmartDiagnosticPage() {
                     >
                       <div className="flex items-center gap-3">
                         <div className="p-2 rounded-xl bg-emerald-700 text-white font-bold text-xs">
-                          Z1
+                          Area 1
                         </div>
                         <div>
                           <h3 className="text-sm font-bold text-slate-900">
-                            Zona 1: Restroom / Toilet (Kubikal, Urinoir, & Wastafel)
+                            Area 1: Toilet & Kamar Mandi
                           </h3>
                           <p className="text-[11px] text-slate-500">
-                            Pipa kloset/urinoir, trafik sabun cuci tangan, sanitary bin, dan seat cleaner
+                            Pilihan kloset, urinoir, wastafel, tempat pembalut, dan pengering tangan
                           </p>
                         </div>
                       </div>
@@ -667,14 +634,14 @@ export default function EcoCareSmartDiagnosticPage() {
                         {/* 1. Kondisi Pipa Kloset/Urinoir */}
                         <div>
                           <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                            1. Kondisi Pipa Kloset / Urinoir (Kritis untuk Rekomendasi Sanitizer)
+                            1. Kondisi Pipa Kloset / Urinoir:
                           </label>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                             <label
                               className={`p-3 rounded-xl border text-xs cursor-pointer flex items-start gap-2.5 transition ${
                                 formData.kondisiPipa === 'PIPA_MANUAL'
-                                  ? 'border-emerald-600 bg-emerald-50/70 font-semibold text-emerald-950'
-                                  : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                                    ? 'border-emerald-600 bg-emerald-50/70 font-semibold text-emerald-950'
+                                    : 'border-slate-200 hover:bg-slate-50 text-slate-700'
                               }`}
                             >
                               <input
@@ -686,10 +653,10 @@ export default function EcoCareSmartDiagnosticPage() {
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Pipa Manual Biasa (Bisa Dibor)
+                                  Pipa Biasa (Bisa Dibor)
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
-                                  Tersedia tekanan air normal, pipa luar bisa dilubangi/dibor untuk katup vakum mekanis EST.
+                                  Saluran pipa luar standar, menggunakan alat pembersih otomatis mekanis tanpa perlu baterai.
                                 </span>
                               </div>
                             </label>
@@ -710,20 +677,20 @@ export default function EcoCareSmartDiagnosticPage() {
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Pipa Tanam / Sensor / Marmer (Dilarang Bor)
+                                  Pipa Tanam / Dinding Marmer (Dilarang Dibor)
                                 </strong>
                                 <span className="text-[11px] text-amber-700">
-                                  Autoflush sensor / dinding marmer mewah. <strong>Wajib EDST Digital Drip</strong> (jangan bawa EST).
+                                  Toilet dengan sensor otomatis atau dinding marmer. Menggunakan alat tetes digital dengan baterai tanpa melubangi dinding.
                                 </span>
                               </div>
                             </label>
                           </div>
                         </div>
 
-                        {/* 2. Tipe Trafik Wastafel */}
+                        {/* 2. Tipe Wastafel */}
                         <div>
                           <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                            2. Tipe Trafik & Konsep Wastafel
+                            2. Kebutuhan Sabun di Wastafel:
                           </label>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                             <label
@@ -742,10 +709,10 @@ export default function EcoCareSmartDiagnosticPage() {
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Wastafel Publik Trafik Padat (&gt;1.000 org/hari)
+                                  Pengunjung Ramai (&gt;1.000 orang/hari)
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
-                                  Kapasitas 1.000 ml sabun cair (ESD-MS1000) mencegah komplain kehabisan sabun.
+                                  Menggunakan dispenser sabun cair kapasitas besar (1 Liter) agar tidak sering habis.
                                 </span>
                               </div>
                             </label>
@@ -766,20 +733,20 @@ export default function EcoCareSmartDiagnosticPage() {
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Wastafel Perkantoran / Konsep Green Hemat Air
+                                  Perkantoran / Ramah Lingkungan
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
-                                  Foam Soap (EFS-SP830) menghemat air bilas & sabun hingga 35%.
+                                  Menggunakan sabun busa (foam soap) yang menghemat air bilasan dan sabun hingga 35%.
                                 </span>
                               </div>
                             </label>
                           </div>
                         </div>
 
-                        {/* 3. Masalah Tambahan Restroom */}
+                        {/* 3. Fasilitas Tambahan di Toilet */}
                         <div className="space-y-2 pt-1 border-t border-slate-100">
                           <label className="block text-xs font-bold text-slate-700">
-                            3. Observasi Masalah Tambahan di Restroom:
+                            3. Kebutuhan Tambahan di Toilet:
                           </label>
 
                           <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
@@ -792,8 +759,8 @@ export default function EcoCareSmartDiagnosticPage() {
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
                             <span className="text-slate-800">
-                              Banyak pengguna wanita/publik khawatir bakteri kulit & kelamin di dudukan kloset{' '}
-                              <strong className="text-emerald-700">&rarr; Butuh Seat Cleaner (ESC)</strong>
+                              Butuh pembersih dudukan kloset agar pengguna merasa higienis dan nyaman{' '}
+                              <strong className="text-emerald-700">&rarr; Pembersih Dudukan Kloset (Seat Cleaner)</strong>
                             </span>
                           </label>
 
@@ -807,8 +774,8 @@ export default function EcoCareSmartDiagnosticPage() {
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
                             <span className="text-slate-800">
-                              Toilet wanita butuh tempat pembuangan pembalut higienis tanpa sentuh (touchless){' '}
-                              <strong className="text-emerald-700">&rarr; Butuh Digital Autolid Bin (ESBD)</strong>
+                              Toilet wanita membutuhkan tempat pembuangan pembalut otomatis tanpa sentuh tangan{' '}
+                              <strong className="text-emerald-700">&rarr; Tempat Sampah Sensor (Sanitary Bin)</strong>
                             </span>
                           </label>
 
@@ -822,13 +789,13 @@ export default function EcoCareSmartDiagnosticPage() {
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
                             <span className="text-slate-800">
-                              Klien mengeluh sampah kertas tisu berserakan / boros pembelian tisu wastafel{' '}
-                              <strong className="text-emerald-700">&rarr; Butuh Jet Hand Dryer (EHD)</strong>
+                              Ingin mengurangi biaya kertas tisu dan mencegah sampah tisu berserakan di wastafel{' '}
+                              <strong className="text-emerald-700">&rarr; Pengering Tangan Cepat (Jet Hand Dryer)</strong>
                             </span>
                           </label>
                         </div>
 
-                        {/* 4. Estimasi Jumlah Titik */}
+                        {/* 4. Jumlah Titik Fasilitas */}
                         <div className="grid grid-cols-3 gap-2.5 pt-2 border-t border-slate-100">
                           <div>
                             <label className="block text-[11px] font-semibold text-slate-600 mb-1">
@@ -862,7 +829,7 @@ export default function EcoCareSmartDiagnosticPage() {
 
                           <div>
                             <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                              Kubikal Toilet Wanita
+                              Bilik Toilet Wanita
                             </label>
                             <input
                               type="number"
@@ -879,7 +846,7 @@ export default function EcoCareSmartDiagnosticPage() {
                     )}
                   </div>
 
-                  {/* ZONA 2: PINTU MASUK & LOBI UTAMA */}
+                  {/* AREA 2: PINTU MASUK & LOBI UTAMA */}
                   <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
                     <button
                       type="button"
@@ -890,14 +857,14 @@ export default function EcoCareSmartDiagnosticPage() {
                     >
                       <div className="flex items-center gap-3">
                         <div className="p-2 rounded-xl bg-teal-700 text-white font-bold text-xs">
-                          Z2
+                          Area 2
                         </div>
                         <div>
                           <h3 className="text-sm font-bold text-slate-900">
-                            Zona 2: Pintu Masuk & Lobi Utama (First Impression)
+                            Area 2: Pintu Masuk & Lobi Utama
                           </h3>
                           <p className="text-[11px] text-slate-500">
-                            Mat keset penahan debu/air dan teknologi Cold-Air Scenting lobi
+                            Pilihan keset karpet penahan kotoran dan pengharum suasana lobi
                           </p>
                         </div>
                       </div>
@@ -921,17 +888,17 @@ export default function EcoCareSmartDiagnosticPage() {
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Area transisi pintu masuk licin saat hujan / banyak debu jalanan terbawa sepatu
+                              Pintu masuk berisiko licin saat hujan atau banyak debu terbawa sepatu
                             </span>
                             <span className="text-[11px] text-teal-700 font-medium">
-                              &rarr; Rekomendasi: EcoCare Dust & Moisture Control Mat (EDM) sistem rental cuci berkala.
+                              &rarr; Rekomendasi: Layanan Sewa & Cuci Bersih Rutin Keset Karpet Penyerap Debu/Air.
                             </span>
                           </div>
                         </label>
 
                         <div>
                           <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                            Kondisi Scenting Area Lobi / Resepsionis:
+                            Kebutuhan Pengharum di Area Lobi / Resepsionis:
                           </label>
                           <div className="space-y-2">
                             <label
@@ -949,7 +916,7 @@ export default function EcoCareSmartDiagnosticPage() {
                                   onChange={() => handleFieldChange('kondisiLobi', 'NONE')}
                                   className="accent-teal-600"
                                 />
-                                <span>Tidak Butuh Scenting Lobi</span>
+                                <span>Tidak Memerlukan Pengharum Lobi</span>
                               </div>
                             </label>
 
@@ -972,10 +939,10 @@ export default function EcoCareSmartDiagnosticPage() {
                                 />
                                 <div>
                                   <span className="font-bold text-slate-900 block">
-                                    Lobi Sedang / Resepsionis s/d 300 m³ (Stand Alone)
+                                    Lobi Sedang / Meja Resepsionis (Unit Berdiri Sendiri)
                                   </span>
                                   <span className="text-[11px] text-slate-500">
-                                    Tanpa AC sentral &rarr; Rekomendasi <strong>Smart Scent D300</strong> (difusi mandiri digital timer).
+                                    Cocok untuk lobi tanpa AC sentral &rarr; Menggunakan mesin pengharum mandiri elegan di sudut ruangan.
                                   </span>
                                 </div>
                               </div>
@@ -998,10 +965,10 @@ export default function EcoCareSmartDiagnosticPage() {
                                 />
                                 <div>
                                   <span className="font-bold text-slate-900 block">
-                                    Lobi Gedung Luas &gt;300 m³ (Koneksi AHU / AC Sentral HVAC)
+                                    Lobi Gedung Luas (Tersambung ke Saluran AC Sentral)
                                   </span>
                                   <span className="text-[11px] text-slate-500">
-                                    Tersedia saluran AC sentral &rarr; Rekomendasi <strong>Smart Scent B5000</strong> (Nano-mist via ducting AHU).
+                                    Aroma disebarkan merata melalui saluran udara AC gedung tanpa perlu meletakkan banyak unit di lantai.
                                   </span>
                                 </div>
                               </div>
@@ -1012,7 +979,7 @@ export default function EcoCareSmartDiagnosticPage() {
                     )}
                   </div>
 
-                  {/* ZONA 3: KORIDOR, LIFT, & RUANG RAPAT */}
+                  {/* AREA 3: KORIDOR, LIFT, & RUANG RAPAT */}
                   <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
                     <button
                       type="button"
@@ -1023,14 +990,14 @@ export default function EcoCareSmartDiagnosticPage() {
                     >
                       <div className="flex items-center gap-3">
                         <div className="p-2 rounded-xl bg-cyan-700 text-white font-bold text-xs">
-                          Z3
+                          Area 3
                         </div>
                         <div>
                           <h3 className="text-sm font-bold text-slate-900">
-                            Zona 3: Koridor, Lift, & Ruang Rapat (Enclosed Area)
+                            Area 3: Koridor, Lift, & Ruang Rapat
                           </h3>
                           <p className="text-[11px] text-slate-500">
-                            Air Freshener blower, semprotan aerosol LCD berkala, waterbase medis & aroma ruang rapat
+                            Pengharum hening untuk lift, ruang rapat direksi, dan koridor umum
                           </p>
                         </div>
                       </div>
@@ -1054,10 +1021,10 @@ export default function EcoCareSmartDiagnosticPage() {
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Ada Ruang Tertutup Sempit (Lift / Toilet Karyawan 3x3x3m) tanpa stopkontak
+                              Ada Ruang Tertutup Sempit (Lift atau Toilet Karyawan Kecil)
                             </span>
                             <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>EAF (Air Freshener Blower)</strong> baterai D, wangi terus tanpa gas aerosol.
+                              &rarr; Rekomendasi <strong>Pengharum Kipas Blower</strong> dengan baterai, wangi lembut terus menerus tanpa suara semprotan.
                             </span>
                           </div>
                         </label>
@@ -1073,11 +1040,10 @@ export default function EcoCareSmartDiagnosticPage() {
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Koridor / Area Publik Terbuka butuh semprotan wangi berkala (LCD Sprayer)
+                              Koridor / Area Publik Terbuka membutuhkan semprotan wangi berkala
                             </span>
                             <span className="text-[11px] text-cyan-700 font-medium">
-                              Kalkulasi Kalibrasi Otomatis:{' '}
-                              <strong>Set Timer = {liveInterval} menit</strong> ({formData.jamOperasional} jam/hari, {formData.hariAktif}, siklus 8 minggu / 6.000 spray).
+                              Sistem otomatis menghitung interval: <strong>Semprot setiap {liveInterval} menit</strong> (agar wangi pas selama masa servis 2 bulan).
                             </span>
                           </div>
                         </label>
@@ -1093,10 +1059,10 @@ export default function EcoCareSmartDiagnosticPage() {
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Area Klinik / RS / Ruang Bayi & Anak (Sensitif bau menyengat & alergi propelan)
+                              Ruang Sensitif (Klinik, RS, Ruang Bayi & Anak yang menghindari aroma menyengat)
                             </span>
                             <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>EWB (Waterbase Freshener)</strong> 100% bebas aerosol & propelan kimia.
+                              &rarr; Rekomendasi <strong>Pengharum Berbahan Dasar Air (Waterbase)</strong> 100% bebas alkohol dan gas pemicu bersin.
                             </span>
                           </div>
                         </label>
@@ -1112,10 +1078,10 @@ export default function EcoCareSmartDiagnosticPage() {
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Ruang Rapat Direksi / VIP Lounge (s/d 100 m³) butuh aroma mewah hening
+                              Ruang Rapat Direksi / Ruang VIP (Butuh aroma mewah dan tidak bersuara)
                             </span>
                             <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>Smart Scent A80</strong> (Ultra silent cold-air diffusion &lt;30 dB tanpa suara semprotan).
+                              &rarr; Rekomendasi <strong>Pengharum Ruang Rapat VIP</strong> bersuara sangat hening tanpa semprotan yang mengagetkan saat diskusi.
                             </span>
                           </div>
                         </label>
@@ -1123,7 +1089,7 @@ export default function EcoCareSmartDiagnosticPage() {
                     )}
                   </div>
 
-                  {/* ZONA 4: PANTRY, KANTIN, & AREA BELAKANG */}
+                  {/* AREA 4: DAPUR, KANTIN, & PANTRY */}
                   <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
                     <button
                       type="button"
@@ -1134,14 +1100,14 @@ export default function EcoCareSmartDiagnosticPage() {
                     >
                       <div className="flex items-center gap-3">
                         <div className="p-2 rounded-xl bg-amber-700 text-white font-bold text-xs">
-                          Z4
+                          Area 4
                         </div>
                         <div>
                           <h3 className="text-sm font-bold text-slate-900">
-                            Zona 4: Pantry, Kantin, & Area Belakang
+                            Area 4: Dapur, Kantin, & Pantry
                           </h3>
                           <p className="text-[11px] text-slate-500">
-                            Pengendalian lalat makanan dan sabun cuci tangan ekonomis staf
+                            Pengendalian lalat ramah makanan dan sabun cuci tangan pantry staf
                           </p>
                         </div>
                       </div>
@@ -1165,10 +1131,10 @@ export default function EcoCareSmartDiagnosticPage() {
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Kantin karyawan / pantry / pintu dapur sering ada lalat berterbangan
+                              Area kantin atau dapur sering terganggu lalat berterbangan
                             </span>
                             <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>Ecoflies (EFL)</strong> repellent aerosol alami berbahan Permethrin/Transfluthrin aman pangan.
+                              &rarr; Rekomendasi <strong>Semprotan Pengusir Lalat Alami (Ecoflies)</strong> berbahan alami yang aman untuk area makan.
                             </span>
                           </div>
                         </label>
@@ -1184,23 +1150,23 @@ export default function EcoCareSmartDiagnosticPage() {
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Wastafel pantry butuh sabun ekonomis untuk cuci tangan & peralatan makan staf
+                              Wastafel dapur/pantry membutuhkan dispenser sabun cuci tangan staf
                             </span>
                             <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>ESD Sabun Cair / Fave 701W (500 ml)</strong> unit kompak & higienis.
+                              &rarr; Rekomendasi <strong>Dispenser Sabun Pantry Ukuran Sedang (500 ml)</strong> yang ringkas dan hemat tempat.
                             </span>
                           </div>
                         </label>
 
                         <div>
                           <label className="block text-xs font-semibold text-slate-700 mb-1">
-                            Catatan Khusus Instalasi Teknisi (Opsional)
+                            Catatan Tambahan untuk Tim Lapangan (Opsional)
                           </label>
                           <textarea
                             rows={2}
                             value={formData.catatanTeknis || ''}
                             onChange={(e) => handleFieldChange('catatanTeknis', e.target.value)}
-                            placeholder="Contoh: Titik colokan hand dryer sudah ada di wastafel barat, pintu masuk lobi wajib pasang keset 115x180cm..."
+                            placeholder="Contoh: Stopkontak hand dryer sudah tersedia di wastafel barat, pintu masuk lobi wajib pasang keset ukuran besar..."
                             className="w-full rounded-xl border border-slate-300 p-2.5 text-xs focus:border-emerald-600 outline-none"
                           />
                         </div>
@@ -1209,58 +1175,58 @@ export default function EcoCareSmartDiagnosticPage() {
                   </div>
                 </div>
 
-                {/* SINGLE PRIMARY ACTION BUTTON UNDER FORM */}
+                {/* TOMBOL UTAMA: LIHAT REKOMENDASI SOLUSI */}
                 <div className="pt-2">
                   <button
                     type="submit"
                     className="w-full bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-700 hover:from-emerald-900 hover:to-teal-800 text-white font-bold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
                   >
                     <Sparkles className="h-5 w-5 text-emerald-200" />
-                    <span>Jalankan Smart Diagnostic (Unit Matchmaking)</span>
+                    <span>Lihat Rekomendasi Solusi Kebersihan</span>
                   </button>
                 </div>
               </form>
             </div>
 
             {/* --------------------------------------------------------- */}
-            {/* RIGHT COLUMN: DIAGNOSTIC RESULT & MATCHMAKING (5 COLS)    */}
+            {/* KOLOM KANAN: HASIL REKOMENDASI (5 KOLOM)                  */}
             {/* --------------------------------------------------------- */}
             <div ref={resultPanelRef} className="lg:col-span-5 lg:sticky lg:top-20 space-y-4">
               {!diagnosticResult ? (
-                /* Placeholder saat hasil belum di-generate */
+                /* Tampilan Awal Sebelum Tombol Ditekan */
                 <div className="bg-white rounded-2xl border-2 border-dashed border-emerald-200 p-8 text-center shadow-sm space-y-3">
                   <div className="mx-auto h-14 w-14 rounded-2xl bg-emerald-50 border border-emerald-100 text-emerald-700 flex items-center justify-center">
                     <Sparkles className="h-7 w-7" />
                   </div>
                   <div className="space-y-1.5">
                     <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                      Hygiene Matchmaking Ready
+                      Sistem Rekomendasi Siap
                     </span>
                     <h3 className="text-base font-bold text-slate-800">
-                      Menunggu Hasil Diagnosis Survei
+                      Menunggu Hasil Analisis Gedung
                     </h3>
                     <p className="text-xs text-slate-500 leading-relaxed max-w-sm mx-auto">
-                      Silakan isi dan periksa form checklist observasi 4 zona di sebelah kiri, kemudian klik tombol{' '}
-                      <strong className="text-emerald-800">&ldquo;Jalankan Smart Diagnostic (Unit Matchmaking)&rdquo;</strong>{' '}
-                      untuk menampilkan rekomendasi unit, instruksi teknis instalasi, dan kalkulasi interval.
+                      Silakan periksa pilihan area di sebelah kiri, lalu klik tombol{' '}
+                      <strong className="text-emerald-800">&ldquo;Lihat Rekomendasi Solusi Kebersihan&rdquo;</strong>{' '}
+                      untuk menampilkan paket produk yang paling pas untuk gedung ini.
                     </p>
                   </div>
                 </div>
               ) : (
-                /* Kartu Hasil Rekomendasi Lengkap */
+                /* Hasil Rekomendasi Lengkap yang Sudah Bersih & Rapi */
                 <>
-                  {/* RINGKASAN SURVEY HEADER */}
+                  {/* RINGKASAN REKOMENDASI GEDUNG */}
                   <div className="bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 rounded-2xl p-4 sm:p-5 text-white shadow-md border border-emerald-800/50 space-y-3">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <span className="text-[10px] font-bold tracking-wider text-emerald-300 uppercase block font-mono">
-                          {diagnosticResult.runId} • Stage 4 Diagnosed
+                        <span className="text-[11px] font-bold tracking-wider text-emerald-300 uppercase block">
+                          Paket Rekomendasi Siap
                         </span>
                         <h3 className="text-base sm:text-lg font-bold text-white truncate max-w-[260px]">
                           {diagnosticResult.namaGedung}
                         </h3>
                         <p className="text-xs text-emerald-200/80">
-                          {diagnosticResult.segmen} • {formData.hariAktif} ({formData.jamOperasional} Jam)
+                          {diagnosticResult.segmen} • {formData.hariAktif} ({formData.jamOperasional} Jam/Hari)
                         </p>
                       </div>
 
@@ -1272,54 +1238,54 @@ export default function EcoCareSmartDiagnosticPage() {
                         }`}
                       >
                         {diagnosticResult.surveyType === 'NEW_CUSTOMER'
-                          ? 'New Customer'
-                          : 'Renewal Upsell'}
+                          ? 'Pelanggan Baru'
+                          : 'Pembaruan Kontrak'}
                       </span>
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 pt-2 border-t border-emerald-800/50">
                       <div className="bg-white/5 rounded-xl p-2.5 border border-white/10">
-                        <span className="text-[10px] text-emerald-300 block">Total Unit Match</span>
+                        <span className="text-[10px] text-emerald-300 block">Total Solusi Disarankan</span>
                         <span className="text-xl font-extrabold text-white">
-                          {diagnosticResult.totalUnitRekomendasi} Unit Model
+                          {diagnosticResult.totalUnitRekomendasi} Produk
                         </span>
                       </div>
                       <div className="bg-white/5 rounded-xl p-2.5 border border-white/10">
-                        <span className="text-[10px] text-emerald-300 block">Pipa Kloset/Urinoir</span>
+                        <span className="text-[10px] text-emerald-300 block">Karakteristik Pipa</span>
                         <span className="text-xs font-bold text-emerald-100">
                           {formData.kondisiPipa === 'PIPA_MANUAL'
-                            ? 'Manual (Bisa Dibor)'
-                            : 'Tanam (Dilarang Bor)'}
+                            ? 'Pipa Luar (Bisa Dibor)'
+                            : 'Pipa Tanam / Marmer'}
                         </span>
                       </div>
                     </div>
 
                     {diagnosticResult.sprayerIntervalMinutes && (
                       <div className="p-2.5 rounded-xl bg-cyan-950/80 border border-cyan-700/60 text-xs text-cyan-200 flex items-center justify-between">
-                        <span>Setting Timer LCD Sprayer:</span>
+                        <span>Pengaturan Semprot Otomatis:</span>
                         <strong className="text-white bg-cyan-800/80 px-2 py-0.5 rounded-md font-mono text-xs">
-                          {diagnosticResult.sprayerIntervalMinutes} Menit / Spray
+                          Tiap {diagnosticResult.sprayerIntervalMinutes} Menit
                         </strong>
                       </div>
                     )}
                   </div>
 
-                  {/* HIERARKI REKOMENDASI 3 KELOMPOK PRODUK */}
+                  {/* DAFTAR PRODUK DALAM 3 KELOMPOK */}
                   <div className="space-y-4 max-h-[580px] overflow-y-auto pr-1">
-                    {/* KELOMPOK 1: MAIN RESTROOM PRODUCTS */}
+                    {/* KELOMPOK 1: TOILET & SANITASI UTAMA */}
                     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
                       <div className="bg-gradient-to-r from-emerald-50 to-teal-50/70 px-4 py-2.5 border-b border-slate-200/80 flex items-center justify-between">
                         <span className="text-xs font-extrabold text-emerald-950 uppercase tracking-wider flex items-center gap-1.5">
                           <Droplets className="h-4 w-4 text-emerald-700" />
-                          1. Main Restroom Products ({diagnosticResult.kategori1_MainRestroom.length})
+                          1. Solusi Toilet & Kamar Mandi ({diagnosticResult.kategori1_Restroom.length})
                         </span>
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                          Area Toilet
+                          Fasilitas Sanitasi
                         </span>
                       </div>
 
                       <div className="p-3.5 space-y-3">
-                        {diagnosticResult.kategori1_MainRestroom.map((unit) => (
+                        {diagnosticResult.kategori1_Restroom.map((unit) => (
                           <div
                             key={unit.id}
                             className="p-3 rounded-xl border border-slate-200 hover:border-emerald-300 bg-slate-50/60 transition space-y-2 text-xs"
@@ -1329,32 +1295,34 @@ export default function EcoCareSmartDiagnosticPage() {
                                 {unit.namaUnit}
                               </span>
                               <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                Match {unit.matchScore}%
+                                Cocok {unit.matchScore}%
                               </span>
                             </div>
 
                             <div className="flex flex-wrap items-center gap-1.5">
                               <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white border border-slate-200 text-slate-600">
-                                {unit.badgeTeknis}
+                                {unit.keteranganTipe}
                               </span>
                               <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                Estimasi: {unit.estimasiUnit}
+                                Kebutuhan: {unit.estimasiUnit}
                               </span>
                             </div>
 
-                            {unit.warningTeknis && (
+                            {unit.catatanKhusus && (
                               <div className="p-2 rounded-lg bg-amber-50 border border-amber-300 text-amber-900 text-[11px] font-medium flex items-start gap-1.5">
-                                <AlertTriangle className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
-                                <span>{unit.warningTeknis}</span>
+                                <Info className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
+                                <span>{unit.catatanKhusus}</span>
                               </div>
                             )}
 
-                            <div className="space-y-1 pt-1 text-[11px]">
+                            <div className="space-y-1.5 pt-1 text-[11px]">
                               <p className="text-slate-600">
-                                <strong className="text-slate-800">Alasan Teknis:</strong> {unit.alasanTeknis}
+                                <strong className="text-slate-800">Petunjuk Pemasangan:</strong>{' '}
+                                {unit.petunjukPemasangan}
                               </p>
-                              <p className="text-emerald-900 bg-emerald-50/80 p-1.5 rounded-md">
-                                <strong>Nilai Bisnis Klien:</strong> {unit.nilaiBisnis}
+                              <p className="text-emerald-950 bg-emerald-50/90 p-2 rounded-lg border border-emerald-100">
+                                <strong className="text-emerald-800">Keunggulan untuk Gedung:</strong>{' '}
+                                {unit.keunggulanGedung}
                               </p>
                             </div>
                           </div>
@@ -1362,16 +1330,16 @@ export default function EcoCareSmartDiagnosticPage() {
                       </div>
                     </div>
 
-                    {/* KELOMPOK 2: SECONDARY PRODUCTS */}
+                    {/* KELOMPOK 2: LANTAI & PENGHARUM RUANGAN */}
                     {diagnosticResult.kategori2_Secondary.length > 0 && (
                       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
                         <div className="bg-gradient-to-r from-teal-50 to-cyan-50/70 px-4 py-2.5 border-b border-slate-200/80 flex items-center justify-between">
                           <span className="text-xs font-extrabold text-teal-950 uppercase tracking-wider flex items-center gap-1.5">
                             <Layers className="h-4 w-4 text-teal-700" />
-                            2. Secondary Products ({diagnosticResult.kategori2_Secondary.length})
+                            2. Solusi Lantai & Pengharum Ruangan ({diagnosticResult.kategori2_Secondary.length})
                           </span>
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800">
-                            Mat & Air Freshener
+                            Kebersihan & Kesegaran
                           </span>
                         </div>
 
@@ -1386,25 +1354,27 @@ export default function EcoCareSmartDiagnosticPage() {
                                   {unit.namaUnit}
                                 </span>
                                 <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-teal-100 text-teal-800 border border-teal-200">
-                                  Match {unit.matchScore}%
+                                  Cocok {unit.matchScore}%
                                 </span>
                               </div>
 
                               <div className="flex flex-wrap items-center gap-1.5">
                                 <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white border border-slate-200 text-slate-600">
-                                  {unit.badgeTeknis}
+                                  {unit.keteranganTipe}
                                 </span>
                                 <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-100">
-                                  Estimasi: {unit.estimasiUnit}
+                                  Kebutuhan: {unit.estimasiUnit}
                                 </span>
                               </div>
 
-                              <div className="space-y-1 pt-1 text-[11px]">
+                              <div className="space-y-1.5 pt-1 text-[11px]">
                                 <p className="text-slate-600">
-                                  <strong className="text-slate-800">Alasan Teknis:</strong> {unit.alasanTeknis}
+                                  <strong className="text-slate-800">Petunjuk Pemasangan:</strong>{' '}
+                                  {unit.petunjukPemasangan}
                                 </p>
-                                <p className="text-teal-900 bg-teal-50/80 p-1.5 rounded-md">
-                                  <strong>Nilai Bisnis Klien:</strong> {unit.nilaiBisnis}
+                                <p className="text-teal-950 bg-teal-50/90 p-2 rounded-lg border border-teal-100">
+                                  <strong className="text-teal-800">Keunggulan untuk Gedung:</strong>{' '}
+                                  {unit.keunggulanGedung}
                                 </p>
                               </div>
                             </div>
@@ -1413,16 +1383,16 @@ export default function EcoCareSmartDiagnosticPage() {
                       </div>
                     )}
 
-                    {/* KELOMPOK 3: SMART SCENTING */}
+                    {/* KELOMPOK 3: PENGHARUM MEWAH SMART SCENTING */}
                     {diagnosticResult.kategori3_SmartScenting.length > 0 && (
                       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
                         <div className="bg-gradient-to-r from-cyan-50 to-emerald-50/50 px-4 py-2.5 border-b border-slate-200/80 flex items-center justify-between">
                           <span className="text-xs font-extrabold text-cyan-950 uppercase tracking-wider flex items-center gap-1.5">
                             <Wind className="h-4 w-4 text-cyan-700" />
-                            3. Smart Scenting / Cold Air ({diagnosticResult.kategori3_SmartScenting.length})
+                            3. Pengharum Mewah (Smart Scenting) ({diagnosticResult.kategori3_SmartScenting.length})
                           </span>
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800">
-                            First Impression
+                            Kesan Pertama Mewah
                           </span>
                         </div>
 
@@ -1437,25 +1407,27 @@ export default function EcoCareSmartDiagnosticPage() {
                                   {unit.namaUnit}
                                 </span>
                                 <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-cyan-100 text-cyan-800 border border-cyan-200">
-                                  Match {unit.matchScore}%
+                                  Cocok {unit.matchScore}%
                                 </span>
                               </div>
 
                               <div className="flex flex-wrap items-center gap-1.5">
                                 <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white border border-slate-200 text-slate-600">
-                                  {unit.badgeTeknis}
+                                  {unit.keteranganTipe}
                                 </span>
                                 <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-cyan-50 text-cyan-700 border border-cyan-100">
-                                  Estimasi: {unit.estimasiUnit}
+                                  Kebutuhan: {unit.estimasiUnit}
                                 </span>
                               </div>
 
-                              <div className="space-y-1 pt-1 text-[11px]">
+                              <div className="space-y-1.5 pt-1 text-[11px]">
                                 <p className="text-slate-600">
-                                  <strong className="text-slate-800">Alasan Teknis:</strong> {unit.alasanTeknis}
+                                  <strong className="text-slate-800">Petunjuk Pemasangan:</strong>{' '}
+                                  {unit.petunjukPemasangan}
                                 </p>
-                                <p className="text-cyan-950 bg-cyan-50/80 p-1.5 rounded-md">
-                                  <strong>Nilai Bisnis Klien:</strong> {unit.nilaiBisnis}
+                                <p className="text-cyan-950 bg-cyan-50/90 p-2 rounded-lg border border-cyan-100">
+                                  <strong className="text-cyan-800">Keunggulan untuk Gedung:</strong>{' '}
+                                  {unit.keunggulanGedung}
                                 </p>
                               </div>
                             </div>
@@ -1472,8 +1444,8 @@ export default function EcoCareSmartDiagnosticPage() {
                       onClick={() => setIsQuotationModalOpen(true)}
                       className="w-full bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-900 hover:to-teal-900 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs sm:text-sm"
                     >
-                      <Send className="h-4 w-4" />
-                      <span>Kirim Draft ke Quotation (Stage 5 - pricing.ecocare.id)</span>
+                      <FileText className="h-4 w-4" />
+                      <span>Buat Ringkasan Penawaran (Quotation)</span>
                     </button>
 
                     <button
@@ -1482,7 +1454,7 @@ export default function EcoCareSmartDiagnosticPage() {
                       className="w-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-xs"
                     >
                       <Save className="h-4 w-4 text-emerald-700" />
-                      <span>Simpan Lampiran Teknis untuk Teknisi & Admin</span>
+                      <span>Simpan Hasil Survei Ini</span>
                     </button>
                   </div>
                 </>
@@ -1491,7 +1463,7 @@ export default function EcoCareSmartDiagnosticPage() {
           </div>
         ) : (
           /* ----------------------------------------------------------- */
-          /* TAB 2: RINGKASAN DRAFT LAPANGAN & RIWAYAT SURVEI          */
+          /* TAB 2: DATA SURVEI TERSIMPAN                               */
           /* ----------------------------------------------------------- */
           <div className="space-y-5">
             <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -1502,26 +1474,26 @@ export default function EcoCareSmartDiagnosticPage() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Cari nama gedung atau lokasi..."
+                    placeholder="Cari nama gedung atau alamat..."
                     className="w-full rounded-xl border border-slate-300 pl-9 pr-3 py-2 text-xs sm:text-sm outline-none focus:border-emerald-600"
                   />
                 </div>
                 <select
                   value={filterSegmen}
                   onChange={(e) => setFilterSegmen(e.target.value)}
-                  className="rounded-xl border border-slate-300 px-3 py-2 text-xs sm:text-sm bg-white outline-none focus:border-emerald-600"
+                  className="rounded-xl border border-slate-300 px-3 py-2 text-xs sm:text-sm bg-white outline-none focus:border-emerald-600 font-medium"
                 >
-                  <option value="ALL">Semua Segmen</option>
-                  <option value="Office Tower">Office Tower</option>
-                  <option value="Mall/Public Area">Mall / Public</option>
+                  <option value="ALL">Semua Jenis Gedung</option>
+                  <option value="Office Tower">Perkantoran (Office Tower)</option>
+                  <option value="Mall/Public Area">Mall / Area Publik</option>
                   <option value="Hotel">Hotel</option>
                   <option value="RS/Klinik">RS / Klinik</option>
-                  <option value="Resto/F&B">Resto / F&B</option>
+                  <option value="Resto/F&B">Resto & Kafe F&B</option>
                 </select>
               </div>
 
               <div className="text-xs text-slate-500 font-medium">
-                Total Tersimpan: <strong>{savedRecords.length} Draft</strong>
+                Total Tersimpan: <strong>{savedRecords.length} Data Gedung</strong>
               </div>
             </div>
 
@@ -1531,17 +1503,17 @@ export default function EcoCareSmartDiagnosticPage() {
                   <ClipboardCheck className="h-6 w-6" />
                 </div>
                 <h3 className="text-base font-bold text-slate-800">
-                  Belum Ada Lampiran Teknis Survei Tersimpan
+                  Belum Ada Data Survei yang Tersimpan
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
-                  Isi form survei 4 zona lalu klik tombol <strong>&ldquo;Simpan Lampiran Teknis untuk Teknisi & Admin&rdquo;</strong> untuk mendokumentasikan hasil survei lapangan.
+                  Isi data di form survei lalu klik tombol <strong>&ldquo;Simpan Hasil Survei Ini&rdquo;</strong> untuk menyimpan data hasil kunjungan gedung ke riwayat.
                 </p>
                 <button
                   type="button"
                   onClick={() => setActiveTab('survey')}
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-800 text-white text-xs font-bold hover:bg-emerald-900 transition"
                 >
-                  <span>Mulai Survei Baru</span>
+                  <span>Mulai Isi Form Survei</span>
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
@@ -1555,8 +1527,8 @@ export default function EcoCareSmartDiagnosticPage() {
                     <div className="space-y-2">
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <span className="text-[10px] font-mono text-slate-400">
-                            {rec.id} • {new Date(rec.createdAtUtc).toLocaleString('id-ID')}
+                          <span className="text-[10px] text-slate-400 font-medium">
+                            Tersimpan: {new Date(rec.createdAtUtc).toLocaleString('id-ID')}
                           </span>
                           <h4 className="text-base font-bold text-slate-900">
                             {rec.input.namaGedung}
@@ -1566,7 +1538,7 @@ export default function EcoCareSmartDiagnosticPage() {
                           </p>
                         </div>
                         <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 shrink-0">
-                          {rec.result.totalUnitRekomendasi} Unit Match
+                          {rec.result.totalUnitRekomendasi} Produk
                         </span>
                       </div>
 
@@ -1574,20 +1546,20 @@ export default function EcoCareSmartDiagnosticPage() {
                         <div>
                           <span className="text-slate-500 font-semibold">Tipe Pipa: </span>
                           <strong className="text-slate-800">
-                            {rec.input.kondisiPipa === 'PIPA_MANUAL' ? 'Manual (EST)' : 'Tanam (EDST)'}
+                            {rec.input.kondisiPipa === 'PIPA_MANUAL' ? 'Pipa Luar (Bisa Dibor)' : 'Pipa Tanam / Marmer'}
                           </strong>
                         </div>
                         <div>
-                          <span className="text-slate-500 font-semibold">Wastafel: </span>
+                          <span className="text-slate-500 font-semibold">Sabun Wastafel: </span>
                           <span className="text-slate-800">
-                            {rec.input.tipeWastafel === 'TRAFIK_PADAT' ? 'Liquid MS1000' : 'Foam SP830'}
+                            {rec.input.tipeWastafel === 'TRAFIK_PADAT' ? 'Sabun Cair 1 Liter' : 'Sabun Busa (Foam) Hemat Air'}
                           </span>
                         </div>
                         {rec.input.kondisiLobi !== 'NONE' && (
                           <div>
-                            <span className="text-slate-500 font-semibold">Scenting: </span>
+                            <span className="text-slate-500 font-semibold">Pengharum Lobi: </span>
                             <span className="text-teal-800 font-medium">
-                              {rec.input.kondisiLobi === 'HVAC_LUAS' ? 'Smart Scent B5000 (AHU)' : 'Smart Scent D300 (Stand Alone)'}
+                              {rec.input.kondisiLobi === 'HVAC_LUAS' ? 'Tersambung AC Sentral (HVAC)' : 'Unit Berdiri Sendiri (Stand Alone)'}
                             </span>
                           </div>
                         )}
@@ -1601,7 +1573,7 @@ export default function EcoCareSmartDiagnosticPage() {
                         className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 hover:text-emerald-950"
                       >
                         <RotateCcw className="h-3.5 w-3.5" />
-                        <span>Buka & Edit Survei</span>
+                        <span>Buka & Edit Kembali</span>
                       </button>
                       <button
                         type="button"
@@ -1621,25 +1593,25 @@ export default function EcoCareSmartDiagnosticPage() {
       </main>
 
       {/* ------------------------------------------------------------- */}
-      {/* MODAL: KIRIM DRAFT KE QUOTATION (STAGE 5 PRICING)             */}
+      {/* MODAL: RINGKASAN PENAWARAN (QUOTATION)                        */}
       {/* ------------------------------------------------------------- */}
       {isQuotationModalOpen && diagnosticResult && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
           <div className="bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden space-y-4">
             <div className="bg-gradient-to-r from-emerald-900 to-teal-900 p-5 text-white flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <Send className="h-5 w-5 text-emerald-300" />
+                <FileText className="h-5 w-5 text-emerald-300" />
                 <div>
-                  <h3 className="font-bold text-base">Handover ke Stage 5: Pricing & Quotation</h3>
+                  <h3 className="font-bold text-base">Ringkasan Penawaran Layanan (Quotation)</h3>
                   <p className="text-xs text-emerald-200/80">
-                    Endpoint: pricing.ecocare.id/api/v1/quotation/draft
+                    Daftar rekomendasi produk siap diajukan untuk penawaran harga
                   </p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setIsQuotationModalOpen(false)}
-                className="text-white/80 hover:text-white text-lg font-bold p-1"
+                className="text-white/80 hover:text-white text-xl font-bold p-1 leading-none"
               >
                 &times;
               </button>
@@ -1648,34 +1620,34 @@ export default function EcoCareSmartDiagnosticPage() {
             <div className="p-5 space-y-4 text-xs sm:text-sm">
               <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 space-y-1">
                 <div className="flex items-center justify-between font-bold">
-                  <span>Draft Siap Diproses ke Surat Penawaran (Quotation):</span>
-                  <span className="font-mono text-xs px-2 py-0.5 rounded bg-emerald-200/70 text-emerald-900">
-                    ID: QT-{diagnosticResult.runId}
+                  <span>{diagnosticResult.namaGedung}</span>
+                  <span className="text-xs px-2 py-0.5 rounded bg-emerald-200 text-emerald-900">
+                    {diagnosticResult.segmen}
                   </span>
                 </div>
                 <p className="text-xs text-emerald-800">
-                  Data unit matchmaking dari hasil survei lapangan telah dikompilasi dengan spesifikasi teknis dan alasan bisnis untuk dilanjutkan ke perhitungan skema harga rental & servis bulanan.
+                  Rekomendasi telah disesuaikan dengan kebutuhan fasilitas dan siap dilanjutkan ke pembuatan surat penawaran harga.
                 </p>
               </div>
 
               <div>
                 <span className="font-bold text-slate-800 block mb-1">
-                  Rincian Unit yang Dikirim ({diagnosticResult.totalUnitRekomendasi} Unit Model):
+                  Daftar Produk yang Direkomendasikan ({diagnosticResult.totalUnitRekomendasi} Produk):
                 </span>
-                <div className="max-h-44 overflow-y-auto space-y-1.5 p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
+                <div className="max-h-48 overflow-y-auto space-y-1.5 p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
                   {[
-                    ...diagnosticResult.kategori1_MainRestroom,
+                    ...diagnosticResult.kategori1_Restroom,
                     ...diagnosticResult.kategori2_Secondary,
                     ...diagnosticResult.kategori3_SmartScenting,
                   ].map((unit, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center justify-between py-1 border-b border-slate-200 last:border-none"
+                      className="flex items-center justify-between py-1.5 border-b border-slate-200 last:border-none"
                     >
                       <span className="font-medium text-slate-900">
-                        {unit.kodeUnit} - {unit.namaUnit}
+                        {unit.namaUnit}
                       </span>
-                      <span className="text-emerald-700 font-semibold">{unit.estimasiUnit}</span>
+                      <span className="text-emerald-800 font-bold">{unit.estimasiUnit}</span>
                     </div>
                   ))}
                 </div>
@@ -1684,18 +1656,18 @@ export default function EcoCareSmartDiagnosticPage() {
               <div className="flex flex-col sm:flex-row gap-2 pt-2 border-t border-slate-100">
                 <button
                   type="button"
-                  onClick={handleCopyQuotationPayload}
+                  onClick={handleCopyCleanSummary}
                   className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-1.5 text-xs"
                 >
-                  {copiedPayload ? (
+                  {copiedSummary ? (
                     <>
                       <Check className="h-4 w-4 text-emerald-600" />
-                      <span>Payload JSON Berhasil Disalin!</span>
+                      <span>Rangkuman Berhasil Disalin!</span>
                     </>
                   ) : (
                     <>
                       <Copy className="h-4 w-4" />
-                      <span>Salin Payload Handover (JSON)</span>
+                      <span>Salin Format Pesan / Email</span>
                     </>
                   )}
                 </button>
@@ -1706,7 +1678,7 @@ export default function EcoCareSmartDiagnosticPage() {
                   rel="noopener noreferrer"
                   className="flex-1 bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-900 hover:to-teal-900 text-white font-bold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-1.5 text-xs text-center"
                 >
-                  <span>Buka pricing.ecocare.id</span>
+                  <span>Buka Sistem Penawaran</span>
                   <ExternalLink className="h-4 w-4" />
                 </a>
               </div>

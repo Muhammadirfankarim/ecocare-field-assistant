@@ -6,9 +6,9 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'EcoCare Smart Diagnostic | PT Ecocare Indo Pasifik Tbk',
+  title: 'EcoCare HygieMatch™ — Rekomendasi Solusi Kebersihan Gedung',
   description:
-    'Modul Smart Survey Diagnostic internal untuk Asisten Sales Lapangan PT EcoCare Indo Pasifik Tbk (Lini EcoCare Hygiene).',
+    'Sistem Rekomendasi Solusi Kebersihan & Sanitasi Gedung PT EcoCare Indo Pasifik Tbk.',
 };
 
 export default function RootLayout({
