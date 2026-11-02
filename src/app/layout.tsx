@@ -6,9 +6,9 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'EcoCare Smart Field Assistant | PT EcoCare Indo Pasifik Tbk',
+  title: 'EcoCare Smart Diagnostic | EcoCare Super Sales App (Stage 4: Site Survey)',
   description:
-    'Aplikasi Asisten Observasi Lapangan, Predictive Lead Scoring & Next Best Offer untuk Tim Sales Door-to-Door PT EcoCare Indo Pasifik Tbk (ECII).',
+    'Modul Smart Survey Diagnostic internal untuk Asisten Sales Lapangan PT EcoCare Indo Pasifik Tbk (Lini EcoCare Hygiene).',
 };
 
 export default function RootLayout({
@@ -24,4 +24,3 @@ export default function RootLayout({
     </html>
   );
 }
-
