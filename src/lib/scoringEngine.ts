@@ -333,5 +333,6 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
     kategori3_SmartScenting: kat3_SmartScenting,
     sprayerIntervalMinutes: input.koridorPublikTerbuka ? calculatedIntervalMinutes : null,
     summaryHighlights,
+    engineType: 'RULE_BASED',
   };
 }

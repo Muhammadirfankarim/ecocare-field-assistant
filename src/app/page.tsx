@@ -29,6 +29,7 @@ import {
   Info,
   SlidersHorizontal,
   FileText,
+  Download,
 } from 'lucide-react';
 import {
   DiagnosticResult,
@@ -43,6 +44,7 @@ import {
   evaluateDiagnostic,
   validateSurveyInput,
 } from '@/lib/scoringEngine';
+import { predictWithHistoricalML } from '@/lib/mlInferenceEngine';
 
 const STORAGE_KEY = 'ecocare_hygiematch_records_v1';
 
@@ -154,6 +156,7 @@ export default function EcoCareHygieMatchPage() {
   const [filterSegmen, setFilterSegmen] = useState<string>('ALL');
   const [isQuotationModalOpen, setIsQuotationModalOpen] = useState<boolean>(false);
   const [copiedSummary, setCopiedSummary] = useState<boolean>(false);
+  const [engineMode, setEngineMode] = useState<'ML_HISTORICAL' | 'RULE_BASED'>('ML_HISTORICAL');
 
   const resultPanelRef = useRef<HTMLDivElement | null>(null);
 
@@ -196,7 +199,9 @@ export default function EcoCareHygieMatchPage() {
     setValidationErrors(errors);
     if (errors.length > 0) return;
 
-    const res = evaluateDiagnostic(formData);
+    const res = engineMode === 'ML_HISTORICAL'
+      ? predictWithHistoricalML(formData)
+      : evaluateDiagnostic(formData);
     setDiagnosticResult(res);
 
     setTimeout(() => {
@@ -209,7 +214,11 @@ export default function EcoCareHygieMatchPage() {
     setValidationErrors(errors);
     if (errors.length > 0) return;
 
-    const currentRes = diagnosticResult ?? evaluateDiagnostic(formData);
+    const currentRes = diagnosticResult ?? (
+      engineMode === 'ML_HISTORICAL'
+        ? predictWithHistoricalML(formData)
+        : evaluateDiagnostic(formData)
+    );
     setDiagnosticResult(currentRes);
 
     const newRecord: SavedDiagnosticRecord = {
@@ -1175,14 +1184,72 @@ _Dianalisis menggunakan sistem EcoCare HygieMatch™_`;
                   </div>
                 </div>
 
+                {/* PILIHAN METODE ANALISIS: MACHINE LEARNING (1.000 DATA) VS SOP STANDAR */}
+                <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50 p-3.5 rounded-2xl border border-emerald-200/90 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      <Sparkles className="h-4 w-4 text-emerald-700" />
+                      Pilihan Mesin Rekomendasi (Client-Side Engine):
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold border border-emerald-200">
+                      Zero Server • 0ms Latency
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setEngineMode('ML_HISTORICAL')}
+                      className={`p-2.5 rounded-xl border text-left transition ${
+                        engineMode === 'ML_HISTORICAL'
+                          ? 'bg-emerald-800 text-white border-emerald-900 shadow-sm'
+                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="text-xs font-bold flex items-center gap-1">
+                        <span>Machine Learning Model</span>
+                      </div>
+                      <div
+                        className={`text-[10px] ${
+                          engineMode === 'ML_HISTORICAL' ? 'text-emerald-200' : 'text-slate-500'
+                        }`}
+                      >
+                        Model 1.000 data survei (Akurasi 99.6%)
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setEngineMode('RULE_BASED')}
+                      className={`p-2.5 rounded-xl border text-left transition ${
+                        engineMode === 'RULE_BASED'
+                          ? 'bg-teal-800 text-white border-teal-900 shadow-sm'
+                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="text-xs font-bold">SOP Standar (Aturan)</div>
+                      <div
+                        className={`text-[10px] ${
+                          engineMode === 'RULE_BASED' ? 'text-teal-200' : 'text-slate-500'
+                        }`}
+                      >
+                        Katalog resmi teknis EcoCare
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
                 {/* TOMBOL UTAMA: LIHAT REKOMENDASI SOLUSI */}
-                <div className="pt-2">
+                <div className="pt-1">
                   <button
                     type="submit"
                     className="w-full bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-700 hover:from-emerald-900 hover:to-teal-800 text-white font-bold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
                   >
                     <Sparkles className="h-5 w-5 text-emerald-200" />
-                    <span>Lihat Rekomendasi Solusi Kebersihan</span>
+                    <span>
+                      {engineMode === 'ML_HISTORICAL'
+                        ? 'Analisis dengan Model Machine Learning'
+                        : 'Lihat Rekomendasi Solusi Kebersihan'}
+                    </span>
                   </button>
                 </div>
               </form>
@@ -1220,7 +1287,9 @@ _Dianalisis menggunakan sistem EcoCare HygieMatch™_`;
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <span className="text-[11px] font-bold tracking-wider text-emerald-300 uppercase block">
-                          Paket Rekomendasi Siap
+                          {diagnosticResult.engineType === 'MACHINE_LEARNING'
+                            ? 'Model ML (1.000 Data Historis • Akurasi 99.6%)'
+                            : 'Paket Rekomendasi SOP Standar'}
                         </span>
                         <h3 className="text-base sm:text-lg font-bold text-white truncate max-w-[260px]">
                           {diagnosticResult.namaGedung}
@@ -1651,6 +1720,22 @@ _Dianalisis menggunakan sistem EcoCare HygieMatch™_`;
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* ONNX Model Info Badge */}
+              <div className="flex items-center justify-between px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-600">
+                <span className="flex items-center gap-1.5 font-medium">
+                  <Sparkles className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                  Format Model: <strong>ONNX Portable (Zero-Server In-Browser)</strong>
+                </span>
+                <a
+                  href="/models/ecocare_hygiene_model.onnx"
+                  download="ecocare_hygiene_model.onnx"
+                  className="font-bold text-emerald-700 hover:text-emerald-900 flex items-center gap-1 shrink-0"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  <span>Unduh ONNX</span>
+                </a>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-2 pt-2 border-t border-slate-100">

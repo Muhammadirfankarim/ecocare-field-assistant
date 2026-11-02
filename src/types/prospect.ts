@@ -93,6 +93,8 @@ export interface DiagnosticResult {
   kategori3_SmartScenting: HygieneProductRecommendation[];
   sprayerIntervalMinutes: number | null;
   summaryHighlights: string[];
+  engineType?: 'MACHINE_LEARNING' | 'RULE_BASED';
+  modelAccuracy?: string;
 }
 
 export interface SavedDiagnosticRecord {

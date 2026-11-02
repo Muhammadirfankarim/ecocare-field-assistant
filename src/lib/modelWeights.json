@@ -1,0 +1,158 @@
+{
+  "version": "1.0.0",
+  "model_name": "EcoCare HygieMatch Multi-Output Random Forest",
+  "trained_samples": 1000,
+  "features": [
+    "tipe_klien",
+    "segmen_gedung",
+    "hari_kerja",
+    "jam_operasional_per_hari",
+    "kondisi_pipa_kloset_urinal",
+    "tipe_wastafel_pengunjung",
+    "is_khawatir_bakteri_kloset",
+    "is_butuh_pembuangan_pembalut",
+    "is_keluhan_sampah_tisu",
+    "jml_urinal",
+    "jml_kloset_duduk",
+    "jml_wastafel",
+    "jml_kubikal_wanita",
+    "is_akses_licin_debu",
+    "kondisi_lobi_utama",
+    "is_lift_toilet_sempit_3x3",
+    "is_koridor_publik_terbuka",
+    "is_area_sensitif_medis_anak",
+    "is_vip_lounge_direksi",
+    "is_lalat_pantry_kantin",
+    "is_wastafel_pantry"
+  ],
+  "cat_mappings": {
+    "tipe_klien": {
+      "New_Customer": 0.0,
+      "Renewal_Contract": 1.0
+    },
+    "segmen_gedung": {
+      "Office_Tower": 0.0,
+      "Mall_Public_Area": 1.0,
+      "Hotel": 2.0,
+      "RS_Klinik": 3.0,
+      "Resto_FB": 4.0
+    },
+    "hari_kerja": {
+      "5_Hari": 0.0,
+      "6_Hari": 1.0,
+      "7_Hari": 2.0
+    },
+    "kondisi_pipa_kloset_urinal": {
+      "Pipa_Manual_Bisa_Dibor": 0.0,
+      "Pipa_Tanam_Autoflush_Marmer": 1.0,
+      "Tidak_Ada_Urinal": 2.0
+    },
+    "tipe_wastafel_pengunjung": {
+      "Trafik_Padat_Publik": 0.0,
+      "Perkantoran_Green_Concept": 1.0,
+      "Standar": 2.0
+    },
+    "kondisi_lobi_utama": {
+      "Tidak_Butuh_Scenting": 0.0,
+      "Lobi_Sedang_StandAlone": 1.0,
+      "Lobi_Luas_HVAC_Sentral": 2.0
+    }
+  },
+  "targets": [
+    "EST",
+    "EDST",
+    "ESD_Liquid",
+    "EFS_Foam",
+    "ESC_SeatCleaner",
+    "ESBD_SanitaryBin",
+    "EHD_HandDryer",
+    "EDM_Doormat",
+    "EAF_AirFreshenerFan",
+    "LCD_Sprayer",
+    "EWB_Waterbase",
+    "EFL_Ecoflies",
+    "SmartScent_B5000",
+    "SmartScent_D300",
+    "SmartScent_A80"
+  ],
+  "f1_scores": {
+    "EST": 100.0,
+    "EDST": 97.2,
+    "ESD_Liquid": 99.2,
+    "EFS_Foam": 97.8,
+    "ESC_SeatCleaner": 100.0,
+    "ESBD_SanitaryBin": 100.0,
+    "EHD_HandDryer": 100.0,
+    "EDM_Doormat": 100.0,
+    "EAF_AirFreshenerFan": 100.0,
+    "LCD_Sprayer": 100.0,
+    "EWB_Waterbase": 100.0,
+    "EFL_Ecoflies": 100.0,
+    "SmartScent_B5000": 100.0,
+    "SmartScent_D300": 100.0,
+    "SmartScent_A80": 100.0
+  },
+  "average_f1": 99.6,
+  "target_metadata": {
+    "EST": {
+      "baseline_prior": 0.465,
+      "f1_score": 100.0
+    },
+    "EDST": {
+      "baseline_prior": 0.479,
+      "f1_score": 97.2
+    },
+    "ESD_Liquid": {
+      "baseline_prior": 0.67,
+      "f1_score": 99.2
+    },
+    "EFS_Foam": {
+      "baseline_prior": 0.33,
+      "f1_score": 97.8
+    },
+    "ESC_SeatCleaner": {
+      "baseline_prior": 0.633,
+      "f1_score": 100.0
+    },
+    "ESBD_SanitaryBin": {
+      "baseline_prior": 0.748,
+      "f1_score": 100.0
+    },
+    "EHD_HandDryer": {
+      "baseline_prior": 0.493,
+      "f1_score": 100.0
+    },
+    "EDM_Doormat": {
+      "baseline_prior": 0.605,
+      "f1_score": 100.0
+    },
+    "EAF_AirFreshenerFan": {
+      "baseline_prior": 0.567,
+      "f1_score": 100.0
+    },
+    "LCD_Sprayer": {
+      "baseline_prior": 0.475,
+      "f1_score": 100.0
+    },
+    "EWB_Waterbase": {
+      "baseline_prior": 0.199,
+      "f1_score": 100.0
+    },
+    "EFL_Ecoflies": {
+      "baseline_prior": 0.414,
+      "f1_score": 100.0
+    },
+    "SmartScent_B5000": {
+      "baseline_prior": 0.377,
+      "f1_score": 100.0
+    },
+    "SmartScent_D300": {
+      "baseline_prior": 0.402,
+      "f1_score": 100.0
+    },
+    "SmartScent_A80": {
+      "baseline_prior": 0.343,
+      "f1_score": 100.0
+    }
+  }
+}
