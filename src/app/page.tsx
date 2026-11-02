@@ -33,6 +33,7 @@ import {
   Download,
 } from 'lucide-react';
 import {
+  AreaRecommendationGroup,
   DiagnosticResult,
   KondisiLobi,
   KondisiPipa,
@@ -66,22 +67,33 @@ const PRESET_CORPORATE: SurveyObservationInput = {
   kondisiPipa: 'PIPA_TANAM',
   tipeWastafel: 'TRAFIK_GREEN',
   khawatirBakteriKloset: true,
+  autoSeatCleanerTouchless: false,
   butuhSanitaryBin: true,
   keluhanSampahTisu: true,
+  pasangUrinalScreen: true,
+  autoDispenserTouchlessArea1: false,
+  blowerToiletKipas: true,
+  handSanitizerToilet: false,
   jumlahUrinoirKloset: 14,
   jumlahWastafel: 8,
   jumlahKubikalWanita: 8,
   // Area 2: Pintu Masuk & Lobi
   pintuMasukLicinDebu: true,
+  handSanitizerLobi: true,
   kondisiLobi: 'STANDALONE_300',
   // Area 3: Koridor & Ruangan
   ruangSempitLift: true,
   koridorPublikTerbuka: false,
   areaSensitifKlinik: false,
   ruangRapatVip: true,
+  essentialOilMeeting: true,
+  handSanitizerKoridor: true,
+  kesetAksesMeeting: true,
   // Area 4: Dapur & Staf
   masalahLalatKantin: false,
   sabunPantryEkonomis: true,
+  kesetMinyakDapur: false,
+  handSanitizerKantinDapur: false,
   catatanTeknis: 'Fokus pada standar kebersihan, kenyamanan karyawan & tamu, serta citra korporat. Dinding marmer mewah dilarang dibor.',
 };
 
@@ -97,23 +109,34 @@ const PRESET_HEALTHCARE: SurveyObservationInput = {
   kondisiPipa: 'PIPA_TANAM',
   tipeWastafel: 'TRAFIK_GREEN',
   khawatirBakteriKloset: true,
+  autoSeatCleanerTouchless: true,
   butuhSanitaryBin: true,
   keluhanSampahTisu: false,
+  pasangUrinalScreen: true,
+  autoDispenserTouchlessArea1: true,
+  blowerToiletKipas: false,
+  handSanitizerToilet: true,
   jumlahUrinoirKloset: 10,
   jumlahWastafel: 12,
   jumlahKubikalWanita: 10,
   // Area 2: Pintu Masuk & Lobi
   pintuMasukLicinDebu: true,
+  handSanitizerLobi: true,
   kondisiLobi: 'STANDALONE_300',
   // Area 3: Koridor & Ruangan
   ruangSempitLift: true,
   koridorPublikTerbuka: false,
   areaSensitifKlinik: true,
   ruangRapatVip: false,
+  essentialOilMeeting: false,
+  handSanitizerKoridor: true,
+  kesetAksesMeeting: false,
   // Area 4: Dapur & Staf
   masalahLalatKantin: false,
   sabunPantryEkonomis: true,
-  catatanTeknis: 'Prioritas sanitasi ketat, risiko kontaminasi, dan keselamatan pengguna. Wajib formula waterbase ramah anak.',
+  kesetMinyakDapur: false,
+  handSanitizerKantinDapur: true,
+  catatanTeknis: 'Prioritas sanitasi ketat, risiko kontaminasi, dan keselamatan pengguna. Wajib formula waterbase ramah anak dan touchless.',
 };
 
 const PRESET_HOSPITALITY: SurveyObservationInput = {
@@ -128,22 +151,33 @@ const PRESET_HOSPITALITY: SurveyObservationInput = {
   kondisiPipa: 'PIPA_MANUAL',
   tipeWastafel: 'TRAFIK_PADAT',
   khawatirBakteriKloset: true,
+  autoSeatCleanerTouchless: false,
   butuhSanitaryBin: true,
   keluhanSampahTisu: true,
+  pasangUrinalScreen: true,
+  autoDispenserTouchlessArea1: false,
+  blowerToiletKipas: true,
+  handSanitizerToilet: true,
   jumlahUrinoirKloset: 32,
   jumlahWastafel: 20,
   jumlahKubikalWanita: 24,
   // Area 2: Pintu Masuk & Lobi
   pintuMasukLicinDebu: true,
+  handSanitizerLobi: true,
   kondisiLobi: 'HVAC_LUAS',
   // Area 3: Koridor & Ruangan
   ruangSempitLift: true,
   koridorPublikTerbuka: true,
   areaSensitifKlinik: false,
   ruangRapatVip: false,
+  essentialOilMeeting: false,
+  handSanitizerKoridor: false,
+  kesetAksesMeeting: false,
   // Area 4: Dapur & Staf
   masalahLalatKantin: true,
   sabunPantryEkonomis: true,
+  kesetMinyakDapur: true,
+  handSanitizerKantinDapur: true,
   catatanTeknis: 'Fokus pada pengalaman pengunjung, kebersihan area publik & reputasi. Lobi utama terhubung pendingin sentral HVAC.',
 };
 
@@ -159,22 +193,33 @@ const PRESET_INDUSTRIAL: SurveyObservationInput = {
   kondisiPipa: 'PIPA_MANUAL',
   tipeWastafel: 'TRAFIK_PADAT',
   khawatirBakteriKloset: false,
+  autoSeatCleanerTouchless: false,
   butuhSanitaryBin: true,
   keluhanSampahTisu: true,
+  pasangUrinalScreen: true,
+  autoDispenserTouchlessArea1: false,
+  blowerToiletKipas: false,
+  handSanitizerToilet: false,
   jumlahUrinoirKloset: 24,
   jumlahWastafel: 16,
   jumlahKubikalWanita: 8,
   // Area 2: Pintu Masuk & Lobi
   pintuMasukLicinDebu: true,
+  handSanitizerLobi: false,
   kondisiLobi: 'NONE',
   // Area 3: Koridor & Ruangan
   ruangSempitLift: false,
   koridorPublikTerbuka: true,
   areaSensitifKlinik: false,
   ruangRapatVip: false,
+  essentialOilMeeting: false,
+  handSanitizerKoridor: false,
+  kesetAksesMeeting: false,
   // Area 4: Dapur & Staf
   masalahLalatKantin: true,
   sabunPantryEkonomis: true,
+  kesetMinyakDapur: true,
+  handSanitizerKantinDapur: true,
   catatanTeknis: 'Standar operasional pabrik & keselamatan kerja. Pengadaan efisien, dokumentasi rapi, keandalan vendor.',
 };
 
@@ -190,22 +235,33 @@ const PRESET_OTHER: SurveyObservationInput = {
   kondisiPipa: 'PIPA_TANAM',
   tipeWastafel: 'TRAFIK_GREEN',
   khawatirBakteriKloset: true,
+  autoSeatCleanerTouchless: false,
   butuhSanitaryBin: true,
   keluhanSampahTisu: false,
+  pasangUrinalScreen: false,
+  autoDispenserTouchlessArea1: false,
+  blowerToiletKipas: true,
+  handSanitizerToilet: false,
   jumlahUrinoirKloset: 4,
   jumlahWastafel: 6,
   jumlahKubikalWanita: 4,
   // Area 2: Pintu Masuk & Lobi
   pintuMasukLicinDebu: true,
+  handSanitizerLobi: false,
   kondisiLobi: 'STANDALONE_300',
   // Area 3: Koridor & Ruangan
   ruangSempitLift: true,
   koridorPublikTerbuka: false,
   areaSensitifKlinik: false,
   ruangRapatVip: true,
+  essentialOilMeeting: true,
+  handSanitizerKoridor: false,
+  kesetAksesMeeting: true,
   // Area 4: Dapur & Staf
   masalahLalatKantin: false,
   sabunPantryEkonomis: true,
+  kesetMinyakDapur: false,
+  handSanitizerKantinDapur: false,
   catatanTeknis: 'Kebutuhan dinilai lebih spesifik (residensial mewah, komunitas privat, rumah tinggal & fasilitas khusus).',
 };
 
@@ -223,6 +279,70 @@ function getPICSuggestion(segmen: SegmenGedung): string {
       return 'Owner Rumah / Estate Manager';
     default:
       return 'Purchasing / GA / Facility Manager';
+  }
+}
+
+function getHierarchyBadge(hierarchy?: string) {
+  switch (hierarchy) {
+    case 'MAIN_PRODUCT':
+      return 'bg-emerald-100 text-emerald-800 border-emerald-300';
+    case 'FLAGSHIP_PRODUCT':
+      return 'bg-purple-100 text-purple-800 border-purple-300';
+    case 'SUPPORTING_NEW':
+      return 'bg-sky-100 text-sky-800 border-sky-300';
+    case 'SECONDARY_PRODUCT':
+    default:
+      return 'bg-slate-100 text-slate-700 border-slate-300';
+  }
+}
+
+function getAreaHeaderBadge(areaId: string) {
+  switch (areaId) {
+    case 'AREA_1_TOILET':
+      return {
+        bgGradient: 'from-emerald-50 to-teal-50/80',
+        borderColor: 'border-emerald-200',
+        textColor: 'text-emerald-950',
+        badgeBg: 'bg-emerald-100 text-emerald-800',
+        icon: Droplets,
+        tag: 'Sanitasi & Toilet',
+      };
+    case 'AREA_2_LOBBY':
+      return {
+        bgGradient: 'from-teal-50 to-emerald-50/80',
+        borderColor: 'border-teal-200',
+        textColor: 'text-teal-950',
+        badgeBg: 'bg-teal-100 text-teal-800',
+        icon: Building2,
+        tag: 'Kesan Pertama & Lobi',
+      };
+    case 'AREA_3_CORRIDOR':
+      return {
+        bgGradient: 'from-cyan-50 to-teal-50/70',
+        borderColor: 'border-cyan-200',
+        textColor: 'text-cyan-950',
+        badgeBg: 'bg-cyan-100 text-cyan-800',
+        icon: Wind,
+        tag: 'Sirkulasi & Hening',
+      };
+    case 'AREA_4_PANTRY':
+      return {
+        bgGradient: 'from-amber-50 to-emerald-50/50',
+        borderColor: 'border-amber-200',
+        textColor: 'text-amber-950',
+        badgeBg: 'bg-amber-100 text-amber-800',
+        icon: ShieldCheck,
+        tag: 'Higienitas Pangan & Staf',
+      };
+    default:
+      return {
+        bgGradient: 'from-slate-50 to-slate-100',
+        borderColor: 'border-slate-200',
+        textColor: 'text-slate-900',
+        badgeBg: 'bg-slate-100 text-slate-800',
+        icon: Layers,
+        tag: 'Area Gedung',
+      };
   }
 }
 
@@ -338,39 +458,79 @@ export default function EcoCareHygieMatchPage() {
     setActiveTab('survey');
   };
 
-  // Format teks rapi dan mudah dibaca untuk WhatsApp / Email / Presentasi
+  // Format teks rapi dan mudah dibaca untuk WhatsApp / Email / Presentasi BOD
   const handleCopyCleanSummary = () => {
     if (!diagnosticResult) return;
 
-    const allUnits = [
-      ...diagnosticResult.kategori1_Restroom,
-      ...diagnosticResult.kategori2_Secondary,
-      ...diagnosticResult.kategori3_SmartScenting,
-    ];
+    const areaGroupsToExport =
+      diagnosticResult.areaGroups && diagnosticResult.areaGroups.length > 0
+        ? diagnosticResult.areaGroups
+        : [
+            {
+              areaId: 'AREA_1_TOILET' as const,
+              areaNumber: 1,
+              areaTitle: 'Area 1: Toilet dan Kamar Mandi',
+              areaFokus: 'Sanitasi kloset/urinoir, limbah pembalut, cuci tangan, dan kesegaran toilet.',
+              units: diagnosticResult.kategori1_Restroom || [],
+            },
+            {
+              areaId: 'AREA_2_LOBBY' as const,
+              areaNumber: 2,
+              areaTitle: 'Area 2: Pintu Masuk dan Lobi Utama',
+              areaFokus: 'Penampilan visual, proteksi debu/lantai licin, dan aroma mewah lobi.',
+              units: (diagnosticResult.kategori3_SmartScenting || []).filter(
+                (u) => u.kodeUnit.includes('B5000') || u.kodeUnit.includes('D300')
+              ),
+            },
+            {
+              areaId: 'AREA_3_CORRIDOR' as const,
+              areaNumber: 3,
+              areaTitle: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+              areaFokus: 'Sirkulasi udara stabil, hening tanpa suara semprotan, dan bebas kuman.',
+              units: (diagnosticResult.kategori2_Secondary || []).filter(
+                (u) => !u.kodeUnit.includes('EFL') && !u.kodeUnit.includes('EDM-Kitchen')
+              ),
+            },
+            {
+              areaId: 'AREA_4_PANTRY' as const,
+              areaNumber: 4,
+              areaTitle: 'Area 4: Dapur, Kantin, dan Pantry',
+              areaFokus: 'Higienitas olahan makanan, penyerapan minyak & lemak lantai dapur.',
+              units: (diagnosticResult.kategori2_Secondary || []).filter(
+                (u) => u.kodeUnit.includes('EFL') || u.kodeUnit.includes('EDM-Kitchen')
+              ),
+            },
+          ];
 
-    const unitLines = allUnits
-      .map(
-        (u, idx) =>
-          `${idx + 1}. ${u.namaUnit} (${u.estimasiUnit})\n   - Keunggulan: ${u.keunggulanGedung}`
-      )
-      .join('\n');
+    const areaLines = areaGroupsToExport
+      .filter((g) => g.units.length > 0)
+      .map((g) => {
+        const uList = g.units
+          .map(
+            (u, idx) =>
+              `  ${idx + 1}. *${u.namaSpesifikAlat || u.namaUnit}* [${u.hierarchyLabel || 'Hygiene'}]\n     • Titik Pasang: ${u.posisiSpesifik || u.namaArea} (${u.estimasiUnit})\n     • Manfaat Klien: ${u.keunggulanGedung}`
+          )
+          .join('\n');
+        return `*${g.areaTitle.toUpperCase()}*\n_${g.areaFokus}_\n${uList}`;
+      })
+      .join('\n\n');
 
     const summaryText = `*PROPOSAL REKOMENDASI SOLUSI KEBERSIHAN GEDUNG*
 *Hycare - PT EcoCare Indo Pasifik Tbk*
 --------------------------------------------------
 *Gedung:* ${formData.namaGedung}
 *Alamat:* ${formData.alamatLokasi || '-'}
-*PIC:* ${formData.picNama || '-'}
-*Kategori:* ${formData.segmen}
+*PIC Ditemui:* ${formData.picNama || '-'}
+*Segment Market:* ${formData.segmen}
 *Operasional:* ${formData.hariAktif} (${formData.jamOperasional} Jam/Hari)
-*Tipe Layanan:* ${formData.surveyType === 'NEW_CUSTOMER' ? 'Pelanggan Baru' : 'Pembaruan Kontrak'}
+*Tipe Survei:* ${formData.surveyType === 'NEW_CUSTOMER' ? 'Pelanggan Baru' : 'Pembaruan Kontrak'}
+*Total Solusi:* ${diagnosticResult.totalUnitRekomendasi} Macam Unit
 
-*DAFTAR REKOMENDASI PRODUK (${diagnosticResult.totalUnitRekomendasi} Macam):*
-${unitLines}
+${areaLines}
 
 ${formData.catatanTeknis ? `*Catatan Khusus Lapangan:*\n${formData.catatanTeknis}\n` : ''}
 --------------------------------------------------
-_Dianalisis menggunakan sistem rekomendasi Hycare_`;
+_Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
 
     navigator.clipboard.writeText(summaryText);
     setCopiedSummary(true);
@@ -702,26 +862,21 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                     </div>
 
                     <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <label className="block text-xs font-semibold text-slate-700">
-                          Nama PIC yang Ditemui
-                        </label>
-                        <span className="text-[10px] text-emerald-700 font-medium bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
-                          PIC Sektor: {getPICSuggestion(formData.segmen)}
-                        </span>
-                      </div>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">
+                        Nama PIC yang Ditemui
+                      </label>
                       <input
                         type="text"
                         value={formData.picNama || ''}
                         onChange={(e) => handleFieldChange('picNama', e.target.value)}
-                        placeholder={`Contoh PIC: ${getPICSuggestion(formData.segmen)}`}
+                        placeholder="Nama Manajer Gedung / Purchasing"
                         className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-emerald-600 outline-none"
                       />
                     </div>
 
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Market Segment Gedung
+                        Jenis Gedung / Segmen
                       </label>
                       <select
                         value={formData.segmen}
@@ -733,11 +888,11 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                         }
                         className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:border-emerald-600 outline-none font-medium"
                       >
-                        <option value="Corporate & Financial">Corporate & Financial (BAF, COF, COB)</option>
-                        <option value="Healthcare & Education">Healthcare & Education (HOC, EDS)</option>
-                        <option value="Hospitality & Lifestyle">Hospitality & Lifestyle (HMI, REN, SHM, RHC)</option>
-                        <option value="Industrial & Institutional">Industrial & Institutional (MAI, GOI, POR)</option>
-                        <option value="Other">Other (OTH - Residensial & Khusus)</option>
+                        <option value="Office Tower">Gedung Perkantoran (Office Tower)</option>
+                        <option value="Mall/Public Area">Pusat Perbelanjaan / Mall / Publik</option>
+                        <option value="Hotel">Hotel & Akomodasi</option>
+                        <option value="RS/Klinik">Rumah Sakit / Fasilitas Kesehatan</option>
+                        <option value="Resto/F&B">Restoran & Kafe F&B</option>
                       </select>
                     </div>
 
@@ -936,20 +1091,37 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                             3. Kebutuhan Tambahan di Toilet:
                           </label>
 
-                          <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
-                            <input
-                              type="checkbox"
-                              checked={formData.khawatirBakteriKloset}
-                              onChange={(e) =>
-                                handleFieldChange('khawatirBakteriKloset', e.target.checked)
-                              }
-                              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-                            />
-                            <span className="text-slate-800">
-                              Butuh pembersih dudukan kloset agar pengguna merasa higienis dan nyaman{' '}
-                              <strong className="text-emerald-700">&rarr; Pembersih Dudukan Kloset (Seat Cleaner)</strong>
-                            </span>
-                          </label>
+                          <div className="space-y-1.5 p-2.5 rounded-xl border border-slate-200/80 bg-slate-50/50">
+                            <label className="flex items-start gap-2.5 cursor-pointer text-xs">
+                              <input
+                                type="checkbox"
+                                checked={formData.khawatirBakteriKloset}
+                                onChange={(e) =>
+                                  handleFieldChange('khawatirBakteriKloset', e.target.checked)
+                                }
+                                className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                              />
+                              <span className="text-slate-800">
+                                Butuh pembersih dudukan kloset agar pengguna merasa higienis{' '}
+                                <strong className="text-emerald-700">&rarr; Pembersih Dudukan Kloset (ESC)</strong>
+                              </span>
+                            </label>
+                            {formData.khawatirBakteriKloset && (
+                              <label className="flex items-center gap-2 pl-6 pt-1 text-[11px] text-purple-900 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={Boolean(formData.autoSeatCleanerTouchless)}
+                                  onChange={(e) =>
+                                    handleFieldChange('autoSeatCleanerTouchless', e.target.checked)
+                                  }
+                                  className="h-3.5 w-3.5 rounded border-slate-300 text-purple-600 focus:ring-purple-500"
+                                />
+                                <span className="font-medium bg-purple-50 border border-purple-200 px-2 py-0.5 rounded">
+                                  Tipe Otomatis Tanpa Sentuh &rarr; <strong>Auto Seat Cleaner (T900 Touchless)</strong>
+                                </span>
+                              </label>
+                            )}
+                          </div>
 
                           <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
                             <input
@@ -961,8 +1133,8 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
                             <span className="text-slate-800">
-                              Toilet wanita membutuhkan tempat pembuangan pembalut otomatis tanpa sentuh tangan{' '}
-                              <strong className="text-emerald-700">&rarr; Tempat Sampah Sensor (Sanitary Bin)</strong>
+                              Toilet wanita membutuhkan tempat pembuangan pembalut otomatis touchless{' '}
+                              <strong className="text-emerald-700">&rarr; ESBD Digital Autolid Sanitary Bin</strong>
                             </span>
                           </label>
 
@@ -976,8 +1148,68 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
                             <span className="text-slate-800">
-                              Ingin mengurangi biaya kertas tisu dan mencegah sampah tisu berserakan di wastafel{' '}
-                              <strong className="text-emerald-700">&rarr; Pengering Tangan Cepat (Jet Hand Dryer)</strong>
+                              Ingin memangkas biaya tisu dan bebas sampah kertas berserakan{' '}
+                              <strong className="text-emerald-700">&rarr; Mini High-Speed Hand Dryer (AK2822)</strong>
+                            </span>
+                          </label>
+
+                          <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
+                            <input
+                              type="checkbox"
+                              checked={Boolean(formData.pasangUrinalScreen)}
+                              onChange={(e) =>
+                                handleFieldChange('pasangUrinalScreen', e.target.checked)
+                              }
+                              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                            />
+                            <span className="text-slate-800">
+                              Urinoir pria butuh saringan pencegah sumbatan & anti percikan{' '}
+                              <strong className="text-emerald-700">&rarr; Urinal Screen Pengharum (Anti-Splash)</strong>
+                            </span>
+                          </label>
+
+                          <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
+                            <input
+                              type="checkbox"
+                              checked={Boolean(formData.autoDispenserTouchlessArea1)}
+                              onChange={(e) =>
+                                handleFieldChange('autoDispenserTouchlessArea1', e.target.checked)
+                              }
+                              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                            />
+                            <span className="text-slate-800">
+                              Wastafel menghendaki dispenser sabun otomatis tanpa sentuh{' '}
+                              <strong className="text-purple-700">&rarr; Touchless Foam Soap (Auto AK1255)</strong>
+                            </span>
+                          </label>
+
+                          <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
+                            <input
+                              type="checkbox"
+                              checked={Boolean(formData.blowerToiletKipas)}
+                              onChange={(e) =>
+                                handleFieldChange('blowerToiletKipas', e.target.checked)
+                              }
+                              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                            />
+                            <span className="text-slate-800">
+                              Toilet membutuhkan pengharum udara konstan bebas semprotan gas{' '}
+                              <strong className="text-emerald-700">&rarr; Ecocare Air Freshener Blower (EAF)</strong>
+                            </span>
+                          </label>
+
+                          <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
+                            <input
+                              type="checkbox"
+                              checked={Boolean(formData.handSanitizerToilet)}
+                              onChange={(e) =>
+                                handleFieldChange('handSanitizerToilet', e.target.checked)
+                              }
+                              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                            />
+                            <span className="text-slate-800">
+                              Pintu keluar toilet dilengkapi pembersih tangan gel antiseptik{' '}
+                              <strong className="text-emerald-700">&rarr; Ecocare Hand Sanitizer (EHS)</strong>
                             </span>
                           </label>
                         </div>
@@ -1078,7 +1310,26 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                               Pintu masuk berisiko licin saat hujan atau banyak debu terbawa sepatu
                             </span>
                             <span className="text-[11px] text-teal-700 font-medium">
-                              &rarr; Rekomendasi: Layanan Sewa & Cuci Bersih Rutin Keset Karpet Penyerap Debu/Air.
+                              &rarr; Rekomendasi: Layanan Sewa & Cuci Bersih Rutin Keset Karpet Penyerap Debu/Air (EDM).
+                            </span>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start gap-2.5 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(formData.handSanitizerLobi)}
+                            onChange={(e) =>
+                              handleFieldChange('handSanitizerLobi', e.target.checked)
+                            }
+                            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500"
+                          />
+                          <div>
+                            <span className="font-semibold text-slate-900 block">
+                              Penyediaan hand sanitizer touchless otomatis di area lobi / meja resepsionis
+                            </span>
+                            <span className="text-[11px] text-purple-700 font-medium">
+                              &rarr; Rekomendasi: Touchless Hand Sanitizer Dispenser (Auto SP811 / SP812 Standing).
                             </span>
                           </div>
                         </label>
@@ -1267,8 +1518,65 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                             <span className="font-semibold text-slate-900 block">
                               Ruang Rapat Direksi / Ruang VIP (Butuh aroma mewah dan tidak bersuara)
                             </span>
+                            <span className="text-[11px] text-cyan-700 font-medium">
+                              &rarr; Rekomendasi <strong>Mini Scent Diffuser (SC-008 A80)</strong> ultra-hening (&lt;30 dB) tanpa suara semprotan.
+                            </span>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(formData.essentialOilMeeting)}
+                            onChange={(e) =>
+                              handleFieldChange('essentialOilMeeting', e.target.checked)
+                            }
+                            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+                          />
+                          <div>
+                            <span className="font-semibold text-slate-900 block">
+                              Ruang kerja eksekutif butuh aroma essential oil relaksasi
+                            </span>
                             <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>Pengharum Ruang Rapat VIP</strong> bersuara sangat hening tanpa semprotan yang mengagetkan saat diskusi.
+                              &rarr; Rekomendasi <strong>Ecocare Microburst (EMB)</strong> aroma essential oil premium tahan lama.
+                            </span>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(formData.handSanitizerKoridor)}
+                            onChange={(e) =>
+                              handleFieldChange('handSanitizerKoridor', e.target.checked)
+                            }
+                            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+                          />
+                          <div>
+                            <span className="font-semibold text-slate-900 block">
+                              Dinding depan pintu ruang rapat / akses lift butuh hand sanitizer
+                            </span>
+                            <span className="text-[11px] text-slate-500">
+                              &rarr; Rekomendasi <strong>Ecocare Hand Sanitizer Dinding (EHS / AK1205)</strong> steril sebelum meeting.
+                            </span>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(formData.kesetAksesMeeting)}
+                            onChange={(e) =>
+                              handleFieldChange('kesetAksesMeeting', e.target.checked)
+                            }
+                            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+                          />
+                          <div>
+                            <span className="font-semibold text-slate-900 block">
+                              Pintu masuk ruang rapat karpet membutuhkan keset penyaring debu
+                            </span>
+                            <span className="text-[11px] text-slate-500">
+                              &rarr; Rekomendasi <strong>Ecocare Doormats (EDM)</strong> pelindung karpet ruang rapat.
                             </span>
                           </div>
                         </label>
@@ -1340,7 +1648,45 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                               Wastafel dapur/pantry membutuhkan dispenser sabun cuci tangan staf
                             </span>
                             <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>Dispenser Sabun Pantry Ukuran Sedang (500 ml)</strong> yang ringkas dan hemat tempat.
+                              &rarr; Rekomendasi <strong>Dispenser Sabun Pantry Kompak (Fave 701W - 500 ml)</strong> hemat tempat.
+                            </span>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(formData.kesetMinyakDapur)}
+                            onChange={(e) =>
+                              handleFieldChange('kesetMinyakDapur', e.target.checked)
+                            }
+                            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-amber-600 focus:ring-amber-500"
+                          />
+                          <div>
+                            <span className="font-semibold text-slate-900 block">
+                              Jalan masuk dapur/kantin butuh keset khusus serap minyak & lemak
+                            </span>
+                            <span className="text-[11px] text-amber-700 font-medium">
+                              &rarr; Rekomendasi <strong>Ecocare Doormats Dapur (EDM Kitchen Anti-Slip)</strong> karet nitril anti-licin.
+                            </span>
+                          </div>
+                        </label>
+
+                        <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={Boolean(formData.handSanitizerKantinDapur)}
+                            onChange={(e) =>
+                              handleFieldChange('handSanitizerKantinDapur', e.target.checked)
+                            }
+                            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-amber-600 focus:ring-amber-500"
+                          />
+                          <div>
+                            <span className="font-semibold text-slate-900 block">
+                              Area persiapan makanan butuh cuci tangan / sanitizer otomatis tanpa sentuh
+                            </span>
+                            <span className="text-[11px] text-purple-700 font-medium">
+                              &rarr; Rekomendasi <strong>Auto Foam Soap & Sanitizer (AK1255)</strong> cegah kontaminasi silang pangan.
                             </span>
                           </div>
                         </label>
@@ -1523,171 +1869,149 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                     )}
                   </div>
 
-                  {/* DAFTAR PRODUK DALAM 3 KELOMPOK */}
-                  <div className="space-y-4 max-h-[580px] overflow-y-auto pr-1">
-                    {/* KELOMPOK 1: TOILET & SANITASI UTAMA */}
-                    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
-                      <div className="bg-gradient-to-r from-emerald-50 to-teal-50/70 px-4 py-2.5 border-b border-slate-200/80 flex items-center justify-between">
-                        <span className="text-xs font-extrabold text-emerald-950 uppercase tracking-wider flex items-center gap-1.5">
-                          <Droplets className="h-4 w-4 text-emerald-700" />
-                          1. Solusi Toilet & Kamar Mandi ({diagnosticResult.kategori1_Restroom.length})
-                        </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                          Fasilitas Sanitasi
-                        </span>
-                      </div>
+                  {/* DAFTAR PRODUK BERDASARKAN 4 AREA GEDUNG */}
+                  <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
+                    {(diagnosticResult.areaGroups && diagnosticResult.areaGroups.length > 0
+                      ? diagnosticResult.areaGroups
+                      : [
+                          {
+                            areaId: 'AREA_1_TOILET' as const,
+                            areaNumber: 1,
+                            areaTitle: 'Area 1: Toilet dan Kamar Mandi',
+                            areaFokus:
+                              'Sanitasi kloset/urinoir, limbah pembalut, cuci tangan wastafel, dan kesegaran toilet.',
+                            units: diagnosticResult.kategori1_Restroom || [],
+                          },
+                          {
+                            areaId: 'AREA_2_LOBBY' as const,
+                            areaNumber: 2,
+                            areaTitle: 'Area 2: Pintu Masuk dan Lobi Utama',
+                            areaFokus:
+                              'Penampilan visual & prestise gedung, proteksi debu/lantai licin, dan aroma mewah lobi.',
+                            units: (diagnosticResult.kategori3_SmartScenting || []).filter(
+                              (u) => u.kodeUnit.includes('B5000') || u.kodeUnit.includes('D300')
+                            ),
+                          },
+                          {
+                            areaId: 'AREA_3_CORRIDOR' as const,
+                            areaNumber: 3,
+                            areaTitle: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+                            areaFokus:
+                              'Sirkulasi udara stabil, hening tanpa suara semprotan, dan bebas kuman.',
+                            units: (diagnosticResult.kategori2_Secondary || []).filter(
+                              (u) =>
+                                !u.kodeUnit.includes('EFL') && !u.kodeUnit.includes('EDM-Kitchen')
+                            ),
+                          },
+                          {
+                            areaId: 'AREA_4_PANTRY' as const,
+                            areaNumber: 4,
+                            areaTitle: 'Area 4: Dapur, Kantin, dan Pantry',
+                            areaFokus:
+                              'Higienitas olahan makanan, penyerapan minyak & lemak lantai dapur.',
+                            units: (diagnosticResult.kategori2_Secondary || []).filter(
+                              (u) =>
+                                u.kodeUnit.includes('EFL') || u.kodeUnit.includes('EDM-Kitchen')
+                            ),
+                          },
+                        ]
+                    )
+                      .filter((group) => group.units && group.units.length > 0)
+                      .map((group) => {
+                        const styleInfo = getAreaHeaderBadge(group.areaId);
+                        const GroupIcon = styleInfo.icon;
 
-                      <div className="p-3.5 space-y-3">
-                        {diagnosticResult.kategori1_Restroom.map((unit) => (
+                        return (
                           <div
-                            key={unit.id}
-                            className="p-3 rounded-xl border border-slate-200 hover:border-emerald-300 bg-slate-50/60 transition space-y-2 text-xs"
+                            key={group.areaId}
+                            className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden"
                           >
-                            <div className="flex items-center justify-between gap-2">
-                              <span className="font-extrabold text-slate-900 text-xs sm:text-sm">
-                                {unit.namaUnit}
-                              </span>
-                              <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                Cocok {unit.matchScore}%
-                              </span>
-                            </div>
-
-                            <div className="flex flex-wrap items-center gap-1.5">
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white border border-slate-200 text-slate-600">
-                                {unit.keteranganTipe}
-                              </span>
-                              <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                Kebutuhan: {unit.estimasiUnit}
-                              </span>
-                            </div>
-
-                            {unit.catatanKhusus && (
-                              <div className="p-2 rounded-lg bg-amber-50 border border-amber-300 text-amber-900 text-[11px] font-medium flex items-start gap-1.5">
-                                <Info className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
-                                <span>{unit.catatanKhusus}</span>
+                            <div
+                              className={`bg-gradient-to-r ${styleInfo.bgGradient} px-4 py-3 border-b border-slate-200/80 flex items-center justify-between`}
+                            >
+                              <div>
+                                <span
+                                  className={`text-xs font-extrabold ${styleInfo.textColor} uppercase tracking-wider flex items-center gap-1.5`}
+                                >
+                                  <GroupIcon className="h-4 w-4" />
+                                  {group.areaTitle} ({group.units.length} Unit)
+                                </span>
+                                <p className="text-[10px] text-slate-600 mt-0.5 line-clamp-1">
+                                  {group.areaFokus}
+                                </p>
                               </div>
-                            )}
+                              <span
+                                className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${styleInfo.badgeBg} shrink-0`}
+                              >
+                                {styleInfo.tag}
+                              </span>
+                            </div>
 
-                            <div className="space-y-1.5 pt-1 text-[11px]">
-                              <p className="text-slate-600">
-                                <strong className="text-slate-800">Petunjuk Pemasangan:</strong>{' '}
-                                {unit.petunjukPemasangan}
-                              </p>
-                              <p className="text-emerald-950 bg-emerald-50/90 p-2 rounded-lg border border-emerald-100">
-                                <strong className="text-emerald-800">Keunggulan untuk Gedung:</strong>{' '}
-                                {unit.keunggulanGedung}
-                              </p>
+                            <div className="p-3.5 space-y-3">
+                              {group.units.map((unit) => (
+                                <div
+                                  key={unit.id}
+                                  className="p-3 rounded-xl border border-slate-200 hover:border-emerald-300 bg-slate-50/60 transition space-y-2 text-xs"
+                                >
+                                  <div className="flex items-start justify-between gap-2">
+                                    <div>
+                                      <span className="font-extrabold text-slate-900 text-xs sm:text-sm block">
+                                        {unit.namaSpesifikAlat || unit.namaUnit}
+                                      </span>
+                                      <span className="text-[11px] font-semibold text-slate-500">
+                                        Kode Alat: {unit.kodeUnit}
+                                      </span>
+                                    </div>
+                                    <div className="flex items-center gap-1 shrink-0">
+                                      <span
+                                        className={`px-2 py-0.5 rounded-md text-[10px] font-bold border ${getHierarchyBadge(
+                                          unit.hierarchy
+                                        )}`}
+                                      >
+                                        {unit.hierarchyLabel || 'Produk Utama'}
+                                      </span>
+                                      <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                        Cocok {unit.matchScore}%
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
+                                    <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-50 text-emerald-900 border border-emerald-200 flex items-center gap-1">
+                                      <MapPin className="h-3 w-3 text-emerald-600" />
+                                      Posisi: {unit.posisiSpesifik || unit.namaArea}
+                                    </span>
+                                    <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white border border-slate-200 text-slate-700">
+                                      Kebutuhan: {unit.estimasiUnit}
+                                    </span>
+                                    <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white border border-slate-200 text-slate-600">
+                                      {unit.keteranganTipe}
+                                    </span>
+                                  </div>
+
+                                  {unit.catatanKhusus && (
+                                    <div className="p-2 rounded-lg bg-amber-50 border border-amber-300 text-amber-900 text-[11px] font-medium flex items-start gap-1.5">
+                                      <Info className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
+                                      <span>{unit.catatanKhusus}</span>
+                                    </div>
+                                  )}
+
+                                  <div className="space-y-1.5 pt-1 text-[11px]">
+                                    <p className="text-slate-600">
+                                      <strong className="text-slate-800">Petunjuk Pemasangan:</strong>{' '}
+                                      {unit.petunjukPemasangan}
+                                    </p>
+                                    <p className="text-emerald-950 bg-emerald-50/90 p-2 rounded-lg border border-emerald-100">
+                                      <strong className="text-emerald-800">Keunggulan untuk Gedung:</strong>{' '}
+                                      {unit.keunggulanGedung}
+                                    </p>
+                                  </div>
+                                </div>
+                              ))}
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* KELOMPOK 2: LANTAI & PENGHARUM RUANGAN */}
-                    {diagnosticResult.kategori2_Secondary.length > 0 && (
-                      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
-                        <div className="bg-gradient-to-r from-teal-50 to-cyan-50/70 px-4 py-2.5 border-b border-slate-200/80 flex items-center justify-between">
-                          <span className="text-xs font-extrabold text-teal-950 uppercase tracking-wider flex items-center gap-1.5">
-                            <Layers className="h-4 w-4 text-teal-700" />
-                            2. Solusi Lantai & Pengharum Ruangan ({diagnosticResult.kategori2_Secondary.length})
-                          </span>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800">
-                            Kebersihan & Kesegaran
-                          </span>
-                        </div>
-
-                        <div className="p-3.5 space-y-3">
-                          {diagnosticResult.kategori2_Secondary.map((unit) => (
-                            <div
-                              key={unit.id}
-                              className="p-3 rounded-xl border border-slate-200 hover:border-teal-300 bg-slate-50/60 transition space-y-2 text-xs"
-                            >
-                              <div className="flex items-center justify-between gap-2">
-                                <span className="font-extrabold text-slate-900 text-xs sm:text-sm">
-                                  {unit.namaUnit}
-                                </span>
-                                <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-teal-100 text-teal-800 border border-teal-200">
-                                  Cocok {unit.matchScore}%
-                                </span>
-                              </div>
-
-                              <div className="flex flex-wrap items-center gap-1.5">
-                                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white border border-slate-200 text-slate-600">
-                                  {unit.keteranganTipe}
-                                </span>
-                                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-teal-50 text-teal-700 border border-teal-100">
-                                  Kebutuhan: {unit.estimasiUnit}
-                                </span>
-                              </div>
-
-                              <div className="space-y-1.5 pt-1 text-[11px]">
-                                <p className="text-slate-600">
-                                  <strong className="text-slate-800">Petunjuk Pemasangan:</strong>{' '}
-                                  {unit.petunjukPemasangan}
-                                </p>
-                                <p className="text-teal-950 bg-teal-50/90 p-2 rounded-lg border border-teal-100">
-                                  <strong className="text-teal-800">Keunggulan untuk Gedung:</strong>{' '}
-                                  {unit.keunggulanGedung}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* KELOMPOK 3: PENGHARUM MEWAH SMART SCENTING */}
-                    {diagnosticResult.kategori3_SmartScenting.length > 0 && (
-                      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
-                        <div className="bg-gradient-to-r from-cyan-50 to-emerald-50/50 px-4 py-2.5 border-b border-slate-200/80 flex items-center justify-between">
-                          <span className="text-xs font-extrabold text-cyan-950 uppercase tracking-wider flex items-center gap-1.5">
-                            <Wind className="h-4 w-4 text-cyan-700" />
-                            3. Pengharum Mewah (Smart Scenting) ({diagnosticResult.kategori3_SmartScenting.length})
-                          </span>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800">
-                            Kesan Pertama Mewah
-                          </span>
-                        </div>
-
-                        <div className="p-3.5 space-y-3">
-                          {diagnosticResult.kategori3_SmartScenting.map((unit) => (
-                            <div
-                              key={unit.id}
-                              className="p-3 rounded-xl border border-slate-200 hover:border-cyan-300 bg-slate-50/60 transition space-y-2 text-xs"
-                            >
-                              <div className="flex items-center justify-between gap-2">
-                                <span className="font-extrabold text-slate-900 text-xs sm:text-sm">
-                                  {unit.namaUnit}
-                                </span>
-                                <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-cyan-100 text-cyan-800 border border-cyan-200">
-                                  Cocok {unit.matchScore}%
-                                </span>
-                              </div>
-
-                              <div className="flex flex-wrap items-center gap-1.5">
-                                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white border border-slate-200 text-slate-600">
-                                  {unit.keteranganTipe}
-                                </span>
-                                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-cyan-50 text-cyan-700 border border-cyan-100">
-                                  Kebutuhan: {unit.estimasiUnit}
-                                </span>
-                              </div>
-
-                              <div className="space-y-1.5 pt-1 text-[11px]">
-                                <p className="text-slate-600">
-                                  <strong className="text-slate-800">Petunjuk Pemasangan:</strong>{' '}
-                                  {unit.petunjukPemasangan}
-                                </p>
-                                <p className="text-cyan-950 bg-cyan-50/90 p-2 rounded-lg border border-cyan-100">
-                                  <strong className="text-cyan-800">Keunggulan untuk Gedung:</strong>{' '}
-                                  {unit.keunggulanGedung}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                        );
+                      })}
                   </div>
 
                   {/* DUA TOMBOL AKSI BAWAH */}
@@ -1899,24 +2223,81 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
 
               <div>
                 <span className="font-bold text-slate-800 block mb-1">
-                  Daftar Produk yang Direkomendasikan ({diagnosticResult.totalUnitRekomendasi} Produk):
+                  Daftar Produk yang Direkomendasikan ({diagnosticResult.totalUnitRekomendasi} Produk Berdasarkan Area):
                 </span>
-                <div className="max-h-48 overflow-y-auto space-y-1.5 p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
-                  {[
-                    ...diagnosticResult.kategori1_Restroom,
-                    ...diagnosticResult.kategori2_Secondary,
-                    ...diagnosticResult.kategori3_SmartScenting,
-                  ].map((unit, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center justify-between py-1.5 border-b border-slate-200 last:border-none"
-                    >
-                      <span className="font-medium text-slate-900">
-                        {unit.namaUnit}
-                      </span>
-                      <span className="text-emerald-800 font-bold">{unit.estimasiUnit}</span>
-                    </div>
-                  ))}
+                <div className="max-h-56 overflow-y-auto space-y-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-xs">
+                  {(diagnosticResult.areaGroups && diagnosticResult.areaGroups.length > 0
+                    ? diagnosticResult.areaGroups
+                    : [
+                        {
+                          areaId: 'AREA_1_TOILET' as const,
+                          areaNumber: 1,
+                          areaTitle: 'Area 1: Toilet dan Kamar Mandi',
+                          areaFokus: 'Fasilitas Sanitasi Utama',
+                          units: diagnosticResult.kategori1_Restroom || [],
+                        },
+                        {
+                          areaId: 'AREA_2_LOBBY' as const,
+                          areaNumber: 2,
+                          areaTitle: 'Area 2: Pintu Masuk dan Lobi Utama',
+                          areaFokus: 'Kesan Pertama & Lobi',
+                          units: (diagnosticResult.kategori3_SmartScenting || []).filter(
+                            (u) => u.kodeUnit.includes('B5000') || u.kodeUnit.includes('D300')
+                          ),
+                        },
+                        {
+                          areaId: 'AREA_3_CORRIDOR' as const,
+                          areaNumber: 3,
+                          areaTitle: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+                          areaFokus: 'Koridor, Lift & Meeting Room',
+                          units: (diagnosticResult.kategori2_Secondary || []).filter(
+                            (u) =>
+                              !u.kodeUnit.includes('EFL') && !u.kodeUnit.includes('EDM-Kitchen')
+                          ),
+                        },
+                        {
+                          areaId: 'AREA_4_PANTRY' as const,
+                          areaNumber: 4,
+                          areaTitle: 'Area 4: Dapur, Kantin, dan Pantry',
+                          areaFokus: 'Dapur & Pantry Staf',
+                          units: (diagnosticResult.kategori2_Secondary || []).filter(
+                            (u) =>
+                              u.kodeUnit.includes('EFL') || u.kodeUnit.includes('EDM-Kitchen')
+                          ),
+                        },
+                      ]
+                  )
+                    .filter((g) => g.units.length > 0)
+                    .map((group) => (
+                      <div key={group.areaId} className="space-y-1">
+                        <div className="text-[11px] font-bold text-emerald-950 uppercase tracking-wide bg-emerald-100/70 px-2 py-0.5 rounded">
+                          {group.areaTitle}
+                        </div>
+                        {group.units.map((unit, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start justify-between py-1.5 px-2 bg-white rounded-lg border border-slate-200/80 gap-2"
+                          >
+                            <div>
+                              <span className="font-bold text-slate-900 block">
+                                {unit.namaSpesifikAlat || unit.namaUnit}
+                              </span>
+                              <span className="text-[10px] text-slate-500">
+                                📍 {unit.posisiSpesifik || unit.namaArea}
+                              </span>
+                            </div>
+                            <div className="text-right shrink-0">
+                              <span className="text-emerald-800 font-bold block">
+                                {unit.estimasiUnit}
+                              </span>
+                              <span className="text-[10px] text-slate-400">
+                                {unit.hierarchyLabel || 'Produk'}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ))}
                 </div>
               </div>
 

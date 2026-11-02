@@ -13,6 +13,7 @@
  */
 
 import {
+  AreaRecommendationGroup,
   DiagnosticResult,
   HygieneProductRecommendation,
   SurveyObservationInput,
@@ -43,9 +44,10 @@ export interface MLDiagnosticOutput extends DiagnosticResult {
 export function predictWithHistoricalML(
   input: SurveyObservationInput
 ): MLDiagnosticOutput {
-  const kat1_Restroom: HygieneProductRecommendation[] = [];
-  const kat2_Secondary: HygieneProductRecommendation[] = [];
-  const kat3_SmartScenting: HygieneProductRecommendation[] = [];
+  const area1Units: HygieneProductRecommendation[] = [];
+  const area2Units: HygieneProductRecommendation[] = [];
+  const area3Units: HygieneProductRecommendation[] = [];
+  const area4Units: HygieneProductRecommendation[] = [];
   const predictionsDetail: MLPredictionDetail[] = [];
   const summaryHighlights: string[] = [];
 
@@ -58,9 +60,9 @@ export function predictWithHistoricalML(
     ((safeHours * 60 * daysPerWeek * 8) / 6000).toFixed(1)
   );
 
-  // --------------------------------------------------------------------------
-  // 1. UNIT MAIN RESTROOM (EST vs EDST, ESD vs EFS, ESC, ESBD, EHD)
-  // --------------------------------------------------------------------------
+  // ==========================================================================
+  // 1. AREA 1: TOILET DAN KAMAR MANDI
+  // ==========================================================================
 
   // A. EST vs EDST (Pipa Kloset / Urinoir)
   if (input.kondisiPipa === 'PIPA_MANUAL') {
@@ -72,20 +74,26 @@ export function predictWithHistoricalML(
       probabilityScore: score,
       f1Score: score,
     });
-    kat1_Restroom.push({
-      id: 'EST-MANUAL',
+    area1Units.push({
+      id: 'A1-EST-MANUAL',
       kodeUnit: 'EST',
       namaUnit: 'Ecocare Sanitizer Manual (EST)',
+      namaSpesifikAlat: 'EST – Ecocare Sanitizer (Bilas Mekanis Manual)',
       kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_1_TOILET',
+      namaArea: 'Area 1: Toilet dan Kamar Mandi',
+      posisiSpesifik: 'Pipa Bilas Luar Kloset & Urinoir (Bisa Dibor)',
+      hierarchy: 'MAIN_PRODUCT',
+      hierarchyLabel: 'Produk Utama',
       matchScore: score,
       petunjukPemasangan:
-        'Dipasang pada pipa luar kloset/urinoir yang bisa dilubangi. Bekerja otomatis setiap kali dibilas tanpa perlu baterai atau listrik.',
+        'Dipasang pada pipa bilas luar kloset/urinoir dengan injeksi katup mekanis. Bekerja otomatis saat dibilas tanpa baterai/listrik.',
       keunggulanGedung:
         'Mencegah timbulnya bau pesing dan kerak urine di pipa saluran kloset, hemat biaya karena tidak memerlukan daya listrik.',
       estimasiUnit: `${input.jumlahUrinoirKloset || 1} Titik Urinoir/Kloset`,
-      keteranganTipe: `ML Match: ${score}% (Akurasi Model F1: 100%)`,
+      keteranganTipe: `ML Match: ${score}% (Akurasi F1: 100%)`,
     });
-    summaryHighlights.push('Pipa luar biasa: Model ML merekomendasikan unit EST Manual (F1: 100%).');
+    summaryHighlights.push('Pipa standar: Model ML memilih unit EST Manual (F1: 100%).');
   } else {
     // PIPA_TANAM / Marmer
     const score = f1['EDST'] ?? 97.2;
@@ -96,74 +104,54 @@ export function predictWithHistoricalML(
       probabilityScore: score,
       f1Score: score,
     });
-    kat1_Restroom.push({
-      id: 'EDST-DIGITAL',
+    area1Units.push({
+      id: 'A1-EDST-DIGITAL',
       kodeUnit: 'EDST',
       namaUnit: 'Ecocare Sanitizer Digital (EDST)',
+      namaSpesifikAlat: 'EDST – Ecocare Digital Sanitizer (Sistem Tetes Digital Sensor)',
       kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_1_TOILET',
+      namaArea: 'Area 1: Toilet dan Kamar Mandi',
+      posisiSpesifik: 'Kloset / Urinoir Dinding Marmer & Pipa Tanam (Tanpa Bor)',
+      hierarchy: 'MAIN_PRODUCT',
+      hierarchyLabel: 'Produk Utama',
       matchScore: score,
       petunjukPemasangan:
-        'Dipasang dengan sistem tetes berkala menggunakan 2 baterai. Tidak memerlukan pengeboran pada dinding marmer atau pipa tanam.',
+        'Dipasang dengan sistem tetes berkala menggunakan 2 baterai C. Tidak memerlukan pengeboran pada dinding marmer atau pipa tanam.',
       catatanKhusus:
-        'Aturan Fisik: Dinding marmer mewah/pipa tanam dilarang dibor. Gunakan unit EDST Digital (bukan tipe manual).',
+        'Peringatan Fisik: Dinding marmer/pipa tanam dilarang dibor. Wajib membawa unit EDST Digital (bukan EST manual).',
       keunggulanGedung:
         'Menjaga kebersihan dan aroma toilet tetap wangi tanpa merusak dinding marmer mewah atau sistem sensor otomatis gedung.',
       estimasiUnit: `${input.jumlahUrinoirKloset || 1} Titik Urinoir/Kloset`,
-      keteranganTipe: `ML Match: ${score}% (Akurasi Model F1: 97.2%)`,
+      keteranganTipe: `ML Match: ${score}% (Akurasi F1: 97.2%)`,
     });
     summaryHighlights.push('Pipa tanam/marmer: Model ML memvalidasi unit EDST Digital (F1: 97.2%).');
   }
 
-  // B. ESD Liquid vs EFS Foam (Sabun Wastafel)
-  if (input.tipeWastafel === 'TRAFIK_PADAT') {
-    const score = f1['ESD_Liquid'] ?? 99.2;
-    predictionsDetail.push({
-      unitCode: 'ESD_Liquid',
-      unitName: 'Dispenser Sabun Cair Kapasitas Besar (1 Liter)',
-      isRecommended: true,
-      probabilityScore: score,
-      f1Score: score,
-    });
-    kat1_Restroom.push({
-      id: 'ESD-LIQUID',
-      kodeUnit: 'ESD-MS1000',
-      namaUnit: 'Dispenser Sabun Cair Kapasitas Besar (1 Liter)',
+  // B. Urinal Screen (Supporting Product)
+  if (input.pasangUrinalScreen || input.jumlahUrinoirKloset >= 4) {
+    area1Units.push({
+      id: 'A1-URINAL-SCREEN',
+      kodeUnit: 'Urinal Screen',
+      namaUnit: 'Ecocare Urinal Screen Pengharum',
+      namaSpesifikAlat: 'Urinal Screen – Penyaring Urinoir Pengharum (Anti-Splash)',
       kategori: 'Toilet & Sanitasi Utama',
-      matchScore: score,
+      targetArea: 'AREA_1_TOILET',
+      namaArea: 'Area 1: Toilet dan Kamar Mandi',
+      posisiSpesifik: 'Dasar Mangkuk Urinoir Pria',
+      hierarchy: 'SUPPORTING_NEW',
+      hierarchyLabel: 'Pengembangan & Pendukung',
+      matchScore: 95.0,
       petunjukPemasangan:
-        'Wadah sabun kapasitas 1.000 ml yang kuat dengan kunci pengaman, cocok untuk pemakaian jumlah orang banyak.',
+        'Ditempatkan langsung pada saringan mangkuk urinoir pria. Mengandung bahan wangi aktif tahan 30 hari.',
       keunggulanGedung:
-        'Kapasitas besar mencegah sabun cepat habis di wastafel ramai, meringankan pekerjaan tim kebersihan.',
-      estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
-      keteranganTipe: `ML Match: ${score}% (Kapasitas Besar)`,
+        'Mencegah puntung rokok/sampah menyumbat saluran urinoir dan mengurangi percikan urine (anti-splash) agar lantai tetap kering.',
+      estimasiUnit: `${input.jumlahUrinoirKloset || 1} Mangkuk Urinoir`,
+      keteranganTipe: 'Anti-Splash & Pengharum Aktif 30 Hari',
     });
-  } else {
-    // Perkantoran Green
-    const score = f1['EFS_Foam'] ?? 97.8;
-    predictionsDetail.push({
-      unitCode: 'EFS_Foam',
-      unitName: 'Dispenser Sabun Busa Hemat Air (Foam Soap)',
-      isRecommended: true,
-      probabilityScore: score,
-      f1Score: score,
-    });
-    kat1_Restroom.push({
-      id: 'EFS-FOAM',
-      kodeUnit: 'EFS-SP830',
-      namaUnit: 'Dispenser Sabun Busa Hemat Air (Foam Soap)',
-      kategori: 'Toilet & Sanitasi Utama',
-      matchScore: score,
-      petunjukPemasangan:
-        'Menghasilkan busa instan lembut siap pakai dengan takaran terukur yang efisien dan higienis.',
-      keunggulanGedung:
-        'Busa lembut menghemat sabun dan air bilasan hingga 35%, sangat mendukung citra gedung perkantoran ramah lingkungan.',
-      estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
-      keteranganTipe: `ML Match: ${score}% (Hemat Air 35%)`,
-    });
-    summaryHighlights.push('Konsep ramah lingkungan: Model ML memilih Foam Soap (F1: 97.8%).');
   }
 
-  // C. ESC (Pembersih Dudukan Kloset)
+  // C. ESC vs Auto Seat Cleaner T900
   if (input.khawatirBakteriKloset) {
     const score = f1['ESC_SeatCleaner'] ?? 100.0;
     predictionsDetail.push({
@@ -173,19 +161,47 @@ export function predictWithHistoricalML(
       probabilityScore: score,
       f1Score: score,
     });
-    kat1_Restroom.push({
-      id: 'ESC-SEAT',
-      kodeUnit: 'ESC',
-      namaUnit: 'Pembersih Dudukan Kloset (Seat Cleaner)',
-      kategori: 'Toilet & Sanitasi Utama',
-      matchScore: score,
-      petunjukPemasangan:
-        'Dispenser cairan pembersih cepat kering di setiap bilik kloset duduk, digunakan bersama tisu toilet sebelum duduk.',
-      keunggulanGedung:
-        'Memberikan rasa nyaman dan kepastian higienis bebas kuman bagi para pengunjung dan tamu penting.',
-      estimasiUnit: `${input.jumlahKubikalWanita || Math.max(1, Math.ceil(input.jumlahUrinoirKloset / 2))} Bilik Kloset Duduk`,
-      keteranganTipe: `ML Match: ${score}%`,
-    });
+    if (input.autoSeatCleanerTouchless) {
+      area1Units.push({
+        id: 'A1-AUTO-SEAT-T900',
+        kodeUnit: 'Auto Seat Cleaner T900',
+        namaUnit: 'Touchless Seat Cleaner (Auto T900)',
+        namaSpesifikAlat: 'Auto Seat Cleaner (T900) – Touchless Seat Cleaner Sensor',
+        kategori: 'Toilet & Sanitasi Utama',
+        targetArea: 'AREA_1_TOILET',
+        namaArea: 'Area 1: Toilet dan Kamar Mandi',
+        posisiSpesifik: 'Dinding Samping Setiap Bilik Kloset Duduk',
+        hierarchy: 'FLAGSHIP_PRODUCT',
+        hierarchyLabel: 'Produk Unggulan (Touchless)',
+        matchScore: score,
+        petunjukPemasangan:
+          'Sensor inframerah mendeteksi tangan otomatis untuk mengeluarkan busa disinfektan ke atas tisu toilet.',
+        keunggulanGedung:
+          'Standar higienitas tertinggi tanpa sentuh tangan, membunuh 99,9% kuman pada dudukan kloset seketika.',
+        estimasiUnit: `${input.jumlahKubikalWanita || Math.max(1, Math.ceil(input.jumlahUrinoirKloset / 2))} Bilik Kloset Duduk`,
+        keteranganTipe: `ML Match: ${score}% (Sensor Touch-Free)`,
+      });
+    } else {
+      area1Units.push({
+        id: 'A1-ESC-SEAT',
+        kodeUnit: 'ESC',
+        namaUnit: 'Ecocare Seat Cleaner (ESC)',
+        namaSpesifikAlat: 'ESC – Ecocare Seat Cleaner (Pembersih Alas Duduk Kloset)',
+        kategori: 'Toilet & Sanitasi Utama',
+        targetArea: 'AREA_1_TOILET',
+        namaArea: 'Area 1: Toilet dan Kamar Mandi',
+        posisiSpesifik: 'Dinding Bilik Kloset Duduk',
+        hierarchy: 'MAIN_PRODUCT',
+        hierarchyLabel: 'Produk Utama',
+        matchScore: score,
+        petunjukPemasangan:
+          'Dispenser cairan pembersih cepat kering di setiap bilik kloset duduk, digunakan bersama tisu toilet sebelum duduk.',
+        keunggulanGedung:
+          'Memberikan rasa nyaman dan kepastian higienis bebas kuman bagi para pengunjung dan tamu penting.',
+        estimasiUnit: `${input.jumlahKubikalWanita || Math.max(1, Math.ceil(input.jumlahUrinoirKloset / 2))} Bilik Kloset Duduk`,
+        keteranganTipe: `ML Match: ${score}%`,
+      });
+    }
   }
 
   // D. ESBD (Sanitary Bin Sensor)
@@ -198,11 +214,17 @@ export function predictWithHistoricalML(
       probabilityScore: score,
       f1Score: score,
     });
-    kat1_Restroom.push({
-      id: 'ESBD-BIN',
+    area1Units.push({
+      id: 'A1-ESBD-BIN',
       kodeUnit: 'ESBD',
-      namaUnit: 'Tempat Sampah Pembalut Sensor Otomatis (Sanitary Bin)',
+      namaUnit: 'Ecocare Sanitary Bin Digital Autolid (ESBD)',
+      namaSpesifikAlat: 'ESB / ESBD – Ecocare Sanitary Bin Digital Autolid (Sensor Otomatis)',
       kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_1_TOILET',
+      namaArea: 'Area 1: Toilet dan Kamar Mandi',
+      posisiSpesifik: 'Lantai Sudut Setiap Bilik Toilet Wanita',
+      hierarchy: 'MAIN_PRODUCT',
+      hierarchyLabel: 'Produk Utama',
       matchScore: score,
       petunjukPemasangan:
         'Tutup membuka otomatis lewat sensor gerak tangan (touchless), di dalamnya terdapat cairan antibakteri penghilang bau.',
@@ -213,21 +235,108 @@ export function predictWithHistoricalML(
     });
   }
 
-  // E. EHD (Jet Hand Dryer)
-  if (input.keluhanSampahTisu) {
-    const score = f1['EHD_HandDryer'] ?? 100.0;
+  // E. ESD vs EFS vs Auto Foam (Sabun Wastafel)
+  if (input.autoDispenserTouchlessArea1) {
+    area1Units.push({
+      id: 'A1-AUTO-FOAM-AK1255',
+      kodeUnit: 'Auto Foam AK1255',
+      namaUnit: 'Touchless Foam Soap Dispenser (Auto AK1255)',
+      namaSpesifikAlat: 'Auto Foam (AK1255) – Touchless Foam Soap Dispenser',
+      kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_1_TOILET',
+      namaArea: 'Area 1: Toilet dan Kamar Mandi',
+      posisiSpesifik: 'Dinding di Atas Meja Wastafel Toilet',
+      hierarchy: 'FLAGSHIP_PRODUCT',
+      hierarchyLabel: 'Produk Unggulan (Touchless)',
+      matchScore: 97.5,
+      petunjukPemasangan:
+        'Dispenser otomatis bertenaga baterai dengan sensor tangan presisi di bawah moncong dispenser.',
+      keunggulanGedung:
+        'Mencegah kontaminasi kuman silang antar pengguna wastafel dengan busa lembut mewah dan higienis.',
+      estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
+      keteranganTipe: 'ML Match: 97.5% (Sensor Otomatis)',
+    });
+  } else if (input.tipeWastafel === 'TRAFIK_PADAT') {
+    const score = f1['ESD_Liquid'] ?? 99.2;
     predictionsDetail.push({
-      unitCode: 'EHD_HandDryer',
-      unitName: 'Pengering Tangan Cepat (Jet Hand Dryer)',
+      unitCode: 'ESD_Liquid',
+      unitName: 'Dispenser Sabun Cair Kapasitas Besar (1 Liter)',
       isRecommended: true,
       probabilityScore: score,
       f1Score: score,
     });
-    kat1_Restroom.push({
-      id: 'EHD-DRYER',
-      kodeUnit: 'EHD',
-      namaUnit: 'Pengering Tangan Cepat (Jet Hand Dryer)',
+    area1Units.push({
+      id: 'A1-ESD-MS1000',
+      kodeUnit: 'ESD-MS1000',
+      namaUnit: 'Ecocare Liquid Soap Dispenser (ESD 1.000 ml)',
+      namaSpesifikAlat: 'ESD – Ecocare Liquid Soap Dispenser (MS1000 - 1.000 ml)',
       kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_1_TOILET',
+      namaArea: 'Area 1: Toilet dan Kamar Mandi',
+      posisiSpesifik: 'Dinding Area Wastafel Trafik Tinggi',
+      hierarchy: 'MAIN_PRODUCT',
+      hierarchyLabel: 'Produk Utama',
+      matchScore: score,
+      petunjukPemasangan:
+        'Wadah sabun kapasitas 1.000 ml yang kuat dengan kunci pengaman, cocok untuk pemakaian jumlah orang banyak.',
+      keunggulanGedung:
+        'Kapasitas besar mencegah sabun cepat habis di wastafel ramai, meringankan pekerjaan tim kebersihan.',
+      estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
+      keteranganTipe: `ML Match: ${score}% (Kapasitas Besar)`,
+    });
+  } else {
+    // EFS Foam
+    const score = f1['EFS_Foam'] ?? 97.8;
+    predictionsDetail.push({
+      unitCode: 'EFS_Foam',
+      unitName: 'Dispenser Sabun Busa Hemat Air (Foam Soap)',
+      isRecommended: true,
+      probabilityScore: score,
+      f1Score: score,
+    });
+    area1Units.push({
+      id: 'A1-EFS-SP830',
+      kodeUnit: 'EFS-SP830',
+      namaUnit: 'Ecocare Foam Soap Dispenser (EFS SP830)',
+      namaSpesifikAlat: 'EFS – Ecocare Foam Soap Dispenser (SP830 - Sabun Busa Hemat Air)',
+      kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_1_TOILET',
+      namaArea: 'Area 1: Toilet dan Kamar Mandi',
+      posisiSpesifik: 'Dinding Area Wastafel Perkantoran / Ramah Lingkungan',
+      hierarchy: 'MAIN_PRODUCT',
+      hierarchyLabel: 'Produk Utama',
+      matchScore: score,
+      petunjukPemasangan:
+        'Menghasilkan busa instan lembut siap pakai dengan takaran terukur yang efisien dan higienis.',
+      keunggulanGedung:
+        'Busa lembut menghemat sabun dan air bilasan hingga 35%, sangat mendukung citra gedung perkantoran ramah lingkungan.',
+      estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
+      keteranganTipe: `ML Match: ${score}% (Hemat Air 35%)`,
+    });
+    summaryHighlights.push('Konsep ramah lingkungan: Model ML memilih Foam Soap EFS-SP830 (F1: 97.8%).');
+  }
+
+  // F. EHD Mini High-Speed AK2822
+  if (input.keluhanSampahTisu) {
+    const score = f1['EHD_HandDryer'] ?? 100.0;
+    predictionsDetail.push({
+      unitCode: 'EHD_HandDryer',
+      unitName: 'Mini High-Speed Hand Dryer (EHD AK2822)',
+      isRecommended: true,
+      probabilityScore: score,
+      f1Score: score,
+    });
+    area1Units.push({
+      id: 'A1-EHD-AK2822',
+      kodeUnit: 'EHD-AK2822',
+      namaUnit: 'Mini High-Speed Hand Dryer (EHD AK2822)',
+      namaSpesifikAlat: 'EHD / AK2822 – Mini High-Speed Hand Dryer Otomatis',
+      kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_1_TOILET',
+      namaArea: 'Area 1: Toilet dan Kamar Mandi',
+      posisiSpesifik: 'Dinding Jalur Keluar Dekat Wastafel Toilet',
+      hierarchy: 'FLAGSHIP_PRODUCT',
+      hierarchyLabel: 'Produk Unggulan (Flagship)',
       matchScore: score,
       petunjukPemasangan:
         'Pengering tangan angin berkecepatan tinggi dengan sensor otomatis, memerlukan sambungan listrik di area wastafel.',
@@ -238,28 +347,57 @@ export function predictWithHistoricalML(
     });
   }
 
-  // F. Sabun Pantry Staf
-  if (input.sabunPantryEkonomis) {
-    kat1_Restroom.push({
-      id: 'ESD-PANTRY',
-      kodeUnit: 'Fave 701W',
-      namaUnit: 'Dispenser Sabun Dapur & Pantry (500 ml)',
+  // G. EAF Toilet Kipas
+  if (input.blowerToiletKipas) {
+    area1Units.push({
+      id: 'A1-EAF-TOILET',
+      kodeUnit: 'EAF',
+      namaUnit: 'Ecocare Air Freshener Toilet (EAF Blower)',
+      namaSpesifikAlat: 'EAF – Ecocare Air Freshener (Penyegar Ruangan Blower/Kipas)',
       kategori: 'Toilet & Sanitasi Utama',
-      matchScore: 92.5,
+      targetArea: 'AREA_1_TOILET',
+      namaArea: 'Area 1: Toilet dan Kamar Mandi',
+      posisiSpesifik: 'Dinding Atas Area Urinoir & Kloset Toilet',
+      hierarchy: 'MAIN_PRODUCT',
+      hierarchyLabel: 'Produk Utama',
+      matchScore: 93.0,
       petunjukPemasangan:
-        'Ukuran sedang 500 ml yang rapi dipasang di dinding dekat wastafel dapur atau area staf.',
+        'Kipas hening bertenaga 1 baterai D dengan cartridge wangi padat, bekerja terus-menerus tanpa gas semprot.',
       keunggulanGedung:
-        'Praktis dan higienis untuk staf saat mencuci tangan dan perlengkapan makan di area pantry.',
-      estimasiUnit: '1 - 2 Unit Pantry',
-      keteranganTipe: 'ML Match: 92.5% (Kompak 500 ml)',
+        'Menetralkan bau di dalam toilet secara konstan dan lembut tanpa suara desis semprotan.',
+      estimasiUnit: '1 - 2 Unit per Ruang Toilet',
+      keteranganTipe: 'Blower Kipas Hening (Bebas Aerosol)',
     });
   }
 
-  // --------------------------------------------------------------------------
-  // 2. KELOMPOK SECONDARY (EDM, EAF, LCD, EWB, EFL)
-  // --------------------------------------------------------------------------
+  // H. EHS Toilet
+  if (input.handSanitizerToilet) {
+    area1Units.push({
+      id: 'A1-EHS-TOILET',
+      kodeUnit: 'EHS',
+      namaUnit: 'Ecocare Hand Sanitizer Toilet (EHS)',
+      namaSpesifikAlat: 'EHS / AK1205 – Ecocare Hand Sanitizer Gel Antiseptik',
+      kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_1_TOILET',
+      namaArea: 'Area 1: Toilet dan Kamar Mandi',
+      posisiSpesifik: 'Dinding Samping Pintu Keluar Toilet',
+      hierarchy: 'SECONDARY_PRODUCT',
+      hierarchyLabel: 'Produk Sekunder',
+      matchScore: 91.0,
+      petunjukPemasangan:
+        'Dipasang di dekat pintu keluar toilet untuk perlindungan higienis ekstra setelah mencuci tangan.',
+      keunggulanGedung:
+        'Gel antiseptik berstandar medis dengan pelembab kulit, membunuh kuman tanpa rasa lengket di tangan.',
+      estimasiUnit: '1 Unit per Akses Pintu Keluar Toilet',
+      keteranganTipe: 'Gel Antiseptik Cepat Kering',
+    });
+  }
 
-  // A. Keset Karpet EDM
+  // ==========================================================================
+  // 2. AREA 2: PINTU MASUK DAN LOBI UTAMA
+  // ==========================================================================
+
+  // A. EDM (Keset Doormat)
   if (input.pintuMasukLicinDebu) {
     const score = f1['EDM_Doormat'] ?? 100.0;
     predictionsDetail.push({
@@ -269,11 +407,17 @@ export function predictWithHistoricalML(
       probabilityScore: score,
       f1Score: score,
     });
-    kat2_Secondary.push({
-      id: 'EDM-MAT',
+    area2Units.push({
+      id: 'A2-EDM-MAT',
       kodeUnit: 'EDM',
-      namaUnit: 'Keset Karpet Penyerap Debu & Air (Doormat Bersih Rutin)',
+      namaUnit: 'Ecocare Doormats (Keset Pelindung Lantai Anti-Slip)',
+      namaSpesifikAlat: 'EDM – Ecocare Doormats (Keset Nilon & Karet Nitril Anti-Slip)',
       kategori: 'Pengharum & Kebersihan Lantai',
+      targetArea: 'AREA_2_LOBBY',
+      namaArea: 'Area 2: Pintu Masuk dan Lobi Utama',
+      posisiSpesifik: 'Ambang Pintu Masuk Utama Gedung & Akses Lobi (Main Entrance)',
+      hierarchy: 'SECONDARY_PRODUCT',
+      hierarchyLabel: 'Produk Sekunder',
       matchScore: score,
       petunjukPemasangan:
         'Sistem sewa keset profesional dengan penukaran dan pencucian bersih secara rutin oleh tim EcoCare.',
@@ -284,125 +428,50 @@ export function predictWithHistoricalML(
     });
   }
 
-  // B. EAF (Blower Lift / Ruang Kecil)
-  if (input.ruangSempitLift) {
-    const score = f1['EAF_AirFreshenerFan'] ?? 100.0;
-    predictionsDetail.push({
-      unitCode: 'EAF_AirFreshenerFan',
-      unitName: 'Pengharum Lift & Ruang Sempit (Kipas Blower)',
-      isRecommended: true,
-      probabilityScore: score,
-      f1Score: score,
-    });
-    kat2_Secondary.push({
-      id: 'EAF-FAN',
-      kodeUnit: 'EAF',
-      namaUnit: 'Pengharum Lift & Ruang Sempit (Kipas Blower)',
-      kategori: 'Pengharum & Kebersihan Lantai',
-      matchScore: score,
+  // B. Hand Sanitizer Lobi (EHS / Auto SP811)
+  if (input.handSanitizerLobi) {
+    area2Units.push({
+      id: 'A2-EHS-LOBBY',
+      kodeUnit: 'Auto Dispenser SP811',
+      namaUnit: 'Touchless Hand Sanitizer Lobi (Auto SP811)',
+      namaSpesifikAlat: 'Auto Dispenser (SP811/SP812) – Touchless Soap & Hand Sanitizer Dispenser',
+      kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_2_LOBBY',
+      namaArea: 'Area 2: Pintu Masuk dan Lobi Utama',
+      posisiSpesifik: 'Standing Pole / Meja Resepsionis Lobi Utama',
+      hierarchy: 'FLAGSHIP_PRODUCT',
+      hierarchyLabel: 'Produk Unggulan (Touchless)',
+      matchScore: 94.0,
       petunjukPemasangan:
-        'Menggunakan kipas hening dengan 1 baterai dan aroma padat, tidak perlu colokan listrik dan bebas semprotan gas.',
+        'Ditempatkan pada standing pole elegan atau dinding depan lift lobi utama. Sensor otomatis tanpa sentuhan tangan.',
       keunggulanGedung:
-        'Memberikan keharuman lembut tanpa suara semprotan yang mengagetkan di dalam lift atau ruangan kecil tertutup.',
-      estimasiUnit: '1 Unit per Lift / Ruang Tertutup',
-      keteranganTipe: `ML Match: ${score}% (Bebas Aerosol)`,
+        'Menciptakan citra gedung modern peduli kesehatan bagi setiap tamu dan eksekutif yang memasuki gedung.',
+      estimasiUnit: '1 - 2 Unit Standing Lobi Utama',
+      keteranganTipe: 'Touchless Automatic Sensor',
     });
   }
 
-  // C. LCD Sprayer
-  if (input.koridorPublikTerbuka) {
-    const score = f1['LCD_Sprayer'] ?? 100.0;
-    predictionsDetail.push({
-      unitCode: 'LCD_Sprayer',
-      unitName: 'Pengharum Semprot Otomatis (LCD Sprayer)',
-      isRecommended: true,
-      probabilityScore: score,
-      f1Score: score,
-    });
-    kat2_Secondary.push({
-      id: 'LCD-SPRAY',
-      kodeUnit: 'LCD Sprayer',
-      namaUnit: 'Pengharum Semprot Otomatis (LCD Sprayer)',
-      kategori: 'Pengharum & Kebersihan Lantai',
-      matchScore: score,
-      petunjukPemasangan: `Timer semprot otomatis diatur setiap ${calculatedIntervalMinutes} menit agar pas digunakan selama 2 bulan sesuai jadwal penggantian servis.`,
-      keunggulanGedung:
-        'Koridor selalu wangi segar merata sepanjang jam kerja secara otomatis, takaran semprot terukur sehingga tidak boros.',
-      estimasiUnit: '1 Unit per jarak 8-10 meter koridor',
-      keteranganTipe: `ML Match: ${score}% (Tiap ${calculatedIntervalMinutes} Menit)`,
-      intervalSprayDetail: `Otomatis semprot tiap ${calculatedIntervalMinutes} menit (sesuai operasional ${input.jamOperasional} jam/hari).`,
-    });
-  }
-
-  // D. EWB Waterbase
-  if (input.areaSensitifKlinik) {
-    const score = f1['EWB_Waterbase'] ?? 100.0;
-    predictionsDetail.push({
-      unitCode: 'EWB_Waterbase',
-      unitName: 'Pengharum Lembut Berbahan Dasar Air (Waterbase)',
-      isRecommended: true,
-      probabilityScore: score,
-      f1Score: score,
-    });
-    kat2_Secondary.push({
-      id: 'EWB-WATERBASE',
-      kodeUnit: 'EWB',
-      namaUnit: 'Pengharum Lembut Berbahan Dasar Air (Waterbase)',
-      kategori: 'Pengharum & Kebersihan Lantai',
-      matchScore: score,
-      petunjukPemasangan:
-        'Menggunakan formula 100% berbahan dasar air murni tanpa alkohol dan tanpa gas propelan pemicu bersin/alergi.',
-      keunggulanGedung:
-        'Sangat aman untuk lingkungan klinik, ruang tunggu dokter anak, atau pasien yang sensitif terhadap wangi menyengat.',
-      estimasiUnit: '1 Unit per Ruang Periksa / Rawat',
-      keteranganTipe: `ML Match: ${score}% (100% Waterbase)`,
-    });
-  }
-
-  // E. EFL Ecoflies
-  if (input.masalahLalatKantin) {
-    const score = f1['EFL_Ecoflies'] ?? 100.0;
-    predictionsDetail.push({
-      unitCode: 'EFL_Ecoflies',
-      unitName: 'Semprotan Pengusir Lalat Alami (Ecoflies)',
-      isRecommended: true,
-      probabilityScore: score,
-      f1Score: score,
-    });
-    kat2_Secondary.push({
-      id: 'EFL-LALAT',
-      kodeUnit: 'EFL',
-      namaUnit: 'Semprotan Pengusir Lalat Alami (Ecoflies)',
-      kategori: 'Pengharum & Kebersihan Lantai',
-      matchScore: score,
-      petunjukPemasangan:
-        'Alat semprot otomatis berjadwal khusus area makan atau dapur dengan ekstrak bahan yang mengusir lalat secara aman.',
-      keunggulanGedung:
-        'Menjaga area kantin dan pantry bebas dari lalat yang mengganggu tanpa meninggalkan bau obat kimia pada makanan.',
-      estimasiUnit: '1 - 2 Unit Dekat Pintu Kantin / Dapur',
-      keteranganTipe: `ML Match: ${score}% (Ramah Pangan)`,
-    });
-  }
-
-  // --------------------------------------------------------------------------
-  // 3. KELOMPOK SMART SCENTING (B5000, D300, A80)
-  // --------------------------------------------------------------------------
-
-  // A. Lobi HVAC Luas (B5000)
+  // C. Scent Diffuser Lobi (B5000 / D300)
   if (input.kondisiLobi === 'HVAC_LUAS') {
     const score = f1['SmartScent_B5000'] ?? 100.0;
     predictionsDetail.push({
       unitCode: 'SmartScent_B5000',
-      unitName: 'Pengharum Lobi Luas Terkoneksi AC Sentral (HVAC)',
+      unitName: 'Ecocare Large Area Scent Diffuser (SC-005 B5000)',
       isRecommended: true,
       probabilityScore: score,
       f1Score: score,
     });
-    kat3_SmartScenting.push({
-      id: 'SCENT-B5000',
-      kodeUnit: 'Smart Scent B5000',
-      namaUnit: 'Pengharum Lobi Luas Terkoneksi AC Sentral (HVAC)',
+    area2Units.push({
+      id: 'A2-SCENT-B5000',
+      kodeUnit: 'SC-005 (B5000)',
+      namaUnit: 'Ecocare Large Area Scent Diffuser (SC-005 B5000)',
+      namaSpesifikAlat: 'SC-005 (B5000) – Large Area Scent Diffuser (Koneksi AC Sentral HVAC)',
       kategori: 'Pengharum Premium (Smart Scenting)',
+      targetArea: 'AREA_2_LOBBY',
+      namaArea: 'Area 2: Pintu Masuk dan Lobi Utama',
+      posisiSpesifik: 'Ruang Mesin AHU / Saluran Utama Pendingin AC Sentral Lobi',
+      hierarchy: 'SUPPORTING_NEW',
+      hierarchyLabel: 'Pengembangan & Pendukung',
       matchScore: score,
       petunjukPemasangan:
         'Tersambung langsung ke saluran utama pendingin udara (AC Sentral), mengalirkan uap aroma mikro ke seluruh penjuru lobi.',
@@ -411,22 +480,27 @@ export function predictWithHistoricalML(
       estimasiUnit: '1 Sistem Terintegrasi Saluran AC Lobi',
       keteranganTipe: `ML Match: ${score}% (AC Sentral HVAC)`,
     });
-    summaryHighlights.push('Lobi HVAC Luas: Model ML memilih Smart Scent B5000 (F1: 100%).');
+    summaryHighlights.push('Lobi HVAC Luas: Model ML memilih SC-005 B5000 (F1: 100%).');
   } else if (input.kondisiLobi === 'STANDALONE_300') {
-    // B. Lobi Sedang Stand Alone (D300)
     const score = f1['SmartScent_D300'] ?? 100.0;
     predictionsDetail.push({
       unitCode: 'SmartScent_D300',
-      unitName: 'Pengharum Resepsionis & Lobi Mandiri (Stand Alone)',
+      unitName: 'Ecocare Scent Diffuser Stand Alone (SC-006 D300)',
       isRecommended: true,
       probabilityScore: score,
       f1Score: score,
     });
-    kat3_SmartScenting.push({
-      id: 'SCENT-D300',
-      kodeUnit: 'Smart Scent D300',
-      namaUnit: 'Pengharum Resepsionis & Lobi Mandiri (Stand Alone)',
+    area2Units.push({
+      id: 'A2-SCENT-D300',
+      kodeUnit: 'SC-006 (D300)',
+      namaUnit: 'Ecocare Scent Diffuser Stand Alone (SC-006 D300)',
+      namaSpesifikAlat: 'SC-006 (D300) – Scent Diffuser Stand Alone (Kapasitas s/d 300 m³)',
       kategori: 'Pengharum Premium (Smart Scenting)',
+      targetArea: 'AREA_2_LOBBY',
+      namaArea: 'Area 2: Pintu Masuk dan Lobi Utama',
+      posisiSpesifik: 'Meja Resepsionis / Sudut Strategis Lobi Utama',
+      hierarchy: 'SUPPORTING_NEW',
+      hierarchyLabel: 'Pengembangan & Pendukung',
       matchScore: score,
       petunjukPemasangan:
         'Unit mesin pengharum berdesain modern yang dapat diletakkan di sudut lobi atau meja resepsionis dengan pengaturan waktu otomatis.',
@@ -437,21 +511,124 @@ export function predictWithHistoricalML(
     });
   }
 
-  // C. Ruang Rapat VIP (A80 Hening)
-  if (input.ruangRapatVip) {
-    const score = f1['SmartScent_A80'] ?? 100.0;
+  // ==========================================================================
+  // 3. AREA 3: KORIDOR, LIFT, DAN RUANG RAPAT
+  // ==========================================================================
+
+  // A. EAF (Blower Lift)
+  if (input.ruangSempitLift) {
+    const score = f1['EAF_AirFreshenerFan'] ?? 100.0;
     predictionsDetail.push({
-      unitCode: 'SmartScent_A80',
-      unitName: 'Pengharum Ruang Rapat VIP & Direksi (Sangat Hening)',
+      unitCode: 'EAF_AirFreshenerFan',
+      unitName: 'Ecocare Air Freshener Blower (EAF)',
       isRecommended: true,
       probabilityScore: score,
       f1Score: score,
     });
-    kat3_SmartScenting.push({
-      id: 'SCENT-A80',
-      kodeUnit: 'Smart Scent A80',
-      namaUnit: 'Pengharum Ruang Rapat VIP & Direksi (Sangat Hening)',
+    area3Units.push({
+      id: 'A3-EAF-LIFT',
+      kodeUnit: 'EAF',
+      namaUnit: 'Ecocare Air Freshener Blower (EAF)',
+      namaSpesifikAlat: 'EAF – Ecocare Air Freshener (Penyegar Ruangan Blower/Kipas)',
+      kategori: 'Pengharum & Kebersihan Lantai',
+      targetArea: 'AREA_3_CORRIDOR',
+      namaArea: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+      posisiSpesifik: 'Dinding Atas Sangkar Lift & Ruang Tertutup 3x3x3m',
+      hierarchy: 'MAIN_PRODUCT',
+      hierarchyLabel: 'Produk Utama',
+      matchScore: score,
+      petunjukPemasangan:
+        'Menggunakan kipas hening dengan 1 baterai dan aroma padat, tidak perlu colokan listrik dan bebas semprotan gas.',
+      keunggulanGedung:
+        'Memberikan keharuman lembut tanpa suara semprotan yang mengagetkan di dalam lift atau ruangan kecil tertutup.',
+      estimasiUnit: '1 Unit per Lift / Ruang Tertutup',
+      keteranganTipe: `ML Match: ${score}% (Bebas Aerosol)`,
+    });
+  }
+
+  // B. LCD Sprayer Koridor
+  if (input.koridorPublikTerbuka) {
+    const score = f1['LCD_Sprayer'] ?? 100.0;
+    predictionsDetail.push({
+      unitCode: 'LCD_Sprayer',
+      unitName: 'Ecocare LCD Automatic Spray (LCD)',
+      isRecommended: true,
+      probabilityScore: score,
+      f1Score: score,
+    });
+    area3Units.push({
+      id: 'A3-LCD-SPRAY',
+      kodeUnit: 'LCD Sprayer',
+      namaUnit: 'Ecocare LCD Automatic Spray (LCD)',
+      namaSpesifikAlat: 'LCD – Ecocare LCD Automatic Spray (Penyegar Ruangan Aerosol Berkala)',
+      kategori: 'Pengharum & Kebersihan Lantai',
+      targetArea: 'AREA_3_CORRIDOR',
+      namaArea: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+      posisiSpesifik: 'Dinding Koridor Terbuka (Jarak Tiap 8 - 10 Meter)',
+      hierarchy: 'SECONDARY_PRODUCT',
+      hierarchyLabel: 'Produk Sekunder',
+      matchScore: score,
+      petunjukPemasangan: `Timer semprot otomatis diatur setiap ${calculatedIntervalMinutes} menit agar pas digunakan selama 2 bulan sesuai jadwal penggantian servis.`,
+      keunggulanGedung:
+        'Koridor selalu wangi segar merata sepanjang jam kerja secara otomatis, takaran semprot terukur sehingga tidak boros.',
+      estimasiUnit: '1 Unit per jarak 8-10 meter koridor',
+      keteranganTipe: `ML Match: ${score}% (Tiap ${calculatedIntervalMinutes} Menit)`,
+      intervalSprayDetail: `Otomatis semprot tiap ${calculatedIntervalMinutes} menit (sesuai operasional ${input.jamOperasional} jam/hari).`,
+    });
+  }
+
+  // C. EWB Waterbase Medis/Sensitif
+  if (input.areaSensitifKlinik) {
+    const score = f1['EWB_Waterbase'] ?? 100.0;
+    predictionsDetail.push({
+      unitCode: 'EWB_Waterbase',
+      unitName: 'Ecocare Waterbase Freshener (EWB)',
+      isRecommended: true,
+      probabilityScore: score,
+      f1Score: score,
+    });
+    area3Units.push({
+      id: 'A3-EWB-WATERBASE',
+      kodeUnit: 'EWB',
+      namaUnit: 'Ecocare Waterbase Freshener (EWB)',
+      namaSpesifikAlat: 'EWB – Ecocare Waterbase Freshener (Penyegar Non-Aerosol Bebas Alkohol)',
+      kategori: 'Pengharum & Kebersihan Lantai',
+      targetArea: 'AREA_3_CORRIDOR',
+      namaArea: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+      posisiSpesifik: 'Ruang Periksa / Rawat Klinik / Ruang Bayi & Anak',
+      hierarchy: 'SECONDARY_PRODUCT',
+      hierarchyLabel: 'Produk Sekunder',
+      matchScore: score,
+      petunjukPemasangan:
+        'Menggunakan formula 100% berbahan dasar air murni tanpa alkohol dan tanpa gas propelan pemicu bersin/alergi.',
+      keunggulanGedung:
+        'Sangat aman untuk lingkungan klinik, ruang tunggu dokter anak, atau pasien yang sensitif terhadap wangi menyengat.',
+      estimasiUnit: '1 Unit per Ruang Periksa / Rawat',
+      keteranganTipe: `ML Match: ${score}% (100% Waterbase)`,
+    });
+  }
+
+  // D. SC-008 (A80) Ruang Rapat VIP
+  if (input.ruangRapatVip) {
+    const score = f1['SmartScent_A80'] ?? 100.0;
+    predictionsDetail.push({
+      unitCode: 'SmartScent_A80',
+      unitName: 'Ecocare Mini Scent Diffuser (SC-008 A80)',
+      isRecommended: true,
+      probabilityScore: score,
+      f1Score: score,
+    });
+    area3Units.push({
+      id: 'A3-SCENT-A80',
+      kodeUnit: 'SC-008 (A80)',
+      namaUnit: 'Ecocare Mini Scent Diffuser (SC-008 A80)',
+      namaSpesifikAlat: 'SC-008 (A80) – Mini Scent Diffuser (Ultra-Silent Nano Mist <30 dB)',
       kategori: 'Pengharum Premium (Smart Scenting)',
+      targetArea: 'AREA_3_CORRIDOR',
+      namaArea: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+      posisiSpesifik: 'Di Atas Meja Credenza Ruang Rapat Direksi & VIP Lounge',
+      hierarchy: 'SUPPORTING_NEW',
+      hierarchyLabel: 'Pengembangan & Pendukung',
       matchScore: score,
       petunjukPemasangan:
         'Mesin pengharum elegan bersuara sangat hening yang dapat diletakkan di atas meja kabinet ruang rapat.',
@@ -462,8 +639,232 @@ export function predictWithHistoricalML(
     });
   }
 
+  // E. EMB Essential Oil
+  if (input.essentialOilMeeting) {
+    area3Units.push({
+      id: 'A3-EMB-BURST',
+      kodeUnit: 'EMB',
+      namaUnit: 'Ecocare Microburst (EMB Essential Oil)',
+      namaSpesifikAlat: 'EMB – Ecocare Microburst (Penyegar Ruangan Essential Oil Premium)',
+      kategori: 'Pengharum & Kebersihan Lantai',
+      targetArea: 'AREA_3_CORRIDOR',
+      namaArea: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+      posisiSpesifik: 'Dinding Ruang Pertemuan Eksekutif / Koridor VIP',
+      hierarchy: 'SECONDARY_PRODUCT',
+      hierarchyLabel: 'Produk Sekunder',
+      matchScore: 92.0,
+      petunjukPemasangan:
+        'Unit dispenser semprot mikro dengan formula minyak esensial konsentrat tinggi yang bertahan lama di udara.',
+      keunggulanGedung:
+        'Memberikan sensasi aromaterapi mewah yang menenangkan pikiran dan meningkatkan fokus kerja tim.',
+      estimasiUnit: '1 Unit per Ruang Meeting Eksekutif',
+      keteranganTipe: 'Aromaterapi Essential Oil Premium',
+    });
+  }
+
+  // F. EHS Koridor
+  if (input.handSanitizerKoridor) {
+    area3Units.push({
+      id: 'A3-EHS-CORRIDOR',
+      kodeUnit: 'EHS-AK1205',
+      namaUnit: 'Ecocare Hand Sanitizer Koridor (AK1205)',
+      namaSpesifikAlat: 'EHS / AK1205 – Touchless Hand Sanitizer Dinding Koridor',
+      kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_3_CORRIDOR',
+      namaArea: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+      posisiSpesifik: 'Dinding Depan Pintu Ruang Rapat & Akses Koridor',
+      hierarchy: 'SECONDARY_PRODUCT',
+      hierarchyLabel: 'Produk Sekunder',
+      matchScore: 91.0,
+      petunjukPemasangan:
+        'Pemasangan dinding di titik lalu lintas koridor atau samping pintu meeting room.',
+      keunggulanGedung:
+        'Memudahkan peserta rapat mensterilkan tangan sebelum masuk ruangan, mencegah penyebaran virus antar karyawan.',
+      estimasiUnit: '1 Unit per Pintu Ruang Rapat',
+      keteranganTipe: 'Sanitasi Dinding Koridor',
+    });
+  }
+
+  // G. Doormats Akses Rapat (EDM)
+  if (input.kesetAksesMeeting) {
+    area3Units.push({
+      id: 'A3-EDM-MEETING',
+      kodeUnit: 'EDM',
+      namaUnit: 'Ecocare Doormats Akses Rapat (EDM)',
+      namaSpesifikAlat: 'EDM – Ecocare Doormats (Keset Pelindung Lantai Karpet)',
+      kategori: 'Pengharum & Kebersihan Lantai',
+      targetArea: 'AREA_3_CORRIDOR',
+      namaArea: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+      posisiSpesifik: 'Pintu Masuk Ruang Rapat & Depan Pintu Lift',
+      hierarchy: 'SECONDARY_PRODUCT',
+      hierarchyLabel: 'Produk Sekunder',
+      matchScore: 90.0,
+      petunjukPemasangan:
+        'Diletakkan di depan pintu masuk ruang rapat untuk menyaring sisa debu dari koridor.',
+      keunggulanGedung:
+        'Menjaga karpet ruang rapat tetap bersih dan tidak cepat kotor atau kusam akibat debu sepatu.',
+      estimasiUnit: '1 Lembar per Pintu Ruang Rapat',
+      keteranganTipe: 'Keset Proteksi Karpet',
+    });
+  }
+
+  // ==========================================================================
+  // 4. AREA 4: DAPUR, KANTIN, DAN PANTRY
+  // ==========================================================================
+
+  // A. EFL Ecoflies
+  if (input.masalahLalatKantin) {
+    const score = f1['EFL_Ecoflies'] ?? 100.0;
+    predictionsDetail.push({
+      unitCode: 'EFL_Ecoflies',
+      unitName: 'Ecoflies Pengusir Lalat Alami (EFL)',
+      isRecommended: true,
+      probabilityScore: score,
+      f1Score: score,
+    });
+    area4Units.push({
+      id: 'A4-EFL-LALAT',
+      kodeUnit: 'EFL',
+      namaUnit: 'Ecoflies Pengusir Lalat Alami (EFL)',
+      namaSpesifikAlat: 'EFL – Ecoflies (Pengendali / Pengusir Serangga Terbang Aman Pangan)',
+      kategori: 'Pengharum & Kebersihan Lantai',
+      targetArea: 'AREA_4_PANTRY',
+      namaArea: 'Area 4: Dapur, Kantin, dan Pantry',
+      posisiSpesifik: 'Dinding Dekat Pintu Masuk Dapur & Area Saji Makanan Kantin',
+      hierarchy: 'SECONDARY_PRODUCT',
+      hierarchyLabel: 'Produk Sekunder',
+      matchScore: score,
+      petunjukPemasangan:
+        'Alat semprot otomatis berjadwal khusus area makan atau dapur dengan ekstrak bahan yang mengusir lalat secara aman.',
+      keunggulanGedung:
+        'Menjaga area kantin dan pantry bebas dari lalat yang mengganggu tanpa meninggalkan bau obat kimia pada makanan.',
+      estimasiUnit: '1 - 2 Unit Dekat Pintu Kantin / Dapur',
+      keteranganTipe: `ML Match: ${score}% (Ramah Pangan)`,
+    });
+  }
+
+  // B. Sabun Pantry Fave 701W
+  if (input.sabunPantryEkonomis) {
+    area4Units.push({
+      id: 'A4-ESD-PANTRY',
+      kodeUnit: 'Fave 701W',
+      namaUnit: 'Dispenser Sabun Pantry Kompak (Fave 701W - 500 ml)',
+      namaSpesifikAlat: 'ESD – Ecocare Liquid Soap Dispenser (Fave 701W - 500 ml Kompak)',
+      kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_4_PANTRY',
+      namaArea: 'Area 4: Dapur, Kantin, dan Pantry',
+      posisiSpesifik: 'Dinding Dekat Wastafel Dapur & Pantry Staf',
+      hierarchy: 'MAIN_PRODUCT',
+      hierarchyLabel: 'Produk Utama',
+      matchScore: 92.5,
+      petunjukPemasangan:
+        'Ukuran sedang 500 ml yang rapi dipasang di dinding dekat wastafel dapur atau area staf.',
+      keunggulanGedung:
+        'Praktis dan higienis untuk staf saat mencuci tangan dan perlengkapan makan di area pantry.',
+      estimasiUnit: '1 - 2 Unit Pantry',
+      keteranganTipe: 'ML Match: 92.5% (Kompak 500 ml)',
+    });
+  }
+
+  // C. Doormats Minyak & Lemak (EDM Kitchen)
+  if (input.kesetMinyakDapur) {
+    area4Units.push({
+      id: 'A4-EDM-KITCHEN',
+      kodeUnit: 'EDM-Kitchen',
+      namaUnit: 'Ecocare Doormats Dapur (Khusus Minyak & Lemak)',
+      namaSpesifikAlat: 'EDM – Ecocare Doormats (Keset Khusus Penyerapan Minyak, Lemak & Air)',
+      kategori: 'Pengharum & Kebersihan Lantai',
+      targetArea: 'AREA_4_PANTRY',
+      namaArea: 'Area 4: Dapur, Kantin, dan Pantry',
+      posisiSpesifik: 'Akses Pintu Keluar/Masuk Dapur & Area Basah Kantin',
+      hierarchy: 'SECONDARY_PRODUCT',
+      hierarchyLabel: 'Produk Sekunder',
+      matchScore: 93.0,
+      petunjukPemasangan:
+        'Keset karet nitril berdaya cengkeram tinggi untuk area basah dan berminyak, diganti dan dicuci rutin oleh EcoCare.',
+      keunggulanGedung:
+        'Mengunci tetesan minyak dan air agar tidak terbawa licin ke area makan atau koridor, melindungi keselamatan staf.',
+      estimasiUnit: '1 - 2 Lembar Akses Dapur',
+      keteranganTipe: 'Anti-Slip Serap Minyak & Lemak',
+    });
+  }
+
+  // D. Touchless Foam & Hand Sanitizer Dapur (Auto AK1255)
+  if (input.handSanitizerKantinDapur) {
+    area4Units.push({
+      id: 'A4-AUTO-FOAM-KITCHEN',
+      kodeUnit: 'Auto Foam AK1255',
+      namaUnit: 'Touchless Soap & Sanitizer Dapur (Auto AK1255)',
+      namaSpesifikAlat: 'Auto Foam (AK1255) – Touchless Foam Soap & Sanitizer Dispenser',
+      kategori: 'Toilet & Sanitasi Utama',
+      targetArea: 'AREA_4_PANTRY',
+      namaArea: 'Area 4: Dapur, Kantin, dan Pantry',
+      posisiSpesifik: 'Dinding Jalur Olah Makanan Sebelum Penyajian',
+      hierarchy: 'FLAGSHIP_PRODUCT',
+      hierarchyLabel: 'Produk Unggulan (Touchless)',
+      matchScore: 94.0,
+      petunjukPemasangan:
+        'Dispenser otomatis tanpa sentuh dipasang di dekat meja persiapan bahan makanan.',
+      keunggulanGedung:
+        'Menjamin standar kebersihan juru masak sebelum menyentuh makanan tanpa menyentuh dispenser.',
+      estimasiUnit: '1 Unit Area Persiapan Makanan',
+      keteranganTipe: 'Higienitas Touchless Olah Makanan',
+    });
+  }
+
+  // ==========================================================================
+  // KELOMPOKKAN KE DALAM 4 AREA
+  // ==========================================================================
+  const areaGroups: AreaRecommendationGroup[] = [
+    {
+      areaId: 'AREA_1_TOILET',
+      areaNumber: 1,
+      areaTitle: 'Area 1: Toilet dan Kamar Mandi',
+      areaFokus:
+        'Sanitasi kloset/urinoir, pembuangan limbah sensitif wanita, cuci tangan wastafel, dan kesegaran udara toilet.',
+      units: area1Units,
+    },
+    {
+      areaId: 'AREA_2_LOBBY',
+      areaNumber: 2,
+      areaTitle: 'Area 2: Pintu Masuk dan Lobi Utama',
+      areaFokus:
+        'Penampilan visual & prestise gedung, pencegahan kotoran masuk lewat alas kaki, dan aroma mewah cakupan luas.',
+      units: area2Units,
+    },
+    {
+      areaId: 'AREA_3_CORRIDOR',
+      areaNumber: 3,
+      areaTitle: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+      areaFokus:
+        'Sirkulasi udara stabil, tingkat kebisingan rendah (silent operation), bebas kuman, dan kesegaran ruang kerja.',
+      units: area3Units,
+    },
+    {
+      areaId: 'AREA_4_PANTRY',
+      areaNumber: 4,
+      areaTitle: 'Area 4: Dapur, Kantin, dan Pantry',
+      areaFokus:
+        'Higienitas olahan makanan, penyerapan minyak & lemak lantai dapur, serta pengendalian serangga terbang ramah pangan.',
+      units: area4Units,
+    },
+  ];
+
   const totalUnitRekomendasi =
-    kat1_Restroom.length + kat2_Secondary.length + kat3_SmartScenting.length;
+    area1Units.length + area2Units.length + area3Units.length + area4Units.length;
+
+  const allUnits = [...area1Units, ...area2Units, ...area3Units, ...area4Units];
+  const kat1_Restroom = allUnits.filter((u) => u.kategori === 'Toilet & Sanitasi Utama');
+  const kat2_Secondary = allUnits.filter(
+    (u) =>
+      u.kategori === 'Pengharum & Kebersihan Lantai' &&
+      !u.namaSpesifikAlat.includes('Scent Diffuser')
+  );
+  const kat3_SmartScenting = allUnits.filter(
+    (u) =>
+      u.kategori === 'Pengharum Premium (Smart Scenting)' ||
+      u.namaSpesifikAlat.includes('Scent Diffuser')
+  );
 
   return {
     runId: `HYCARE-ML-${Date.now().toString(36).toUpperCase()}`,
@@ -472,6 +873,7 @@ export function predictWithHistoricalML(
     surveyType: input.surveyType,
     segmen: input.segmen,
     totalUnitRekomendasi,
+    areaGroups,
     kategori1_Restroom: kat1_Restroom,
     kategori2_Secondary: kat2_Secondary,
     kategori3_SmartScenting: kat3_SmartScenting,
@@ -486,4 +888,3 @@ export function predictWithHistoricalML(
     predictionsDetail,
   };
 }
-
