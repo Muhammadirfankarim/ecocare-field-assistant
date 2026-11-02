@@ -6,7 +6,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'EcoCare Smart Diagnostic | EcoCare Super Sales App (Stage 4: Site Survey)',
+  title: 'EcoCare Smart Diagnostic | PT Ecocare Indo Pasifik Tbk',
   description:
     'Modul Smart Survey Diagnostic internal untuk Asisten Sales Lapangan PT EcoCare Indo Pasifik Tbk (Lini EcoCare Hygiene).',
 };
