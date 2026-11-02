@@ -322,7 +322,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
     kat1_Restroom.length + kat2_Secondary.length + kat3_SmartScenting.length;
 
   return {
-    runId: `ECO-${Date.now().toString(36).toUpperCase()}`,
+    runId: `HYCARE-SOP-${Date.now().toString(36).toUpperCase()}`,
     evaluatedAtUtc: new Date().toISOString(),
     namaGedung: input.namaGedung,
     surveyType: input.surveyType,

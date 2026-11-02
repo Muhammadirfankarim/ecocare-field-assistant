@@ -6,9 +6,18 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'EcoCare HygieMatch™ — Rekomendasi Solusi Kebersihan Gedung',
+  title: 'Hycare — Solusi Kebersihan Gedung Pintar',
   description:
-    'Sistem Rekomendasi Solusi Kebersihan & Sanitasi Gedung PT EcoCare Indo Pasifik Tbk.',
+    'Hycare: Sistem Rekomendasi Solusi Kebersihan & Sanitasi Gedung oleh PT EcoCare Indo Pasifik Tbk.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/hycare-icon.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/hycare-icon.png' },
+    ],
+  },
 };
 
 export default function RootLayout({

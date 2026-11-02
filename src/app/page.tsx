@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import Image from 'next/image';
 import {
   Building2,
   Sparkles,
@@ -46,7 +47,8 @@ import {
 } from '@/lib/scoringEngine';
 import { predictWithHistoricalML } from '@/lib/mlInferenceEngine';
 
-const STORAGE_KEY = 'ecocare_hygiematch_records_v1';
+const STORAGE_KEY = 'hycare_records_v1';
+const LEGACY_STORAGE_KEY = 'ecocare_hygiematch_records_v1';
 
 // -------------------------------------------------------------
 // 3 SKENARIO CONTOH UNTUK DEMO PRESENTASI
@@ -163,7 +165,7 @@ export default function EcoCareHygieMatchPage() {
   // Ambil riwayat dari LocalStorage saat pertama buka
   useEffect(() => {
     try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
+      const raw = window.localStorage.getItem(STORAGE_KEY) || window.localStorage.getItem(LEGACY_STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) {
@@ -171,7 +173,7 @@ export default function EcoCareHygieMatchPage() {
         }
       }
     } catch (err) {
-      console.error('[EcoCare Storage] Catatan lokal belum ada:', err);
+      console.error('[Hycare Storage] Catatan lokal belum ada:', err);
     }
   }, []);
 
@@ -274,7 +276,7 @@ export default function EcoCareHygieMatchPage() {
       .join('\n');
 
     const summaryText = `*PROPOSAL REKOMENDASI SOLUSI KEBERSIHAN GEDUNG*
-*EcoCare HygieMatch™ - PT EcoCare Indo Pasifik Tbk*
+*Hycare - PT EcoCare Indo Pasifik Tbk*
 --------------------------------------------------
 *Gedung:* ${formData.namaGedung}
 *Alamat:* ${formData.alamatLokasi || '-'}
@@ -288,7 +290,7 @@ ${unitLines}
 
 ${formData.catatanTeknis ? `*Catatan Khusus Lapangan:*\n${formData.catatanTeknis}\n` : ''}
 --------------------------------------------------
-_Dianalisis menggunakan sistem EcoCare HygieMatch™_`;
+_Dianalisis menggunakan sistem rekomendasi Hycare_`;
 
     navigator.clipboard.writeText(summaryText);
     setCopiedSummary(true);
@@ -316,25 +318,32 @@ _Dianalisis menggunakan sistem EcoCare HygieMatch™_`;
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
       {/* ------------------------------------------------------------- */}
-      {/* HEADER UTAMA: ECOCARE HYGIEMATCH™                             */}
+      {/* HEADER UTAMA: HYCARE BRANDING                                 */}
       {/* ------------------------------------------------------------- */}
       <header className="sticky top-0 z-30 bg-gradient-to-r from-emerald-950 via-emerald-900 to-teal-900 text-white shadow-md border-b border-emerald-800/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-emerald-500/20 backdrop-blur-sm border border-emerald-400/30 flex items-center justify-center shadow-inner">
-              <ShieldCheck className="h-6 w-6 text-emerald-300" />
+            <div className="h-11 w-11 rounded-2xl bg-white p-1.5 shadow-md border border-emerald-300/30 flex items-center justify-center shrink-0">
+              <Image
+                src="/hycare-icon.png"
+                alt="Hycare Logo"
+                width={38}
+                height={38}
+                className="object-contain"
+                priority
+              />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-base sm:text-lg font-bold tracking-tight text-white">
-                  EcoCare HygieMatch™
+                <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center">
+                  Hycare
                 </h1>
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-400/20 text-emerald-200 border border-emerald-300/30">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-400/20 text-emerald-200 border border-emerald-300/30">
                   Solusi Kebersihan Gedung
                 </span>
               </div>
               <p className="text-xs text-emerald-100/80">
-                PT EcoCare Indo Pasifik Tbk • Rekomendasi Produk Tepat Sesuai Kebutuhan Fasilitas
+                PT EcoCare Indo Pasifik Tbk • Smart Hygiene Recommendation System
               </p>
             </div>
           </div>
@@ -1262,12 +1271,18 @@ _Dianalisis menggunakan sistem EcoCare HygieMatch™_`;
               {!diagnosticResult ? (
                 /* Tampilan Awal Sebelum Tombol Ditekan */
                 <div className="bg-white rounded-2xl border-2 border-dashed border-emerald-200 p-8 text-center shadow-sm space-y-3">
-                  <div className="mx-auto h-14 w-14 rounded-2xl bg-emerald-50 border border-emerald-100 text-emerald-700 flex items-center justify-center">
-                    <Sparkles className="h-7 w-7" />
+                  <div className="mx-auto h-16 w-16 rounded-2xl bg-emerald-50/70 border border-emerald-100 p-2.5 flex items-center justify-center shadow-sm">
+                    <Image
+                      src="/hycare-icon.png"
+                      alt="Hycare"
+                      width={48}
+                      height={48}
+                      className="object-contain"
+                    />
                   </div>
                   <div className="space-y-1.5">
                     <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                      Sistem Rekomendasi Siap
+                      Hycare Intelligence Siap
                     </span>
                     <h3 className="text-base font-bold text-slate-800">
                       Menunggu Hasil Analisis Gedung
@@ -1275,7 +1290,7 @@ _Dianalisis menggunakan sistem EcoCare HygieMatch™_`;
                     <p className="text-xs text-slate-500 leading-relaxed max-w-sm mx-auto">
                       Silakan periksa pilihan area di sebelah kiri, lalu klik tombol{' '}
                       <strong className="text-emerald-800">&ldquo;Lihat Rekomendasi Solusi Kebersihan&rdquo;</strong>{' '}
-                      untuk menampilkan paket produk yang paling pas untuk gedung ini.
+                      untuk menampilkan paket produk Hycare yang paling pas untuk gedung ini.
                     </p>
                   </div>
                 </div>
@@ -1568,14 +1583,20 @@ _Dianalisis menggunakan sistem EcoCare HygieMatch™_`;
 
             {filteredRecords.length === 0 ? (
               <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-3">
-                <div className="mx-auto h-12 w-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-                  <ClipboardCheck className="h-6 w-6" />
+                <div className="mx-auto h-16 w-16 rounded-2xl bg-emerald-50 border border-emerald-100 p-2.5 flex items-center justify-center shadow-sm">
+                  <Image
+                    src="/hycare-icon.png"
+                    alt="Hycare"
+                    width={48}
+                    height={48}
+                    className="object-contain"
+                  />
                 </div>
                 <h3 className="text-base font-bold text-slate-800">
-                  Belum Ada Data Survei yang Tersimpan
+                  Belum Ada Data Survei Hycare Tersimpan
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
-                  Isi data di form survei lalu klik tombol <strong>&ldquo;Simpan Hasil Survei Ini&rdquo;</strong> untuk menyimpan data hasil kunjungan gedung ke riwayat.
+                  Isi data di form survei lalu klik tombol <strong>&ldquo;Simpan Hasil Survei Ini&rdquo;</strong> untuk menyimpan data hasil kunjungan gedung ke riwayat Hycare.
                 </p>
                 <button
                   type="button"
@@ -1668,12 +1689,20 @@ _Dianalisis menggunakan sistem EcoCare HygieMatch™_`;
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
           <div className="bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden space-y-4">
             <div className="bg-gradient-to-r from-emerald-900 to-teal-900 p-5 text-white flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <FileText className="h-5 w-5 text-emerald-300" />
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-white p-1.5 flex items-center justify-center shrink-0 shadow-sm">
+                  <Image
+                    src="/hycare-icon.png"
+                    alt="Hycare"
+                    width={32}
+                    height={32}
+                    className="object-contain"
+                  />
+                </div>
                 <div>
-                  <h3 className="font-bold text-base">Ringkasan Penawaran Layanan (Quotation)</h3>
+                  <h3 className="font-bold text-base">Ringkasan Penawaran Layanan (Hycare Quotation)</h3>
                   <p className="text-xs text-emerald-200/80">
-                    Daftar rekomendasi produk siap diajukan untuk penawaran harga
+                    Daftar rekomendasi produk Hycare siap diajukan untuk penawaran harga
                   </p>
                 </div>
               </div>

@@ -466,7 +466,7 @@ export function predictWithHistoricalML(
     kat1_Restroom.length + kat2_Secondary.length + kat3_SmartScenting.length;
 
   return {
-    runId: `ML-HYG-${Date.now().toString(36).toUpperCase()}`,
+    runId: `HYCARE-ML-${Date.now().toString(36).toUpperCase()}`,
     evaluatedAtUtc: new Date().toISOString(),
     namaGedung: input.namaGedung,
     surveyType: input.surveyType,
@@ -486,3 +486,4 @@ export function predictWithHistoricalML(
     predictionsDetail,
   };
 }
+
