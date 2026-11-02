@@ -37,6 +37,7 @@ import {
   KondisiLobi,
   KondisiPipa,
   SavedDiagnosticRecord,
+  SegmenGedung,
   SurveyObservationInput,
   SurveyType,
   TipeWastafel,
@@ -51,14 +52,14 @@ const STORAGE_KEY = 'hycare_records_v1';
 const LEGACY_STORAGE_KEY = 'ecocare_hygiematch_records_v1';
 
 // -------------------------------------------------------------
-// 3 SKENARIO CONTOH UNTUK DEMO PRESENTASI
+// 5 MARKET SEGMENT PRESETS (SESUAI 13 SEKTOR ECOCARE TRAINING)
 // -------------------------------------------------------------
-const CONTOH_KANTOR: SurveyObservationInput = {
+const PRESET_CORPORATE: SurveyObservationInput = {
   namaGedung: 'Menara Astra Ventura (Tower 1)',
   alamatLokasi: 'Jl. Jend. Sudirman Kav. 5-6, Jakarta Pusat',
-  picNama: 'Ibu Ratna (Building Facility Manager)',
+  picNama: 'Ibu Ratna (GA / Bagian Umum)',
   surveyType: 'NEW_CUSTOMER',
-  segmen: 'Office Tower',
+  segmen: 'Corporate & Financial',
   hariAktif: '5 Hari Kerja',
   jamOperasional: 11,
   // Area 1: Toilet
@@ -81,46 +82,15 @@ const CONTOH_KANTOR: SurveyObservationInput = {
   // Area 4: Dapur & Staf
   masalahLalatKantin: false,
   sabunPantryEkonomis: true,
-  catatanTeknis: 'Dinding toilet marmer mewah. Pengelola gedung menghendaki unit tanpa bor dinding.',
+  catatanTeknis: 'Fokus pada standar kebersihan, kenyamanan karyawan & tamu, serta citra korporat. Dinding marmer mewah dilarang dibor.',
 };
 
-const CONTOH_MALL: SurveyObservationInput = {
-  namaGedung: 'Grand Metropolitan Promenade & Mall',
-  alamatLokasi: 'Kawasan Bisnis Boulevard No. 88, Bekasi Barat',
-  picNama: 'Bpk. Fajar (Head of Building Operations)',
-  surveyType: 'RENEWAL',
-  segmen: 'Mall/Public Area',
-  hariAktif: '7 Hari Kerja',
-  jamOperasional: 14,
-  // Area 1: Toilet
-  kondisiPipa: 'PIPA_MANUAL',
-  tipeWastafel: 'TRAFIK_PADAT',
-  khawatirBakteriKloset: true,
-  butuhSanitaryBin: true,
-  keluhanSampahTisu: true,
-  jumlahUrinoirKloset: 32,
-  jumlahWastafel: 20,
-  jumlahKubikalWanita: 24,
-  // Area 2: Pintu Masuk & Lobi
-  pintuMasukLicinDebu: true,
-  kondisiLobi: 'HVAC_LUAS',
-  // Area 3: Koridor & Ruangan
-  ruangSempitLift: true,
-  koridorPublikTerbuka: true,
-  areaSensitifKlinik: false,
-  ruangRapatVip: false,
-  // Area 4: Dapur & Staf
-  masalahLalatKantin: true,
-  sabunPantryEkonomis: true,
-  catatanTeknis: 'Pengunjung sangat ramai di akhir pekan. Lobi utama tersambung dengan sistem pendingin sentral (AC Ducting).',
-};
-
-const CONTOH_RS: SurveyObservationInput = {
+const PRESET_HEALTHCARE: SurveyObservationInput = {
   namaGedung: 'RS Hermina Premier Health Care',
   alamatLokasi: 'Jl. Pemuda No. 12, Pulo Gadung, Jakarta Timur',
-  picNama: 'dr. Haryo, Sp.A (Komite PPI / K3 Gedung)',
+  picNama: 'dr. Haryo, Sp.A (Komite PPI / Kessling / RT)',
   surveyType: 'NEW_CUSTOMER',
-  segmen: 'RS/Klinik',
+  segmen: 'Healthcare & Education',
   hariAktif: '7 Hari Kerja',
   jamOperasional: 24,
   // Area 1: Toilet
@@ -143,13 +113,123 @@ const CONTOH_RS: SurveyObservationInput = {
   // Area 4: Dapur & Staf
   masalahLalatKantin: false,
   sabunPantryEkonomis: true,
-  catatanTeknis: 'Area poli anak dan kamar rawat sensitif aroma tajam. Diutamakan formula berbahan dasar air (waterbase).',
+  catatanTeknis: 'Prioritas sanitasi ketat, risiko kontaminasi, dan keselamatan pengguna. Wajib formula waterbase ramah anak.',
 };
+
+const PRESET_HOSPITALITY: SurveyObservationInput = {
+  namaGedung: 'Grand Metropolitan Promenade & Mall',
+  alamatLokasi: 'Kawasan Bisnis Boulevard No. 88, Bekasi Barat',
+  picNama: 'Bpk. Fajar (Executive HK / Building Manager)',
+  surveyType: 'RENEWAL',
+  segmen: 'Hospitality & Lifestyle',
+  hariAktif: '7 Hari Kerja',
+  jamOperasional: 14,
+  // Area 1: Toilet
+  kondisiPipa: 'PIPA_MANUAL',
+  tipeWastafel: 'TRAFIK_PADAT',
+  khawatirBakteriKloset: true,
+  butuhSanitaryBin: true,
+  keluhanSampahTisu: true,
+  jumlahUrinoirKloset: 32,
+  jumlahWastafel: 20,
+  jumlahKubikalWanita: 24,
+  // Area 2: Pintu Masuk & Lobi
+  pintuMasukLicinDebu: true,
+  kondisiLobi: 'HVAC_LUAS',
+  // Area 3: Koridor & Ruangan
+  ruangSempitLift: true,
+  koridorPublikTerbuka: true,
+  areaSensitifKlinik: false,
+  ruangRapatVip: false,
+  // Area 4: Dapur & Staf
+  masalahLalatKantin: true,
+  sabunPantryEkonomis: true,
+  catatanTeknis: 'Fokus pada pengalaman pengunjung, kebersihan area publik & reputasi. Lobi utama terhubung pendingin sentral HVAC.',
+};
+
+const PRESET_INDUSTRIAL: SurveyObservationInput = {
+  namaGedung: 'Kawasan Industri Mitra Karawang & Logistik',
+  alamatLokasi: 'Kawasan Industri KIIC Lot C-4, Karawang Barat',
+  picNama: 'Bpk. Agus (GA / General Service / Karumga)',
+  surveyType: 'NEW_CUSTOMER',
+  segmen: 'Industrial & Institutional',
+  hariAktif: '5 Hari Kerja',
+  jamOperasional: 16,
+  // Area 1: Toilet
+  kondisiPipa: 'PIPA_MANUAL',
+  tipeWastafel: 'TRAFIK_PADAT',
+  khawatirBakteriKloset: false,
+  butuhSanitaryBin: true,
+  keluhanSampahTisu: true,
+  jumlahUrinoirKloset: 24,
+  jumlahWastafel: 16,
+  jumlahKubikalWanita: 8,
+  // Area 2: Pintu Masuk & Lobi
+  pintuMasukLicinDebu: true,
+  kondisiLobi: 'NONE',
+  // Area 3: Koridor & Ruangan
+  ruangSempitLift: false,
+  koridorPublikTerbuka: true,
+  areaSensitifKlinik: false,
+  ruangRapatVip: false,
+  // Area 4: Dapur & Staf
+  masalahLalatKantin: true,
+  sabunPantryEkonomis: true,
+  catatanTeknis: 'Standar operasional pabrik & keselamatan kerja. Pengadaan efisien, dokumentasi rapi, keandalan vendor.',
+};
+
+const PRESET_OTHER: SurveyObservationInput = {
+  namaGedung: 'Pakubuwono Residence & Private Clubhouse',
+  alamatLokasi: 'Jl. Bumi No. 15, Kebayoran Baru, Jakarta Selatan',
+  picNama: 'Ibu Cindy (Estate Manager / Owner)',
+  surveyType: 'NEW_CUSTOMER',
+  segmen: 'Other',
+  hariAktif: '7 Hari Kerja',
+  jamOperasional: 12,
+  // Area 1: Toilet
+  kondisiPipa: 'PIPA_TANAM',
+  tipeWastafel: 'TRAFIK_GREEN',
+  khawatirBakteriKloset: true,
+  butuhSanitaryBin: true,
+  keluhanSampahTisu: false,
+  jumlahUrinoirKloset: 4,
+  jumlahWastafel: 6,
+  jumlahKubikalWanita: 4,
+  // Area 2: Pintu Masuk & Lobi
+  pintuMasukLicinDebu: true,
+  kondisiLobi: 'STANDALONE_300',
+  // Area 3: Koridor & Ruangan
+  ruangSempitLift: true,
+  koridorPublikTerbuka: false,
+  areaSensitifKlinik: false,
+  ruangRapatVip: true,
+  // Area 4: Dapur & Staf
+  masalahLalatKantin: false,
+  sabunPantryEkonomis: true,
+  catatanTeknis: 'Kebutuhan dinilai lebih spesifik (residensial mewah, komunitas privat, rumah tinggal & fasilitas khusus).',
+};
+
+function getPICSuggestion(segmen: SegmenGedung): string {
+  switch (segmen) {
+    case 'Corporate & Financial':
+      return 'GA / Bagian Umum / Building Manager';
+    case 'Healthcare & Education':
+      return 'GA / Kessling / Bagian Umum / RT';
+    case 'Hospitality & Lifestyle':
+      return 'Executive HK / Outlet Manager / BM';
+    case 'Industrial & Institutional':
+      return 'GA / General Service / Kabag Umum';
+    case 'Other':
+      return 'Owner Rumah / Estate Manager';
+    default:
+      return 'Purchasing / GA / Facility Manager';
+  }
+}
 
 export default function EcoCareHygieMatchPage() {
   const [activeTab, setActiveTab] = useState<'survey' | 'riwayat'>('survey');
   const [activeZoneAccordion, setActiveZoneAccordion] = useState<number>(1);
-  const [formData, setFormData] = useState<SurveyObservationInput>(CONTOH_KANTOR);
+  const [formData, setFormData] = useState<SurveyObservationInput>(PRESET_CORPORATE);
   const [diagnosticResult, setDiagnosticResult] = useState<DiagnosticResult | null>(null);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [savedRecords, setSavedRecords] = useState<SavedDiagnosticRecord[]>([]);
@@ -399,47 +479,131 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
             {/* KOLOM KIRI: FORM SURVEI (7 KOLOM)                         */}
             {/* --------------------------------------------------------- */}
             <div className="lg:col-span-7 space-y-5">
-              {/* Contoh Skenario Demo Cepat */}
-              <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-sm">
-                <div className="flex items-center justify-between mb-2.5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+              {/* PILIH SEGMENT MARKET (5 KELOMPOK RESMI ECOCARE) */}
+              <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-sm space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                     <SlidersHorizontal className="h-3.5 w-3.5 text-teal-600" />
-                    Pilih Contoh Skenario Gedung (1-Klik untuk Demo):
+                    PILIH SEGMENT MARKET
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-semibold hidden sm:inline">
+                    5 Kelompok Pasar (13 Sektor Pelanggan)
                   </span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {/* 1. Corporate & Financial */}
                   <button
                     type="button"
-                    onClick={() => handleApplyPreset(CONTOH_KANTOR)}
-                    className="text-left px-3 py-2 rounded-xl border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-100/70 transition flex items-center justify-between group"
+                    onClick={() => handleApplyPreset(PRESET_CORPORATE)}
+                    className={`text-left p-3 rounded-xl border transition flex flex-col justify-between group ${
+                      formData.segmen === 'Corporate & Financial'
+                        ? 'border-emerald-600 bg-emerald-50/80 shadow-sm ring-1 ring-emerald-500/30'
+                        : 'border-emerald-200 bg-emerald-50/40 hover:bg-emerald-50/80'
+                    }`}
                   >
-                    <div>
-                      <div className="text-xs font-bold text-emerald-950">1. Gedung Kantor</div>
-                      <div className="text-[11px] text-emerald-700">Dinding Marmer & Konsep Ramah Lingkungan</div>
+                    <div className="flex items-start justify-between gap-1 mb-1">
+                      <div className="text-xs font-bold text-emerald-950 flex items-center gap-1">
+                        <span>1. Corporate & Financial</span>
+                      </div>
+                      <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 font-bold shrink-0">
+                        BAF, COF, COB
+                      </span>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-emerald-600 group-hover:translate-x-0.5 transition" />
+                    <p className="text-[11px] text-emerald-800 leading-tight">
+                      Kenyamanan karyawan & tamu, citra korporat, konsistensi layanan.
+                    </p>
                   </button>
+
+                  {/* 2. Healthcare & Education */}
                   <button
                     type="button"
-                    onClick={() => handleApplyPreset(CONTOH_MALL)}
-                    className="text-left px-3 py-2 rounded-xl border border-teal-200 bg-teal-50/60 hover:bg-teal-100/70 transition flex items-center justify-between group"
+                    onClick={() => handleApplyPreset(PRESET_HEALTHCARE)}
+                    className={`text-left p-3 rounded-xl border transition flex flex-col justify-between group ${
+                      formData.segmen === 'Healthcare & Education'
+                        ? 'border-cyan-600 bg-cyan-50/80 shadow-sm ring-1 ring-cyan-500/30'
+                        : 'border-cyan-200 bg-cyan-50/40 hover:bg-cyan-50/80'
+                    }`}
                   >
-                    <div>
-                      <div className="text-xs font-bold text-teal-950">2. Mall Besar</div>
-                      <div className="text-[11px] text-teal-700">Pengunjung Ramai & Lobi AC Sentral</div>
+                    <div className="flex items-start justify-between gap-1 mb-1">
+                      <div className="text-xs font-bold text-cyan-950 flex items-center gap-1">
+                        <span>2. Healthcare & Education</span>
+                      </div>
+                      <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-cyan-100 text-cyan-800 font-bold shrink-0">
+                        HOC, EDS
+                      </span>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-teal-600 group-hover:translate-x-0.5 transition" />
+                    <p className="text-[11px] text-cyan-800 leading-tight">
+                      Sanitasi, risiko kontaminasi, keselamatan pengguna & area medis.
+                    </p>
                   </button>
+
+                  {/* 3. Hospitality & Lifestyle */}
                   <button
                     type="button"
-                    onClick={() => handleApplyPreset(CONTOH_RS)}
-                    className="text-left px-3 py-2 rounded-xl border border-cyan-200 bg-cyan-50/60 hover:bg-cyan-100/70 transition flex items-center justify-between group"
+                    onClick={() => handleApplyPreset(PRESET_HOSPITALITY)}
+                    className={`text-left p-3 rounded-xl border transition flex flex-col justify-between group ${
+                      formData.segmen === 'Hospitality & Lifestyle'
+                        ? 'border-teal-600 bg-teal-50/80 shadow-sm ring-1 ring-teal-500/30'
+                        : 'border-teal-200 bg-teal-50/40 hover:bg-teal-50/80'
+                    }`}
                   >
-                    <div>
-                      <div className="text-xs font-bold text-cyan-950">3. Rumah Sakit</div>
-                      <div className="text-[11px] text-cyan-700">Sensitif Alergi & Bebas Alkohol</div>
+                    <div className="flex items-start justify-between gap-1 mb-1">
+                      <div className="text-xs font-bold text-teal-950 flex items-center gap-1">
+                        <span>3. Hospitality & Lifestyle</span>
+                      </div>
+                      <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-teal-100 text-teal-800 font-bold shrink-0">
+                        HMI, REN, SHM
+                      </span>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-cyan-600 group-hover:translate-x-0.5 transition" />
+                    <p className="text-[11px] text-teal-800 leading-tight">
+                      Pengalaman pengunjung, kebersihan area publik & reputasi.
+                    </p>
+                  </button>
+
+                  {/* 4. Industrial & Institutional */}
+                  <button
+                    type="button"
+                    onClick={() => handleApplyPreset(PRESET_INDUSTRIAL)}
+                    className={`text-left p-3 rounded-xl border transition flex flex-col justify-between group ${
+                      formData.segmen === 'Industrial & Institutional'
+                        ? 'border-amber-600 bg-amber-50/80 shadow-sm ring-1 ring-amber-500/30'
+                        : 'border-amber-200 bg-amber-50/40 hover:bg-amber-50/80'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-1 mb-1">
+                      <div className="text-xs font-bold text-amber-950 flex items-center gap-1">
+                        <span>4. Industrial & Institutional</span>
+                      </div>
+                      <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 font-bold shrink-0">
+                        MAI, GOI, POR
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-amber-800 leading-tight">
+                      Standar operasional pabrik, pengadaan & keandalan vendor.
+                    </p>
+                  </button>
+
+                  {/* 5. Other */}
+                  <button
+                    type="button"
+                    onClick={() => handleApplyPreset(PRESET_OTHER)}
+                    className={`text-left p-3 rounded-xl border transition flex flex-col justify-between group sm:col-span-2 lg:col-span-2 ${
+                      formData.segmen === 'Other'
+                        ? 'border-indigo-600 bg-indigo-50/80 shadow-sm ring-1 ring-indigo-500/30'
+                        : 'border-indigo-200 bg-indigo-50/40 hover:bg-indigo-50/80'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-1 mb-1">
+                      <div className="text-xs font-bold text-indigo-950 flex items-center gap-1">
+                        <span>5. Other (Fasilitas Khusus & Residensial)</span>
+                      </div>
+                      <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-800 font-bold shrink-0">
+                        OTH
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-indigo-800 leading-tight">
+                      Kebutuhan dinilai lebih spesifik (rumah tinggal, hunian privat, dan tipe customer lain).
+                    </p>
                   </button>
                 </div>
               </div>
@@ -538,21 +702,26 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Nama PIC yang Ditemui
-                      </label>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="block text-xs font-semibold text-slate-700">
+                          Nama PIC yang Ditemui
+                        </label>
+                        <span className="text-[10px] text-emerald-700 font-medium bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
+                          PIC Sektor: {getPICSuggestion(formData.segmen)}
+                        </span>
+                      </div>
                       <input
                         type="text"
                         value={formData.picNama || ''}
                         onChange={(e) => handleFieldChange('picNama', e.target.value)}
-                        placeholder="Nama Manajer Gedung / Purchasing"
+                        placeholder={`Contoh PIC: ${getPICSuggestion(formData.segmen)}`}
                         className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-emerald-600 outline-none"
                       />
                     </div>
 
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Jenis Gedung / Segmen
+                        Market Segment Gedung
                       </label>
                       <select
                         value={formData.segmen}
@@ -564,11 +733,11 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                         }
                         className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:border-emerald-600 outline-none font-medium"
                       >
-                        <option value="Office Tower">Gedung Perkantoran (Office Tower)</option>
-                        <option value="Mall/Public Area">Pusat Perbelanjaan / Mall / Publik</option>
-                        <option value="Hotel">Hotel & Akomodasi</option>
-                        <option value="RS/Klinik">Rumah Sakit / Fasilitas Kesehatan</option>
-                        <option value="Resto/F&B">Restoran & Kafe F&B</option>
+                        <option value="Corporate & Financial">Corporate & Financial (BAF, COF, COB)</option>
+                        <option value="Healthcare & Education">Healthcare & Education (HOC, EDS)</option>
+                        <option value="Hospitality & Lifestyle">Hospitality & Lifestyle (HMI, REN, SHM, RHC)</option>
+                        <option value="Industrial & Institutional">Industrial & Institutional (MAI, GOI, POR)</option>
+                        <option value="Other">Other (OTH - Residensial & Khusus)</option>
                       </select>
                     </div>
 
@@ -1567,12 +1736,12 @@ _Dianalisis menggunakan sistem rekomendasi Hycare_`;
                   onChange={(e) => setFilterSegmen(e.target.value)}
                   className="rounded-xl border border-slate-300 px-3 py-2 text-xs sm:text-sm bg-white outline-none focus:border-emerald-600 font-medium"
                 >
-                  <option value="ALL">Semua Jenis Gedung</option>
-                  <option value="Office Tower">Perkantoran (Office Tower)</option>
-                  <option value="Mall/Public Area">Mall / Area Publik</option>
-                  <option value="Hotel">Hotel</option>
-                  <option value="RS/Klinik">RS / Klinik</option>
-                  <option value="Resto/F&B">Resto & Kafe F&B</option>
+                  <option value="ALL">Semua Segment Market</option>
+                  <option value="Corporate & Financial">Corporate & Financial (BAF, COF, COB)</option>
+                  <option value="Healthcare & Education">Healthcare & Education (HOC, EDS)</option>
+                  <option value="Hospitality & Lifestyle">Hospitality & Lifestyle (HMI, REN, SHM, RHC)</option>
+                  <option value="Industrial & Institutional">Industrial & Institutional (MAI, GOI, POR)</option>
+                  <option value="Other">Other (OTH - Khusus)</option>
                 </select>
               </div>
 

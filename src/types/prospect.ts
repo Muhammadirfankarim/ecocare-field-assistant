@@ -3,11 +3,11 @@
 export type SurveyType = 'NEW_CUSTOMER' | 'RENEWAL';
 
 export type SegmenGedung =
-  | 'Office Tower'
-  | 'Mall/Public Area'
-  | 'Hotel'
-  | 'RS/Klinik'
-  | 'Resto/F&B';
+  | 'Corporate & Financial'
+  | 'Healthcare & Education'
+  | 'Hospitality & Lifestyle'
+  | 'Industrial & Institutional'
+  | 'Other';
 
 export type HariAktif = '5 Hari Kerja' | '7 Hari Kerja';
 
