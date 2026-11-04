@@ -70,9 +70,13 @@ const PRESET_CORPORATE: SurveyObservationInput = {
   khawatirBakteriKloset: true,
   autoSeatCleanerTouchless: false,
   butuhSanitaryBin: true,
+  tipeSanitaryBin: 'AUTOLID_SENSOR',
   keluhanSampahTisu: true,
+  tipeHandDryer: 'COFFEEMAKER',
   pasangUrinalScreen: true,
   autoDispenserTouchlessArea1: false,
+  tipeDispenserWastafelOtomatis: 'AUTO_AK1255',
+  butuhSabunMandiShower: false,
   blowerToiletKipas: true,
   handSanitizerToilet: false,
   jumlahUrinoirKloset: 14,
@@ -82,6 +86,7 @@ const PRESET_CORPORATE: SurveyObservationInput = {
   pintuMasukLicinDebu: true,
   handSanitizerLobi: true,
   kondisiLobi: 'STANDALONE_300',
+  coverageLobiScent: 'SMALL_100_300',
   // Area 3: Koridor & Ruangan
   ruangSempitLift: true,
   koridorPublikTerbuka: false,
@@ -112,9 +117,13 @@ const PRESET_HEALTHCARE: SurveyObservationInput = {
   khawatirBakteriKloset: true,
   autoSeatCleanerTouchless: true,
   butuhSanitaryBin: true,
+  tipeSanitaryBin: 'AUTOLID_SENSOR',
   keluhanSampahTisu: false,
+  tipeHandDryer: 'JET_MINI_AK2822',
   pasangUrinalScreen: true,
   autoDispenserTouchlessArea1: true,
+  tipeDispenserWastafelOtomatis: 'AUTO_STAINLESS',
+  butuhSabunMandiShower: false,
   blowerToiletKipas: false,
   handSanitizerToilet: true,
   jumlahUrinoirKloset: 10,
@@ -124,6 +133,7 @@ const PRESET_HEALTHCARE: SurveyObservationInput = {
   pintuMasukLicinDebu: true,
   handSanitizerLobi: true,
   kondisiLobi: 'STANDALONE_300',
+  coverageLobiScent: 'SMALL_100_300',
   // Area 3: Koridor & Ruangan
   ruangSempitLift: true,
   koridorPublikTerbuka: false,
@@ -154,9 +164,13 @@ const PRESET_HOSPITALITY: SurveyObservationInput = {
   khawatirBakteriKloset: true,
   autoSeatCleanerTouchless: false,
   butuhSanitaryBin: true,
+  tipeSanitaryBin: 'AUTOLID_SENSOR',
   keluhanSampahTisu: true,
+  tipeHandDryer: 'HANDS_IN_DUAL',
   pasangUrinalScreen: true,
   autoDispenserTouchlessArea1: false,
+  tipeDispenserWastafelOtomatis: 'AUTO_AK1255',
+  butuhSabunMandiShower: false,
   blowerToiletKipas: true,
   handSanitizerToilet: true,
   jumlahUrinoirKloset: 32,
@@ -166,6 +180,7 @@ const PRESET_HOSPITALITY: SurveyObservationInput = {
   pintuMasukLicinDebu: true,
   handSanitizerLobi: true,
   kondisiLobi: 'HVAC_LUAS',
+  coverageLobiScent: 'LARGE_5000',
   // Area 3: Koridor & Ruangan
   ruangSempitLift: true,
   koridorPublikTerbuka: true,
@@ -196,9 +211,13 @@ const PRESET_INDUSTRIAL: SurveyObservationInput = {
   khawatirBakteriKloset: false,
   autoSeatCleanerTouchless: false,
   butuhSanitaryBin: true,
+  tipeSanitaryBin: 'MANUAL_PEDAL',
   keluhanSampahTisu: true,
+  tipeHandDryer: 'JET_MINI_AK2822',
   pasangUrinalScreen: true,
   autoDispenserTouchlessArea1: false,
+  tipeDispenserWastafelOtomatis: 'AUTO_SP811_WALL',
+  butuhSabunMandiShower: false,
   blowerToiletKipas: false,
   handSanitizerToilet: false,
   jumlahUrinoirKloset: 24,
@@ -208,6 +227,7 @@ const PRESET_INDUSTRIAL: SurveyObservationInput = {
   pintuMasukLicinDebu: true,
   handSanitizerLobi: false,
   kondisiLobi: 'NONE',
+  coverageLobiScent: 'AUTO',
   // Area 3: Koridor & Ruangan
   ruangSempitLift: false,
   koridorPublikTerbuka: true,
@@ -238,9 +258,14 @@ const PRESET_OTHER: SurveyObservationInput = {
   khawatirBakteriKloset: true,
   autoSeatCleanerTouchless: false,
   butuhSanitaryBin: true,
+  tipeSanitaryBin: 'AUTOLID_SENSOR',
   keluhanSampahTisu: false,
+  tipeHandDryer: 'JET_MINI_AK2822',
   pasangUrinalScreen: false,
   autoDispenserTouchlessArea1: false,
+  tipeDispenserWastafelOtomatis: 'AUTO_1017T',
+  butuhSabunMandiShower: true,
+  tipeSabunShower: 'LUXURY_MILK',
   blowerToiletKipas: true,
   handSanitizerToilet: false,
   jumlahUrinoirKloset: 4,
@@ -250,6 +275,7 @@ const PRESET_OTHER: SurveyObservationInput = {
   pintuMasukLicinDebu: true,
   handSanitizerLobi: false,
   kondisiLobi: 'STANDALONE_300',
+  coverageLobiScent: 'SMALL_100_300',
   // Area 3: Koridor & Ruangan
   ruangSempitLift: true,
   koridorPublikTerbuka: false,
@@ -408,6 +434,9 @@ export default function EcoCareHygieMatchPage() {
   };
 
   const handleToggleAllAreas = (open: boolean) => {
+    if (open) {
+      setSelectedResultArea('ALL');
+    }
     setExpandedResultAreas({
       AREA_1_TOILET: open,
       AREA_2_LOBBY: open,
@@ -1112,12 +1141,12 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           <label className="block text-xs font-bold text-slate-700 mb-1.5">
                             Kondisi pipa kloset
                           </label>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                             <label
-                              className={`p-3 rounded-xl border text-xs cursor-pointer flex items-start gap-2.5 transition ${
+                              className={`p-2.5 rounded-xl border text-xs cursor-pointer flex items-start gap-2 transition ${
                                 formData.kondisiPipa === 'PIPA_MANUAL'
-                                    ? 'border-emerald-600 bg-emerald-50/70 font-semibold text-emerald-950'
-                                    : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                                  ? 'border-emerald-600 bg-emerald-50/70 font-semibold text-emerald-950'
+                                  : 'border-slate-200 hover:bg-slate-50 text-slate-700'
                               }`}
                             >
                               <input
@@ -1132,13 +1161,13 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                                   Pipa biasa (bor)
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
-                                  Saluran pipa luar standar, menggunakan alat pembersih otomatis mekanis tanpa perlu baterai.
+                                  Saluran pipa luar standar, alat pembersih otomatis mekanis tanpa baterai.
                                 </span>
                               </div>
                             </label>
 
                             <label
-                              className={`p-3 rounded-xl border text-xs cursor-pointer flex items-start gap-2.5 transition ${
+                              className={`p-2.5 rounded-xl border text-xs cursor-pointer flex items-start gap-2 transition ${
                                 formData.kondisiPipa === 'PIPA_TANAM'
                                   ? 'border-emerald-600 bg-emerald-50/70 font-semibold text-emerald-950'
                                   : 'border-slate-200 hover:bg-slate-50 text-slate-700'
@@ -1156,7 +1185,31 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                                   Pipa tanam
                                 </strong>
                                 <span className="text-[11px] text-amber-700">
-                                  Toilet dengan sensor otomatis atau dinding marmer.
+                                  Toilet dengan sensor otomatis atau dinding marmer (EDST).
+                                </span>
+                              </div>
+                            </label>
+
+                            <label
+                              className={`p-2.5 rounded-xl border text-xs cursor-pointer flex items-start gap-2 transition ${
+                                formData.kondisiPipa === 'NONE'
+                                  ? 'border-emerald-600 bg-emerald-50/70 font-semibold text-emerald-950'
+                                  : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="kondisiPipa"
+                                checked={formData.kondisiPipa === 'NONE'}
+                                onChange={() => handleFieldChange('kondisiPipa', 'NONE')}
+                                className="mt-0.5 accent-emerald-600"
+                              />
+                              <div>
+                                <strong className="block text-slate-900">
+                                  Tidak perlu / lewati
+                                </strong>
+                                <span className="text-[11px] text-slate-400">
+                                  Lewati pembersih pipa kloset/urinoir (0 unit).
                                 </span>
                               </div>
                             </label>
@@ -1168,9 +1221,9 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           <label className="block text-xs font-bold text-slate-700 mb-1.5">
                             Kebutuhan sabun
                           </label>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                             <label
-                              className={`p-3 rounded-xl border text-xs cursor-pointer flex items-start gap-2.5 transition ${
+                              className={`p-2.5 rounded-xl border text-xs cursor-pointer flex items-start gap-2 transition ${
                                 formData.tipeWastafel === 'TRAFIK_PADAT'
                                   ? 'border-emerald-600 bg-emerald-50/70 font-semibold text-emerald-950'
                                   : 'border-slate-200 hover:bg-slate-50 text-slate-700'
@@ -1188,13 +1241,13 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                                   Traffic yang tinggi
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
-                                  Penggunaan wastafel padat dan berfrekuensi tinggi.
+                                  Penggunaan wastafel padat & berfrekuensi tinggi (Sabun Cair 1 Liter).
                                 </span>
                               </div>
                             </label>
 
                             <label
-                              className={`p-3 rounded-xl border text-xs cursor-pointer flex items-start gap-2.5 transition ${
+                              className={`p-2.5 rounded-xl border text-xs cursor-pointer flex items-start gap-2 transition ${
                                 formData.tipeWastafel === 'TRAFIK_GREEN'
                                   ? 'border-emerald-600 bg-emerald-50/70 font-semibold text-emerald-950'
                                   : 'border-slate-200 hover:bg-slate-50 text-slate-700'
@@ -1209,10 +1262,34 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Mengutamakan efisiensi air dan ramah lingkungan
+                                  Efisiensi air & ramah lingkungan
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
-                                  Mengutamakan efisiensi pemakaian air bilasan dan konsep ramah lingkungan.
+                                  Mengutamakan efisiensi bilasan & hemat sabun 35% (Sabun Busa).
+                                </span>
+                              </div>
+                            </label>
+
+                            <label
+                              className={`p-2.5 rounded-xl border text-xs cursor-pointer flex items-start gap-2 transition ${
+                                formData.tipeWastafel === 'NONE'
+                                  ? 'border-emerald-600 bg-emerald-50/70 font-semibold text-emerald-950'
+                                  : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="tipeWastafel"
+                                checked={formData.tipeWastafel === 'NONE'}
+                                onChange={() => handleFieldChange('tipeWastafel', 'NONE')}
+                                className="mt-0.5 accent-emerald-600"
+                              />
+                              <div>
+                                <strong className="block text-slate-900">
+                                  Tidak perlu / lewati
+                                </strong>
+                                <span className="text-[11px] text-slate-400">
+                                  Lewati dispenser sabun wastafel (0 unit).
                                 </span>
                               </div>
                             </label>
@@ -1225,6 +1302,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                             Kebutuhan tambahan di toilet
                           </label>
 
+                          {/* Pembersih Dudukan Kloset */}
                           <div className="space-y-1.5 p-2.5 rounded-xl border border-slate-200/80 bg-slate-50/50">
                             <label className="flex items-start gap-2.5 cursor-pointer text-xs">
                               <input
@@ -1250,39 +1328,244 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                                   className="h-3.5 w-3.5 rounded border-slate-300 text-purple-600 focus:ring-purple-500"
                                 />
                                 <span className="font-medium bg-purple-50 border border-purple-200 px-2 py-0.5 rounded">
-                                  Opsi otomatis tanpa sentuh (touchless)
+                                  Opsi otomatis tanpa sentuh (Auto Seat Cleaner T900 Touchless)
                                 </span>
                               </label>
                             )}
                           </div>
 
-                          <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
-                            <input
-                              type="checkbox"
-                              checked={formData.butuhSanitaryBin}
-                              onChange={(e) =>
-                                handleFieldChange('butuhSanitaryBin', e.target.checked)
-                              }
-                              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-                            />
-                            <span className="text-slate-800 font-medium">
-                              Butuh tempat pembuangan pembalut wanita
-                            </span>
-                          </label>
+                          {/* Sanitary Bin */}
+                          <div className="space-y-1.5 p-2.5 rounded-xl border border-slate-200/80 bg-slate-50/50">
+                            <label className="flex items-start gap-2.5 cursor-pointer text-xs">
+                              <input
+                                type="checkbox"
+                                checked={formData.butuhSanitaryBin}
+                                onChange={(e) =>
+                                  handleFieldChange('butuhSanitaryBin', e.target.checked)
+                                }
+                                className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                              />
+                              <span className="text-slate-800 font-medium">
+                                Butuh tempat pembuangan pembalut wanita
+                              </span>
+                            </label>
+                            {formData.butuhSanitaryBin && (
+                              <div className="pl-6 pt-1 flex flex-wrap gap-2 text-[11px]">
+                                <label className="flex items-center gap-1.5 cursor-pointer bg-white border border-slate-200 px-2.5 py-1 rounded-lg hover:bg-slate-100">
+                                  <input
+                                    type="radio"
+                                    name="tipeSanitaryBin"
+                                    checked={formData.tipeSanitaryBin !== 'MANUAL_PEDAL'}
+                                    onChange={() => handleFieldChange('tipeSanitaryBin', 'AUTOLID_SENSOR')}
+                                    className="accent-emerald-600"
+                                  />
+                                  <span className="font-medium text-slate-800">ESBD Digital Autolid (Sensor Otomatis)</span>
+                                </label>
+                                <label className="flex items-center gap-1.5 cursor-pointer bg-white border border-slate-200 px-2.5 py-1 rounded-lg hover:bg-slate-100">
+                                  <input
+                                    type="radio"
+                                    name="tipeSanitaryBin"
+                                    checked={formData.tipeSanitaryBin === 'MANUAL_PEDAL'}
+                                    onChange={() => handleFieldChange('tipeSanitaryBin', 'MANUAL_PEDAL')}
+                                    className="accent-emerald-600"
+                                  />
+                                  <span className="font-medium text-slate-800">ESB Manual (Pedal Kaki Mekanis)</span>
+                                </label>
+                              </div>
+                            )}
+                          </div>
 
-                          <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
-                            <input
-                              type="checkbox"
-                              checked={formData.keluhanSampahTisu}
-                              onChange={(e) =>
-                                handleFieldChange('keluhanSampahTisu', e.target.checked)
-                              }
-                              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-                            />
-                            <span className="text-slate-800 font-medium">
-                              Ingin memangkas biaya tisu dan mengurangi sampah kertas
-                            </span>
-                          </label>
+                          {/* Hand Dryer */}
+                          <div className="space-y-1.5 p-2.5 rounded-xl border border-slate-200/80 bg-slate-50/50">
+                            <label className="flex items-start gap-2.5 cursor-pointer text-xs">
+                              <input
+                                type="checkbox"
+                                checked={formData.keluhanSampahTisu}
+                                onChange={(e) =>
+                                  handleFieldChange('keluhanSampahTisu', e.target.checked)
+                                }
+                                className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                              />
+                              <span className="text-slate-800 font-medium">
+                                Ingin memangkas biaya tisu dan mengurangi sampah kertas
+                              </span>
+                            </label>
+                            {formData.keluhanSampahTisu && (
+                              <div className="pl-6 pt-1 space-y-1 text-[11px]">
+                                <span className="block font-semibold text-slate-600">Model Pengering Tangan:</span>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                                  <label className="flex items-start gap-1.5 cursor-pointer bg-white border border-slate-200 p-2 rounded-lg hover:bg-slate-100">
+                                    <input
+                                      type="radio"
+                                      name="tipeHandDryer"
+                                      checked={!formData.tipeHandDryer || formData.tipeHandDryer === 'JET_MINI_AK2822'}
+                                      onChange={() => handleFieldChange('tipeHandDryer', 'JET_MINI_AK2822')}
+                                      className="mt-0.5 accent-emerald-600"
+                                    />
+                                    <div>
+                                      <strong className="block text-slate-800">Mini High-Speed (AK2822)</strong>
+                                      <span className="text-[10px] text-slate-500">Standar hemat ruang & cepat</span>
+                                    </div>
+                                  </label>
+                                  <label className="flex items-start gap-1.5 cursor-pointer bg-white border border-slate-200 p-2 rounded-lg hover:bg-slate-100">
+                                    <input
+                                      type="radio"
+                                      name="tipeHandDryer"
+                                      checked={formData.tipeHandDryer === 'HANDS_IN_DUAL'}
+                                      onChange={() => handleFieldChange('tipeHandDryer', 'HANDS_IN_DUAL')}
+                                      className="mt-0.5 accent-emerald-600"
+                                    />
+                                    <div>
+                                      <strong className="block text-slate-800">Dual-Jet Hands-In</strong>
+                                      <span className="text-[10px] text-slate-500">Tipe celup 95 m/s (Bandara/Mall/Hotel)</span>
+                                    </div>
+                                  </label>
+                                  <label className="flex items-start gap-1.5 cursor-pointer bg-white border border-slate-200 p-2 rounded-lg hover:bg-slate-100">
+                                    <input
+                                      type="radio"
+                                      name="tipeHandDryer"
+                                      checked={formData.tipeHandDryer === 'COFFEEMAKER'}
+                                      onChange={() => handleFieldChange('tipeHandDryer', 'COFFEEMAKER')}
+                                      className="mt-0.5 accent-emerald-600"
+                                    />
+                                    <div>
+                                      <strong className="block text-slate-800">Coffeemaker 1.350W</strong>
+                                      <span className="text-[10px] text-slate-500">Plastik ABS untuk resto & kantor</span>
+                                    </div>
+                                  </label>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Dispenser Wastafel Otomatis Touchless */}
+                          <div className="space-y-1.5 p-2.5 rounded-xl border border-slate-200/80 bg-slate-50/50">
+                            <label className="flex items-start gap-2.5 cursor-pointer text-xs">
+                              <input
+                                type="checkbox"
+                                checked={Boolean(formData.autoDispenserTouchlessArea1)}
+                                onChange={(e) =>
+                                  handleFieldChange('autoDispenserTouchlessArea1', e.target.checked)
+                                }
+                                className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                              />
+                              <span className="text-slate-800 font-medium">
+                                Wastafel menghendaki dispenser sabun otomatis tanpa sentuh (touch-free)
+                              </span>
+                            </label>
+                            {formData.autoDispenserTouchlessArea1 && (
+                              <div className="pl-6 pt-1 space-y-1 text-[11px]">
+                                <span className="block font-semibold text-slate-600">Model Dispenser Sabun Otomatis:</span>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                                  <label className="flex items-start gap-1.5 cursor-pointer bg-white border border-slate-200 p-2 rounded-lg hover:bg-slate-100">
+                                    <input
+                                      type="radio"
+                                      name="tipeDispenserWastafelOtomatis"
+                                      checked={!formData.tipeDispenserWastafelOtomatis || formData.tipeDispenserWastafelOtomatis === 'AUTO_AK1255'}
+                                      onChange={() => handleFieldChange('tipeDispenserWastafelOtomatis', 'AUTO_AK1255')}
+                                      className="mt-0.5 accent-emerald-600"
+                                    />
+                                    <div>
+                                      <strong className="block text-slate-800">Auto Foam AK1255</strong>
+                                      <span className="text-[10px] text-slate-500">Dispenser busa otomatis standar mewah</span>
+                                    </div>
+                                  </label>
+                                  <label className="flex items-start gap-1.5 cursor-pointer bg-white border border-slate-200 p-2 rounded-lg hover:bg-slate-100">
+                                    <input
+                                      type="radio"
+                                      name="tipeDispenserWastafelOtomatis"
+                                      checked={formData.tipeDispenserWastafelOtomatis === 'AUTO_1017T'}
+                                      onChange={() => handleFieldChange('tipeDispenserWastafelOtomatis', 'AUTO_1017T')}
+                                      className="mt-0.5 accent-emerald-600"
+                                    />
+                                    <div>
+                                      <strong className="block text-slate-800">Auto Foam 1017 T (Anti-Kerak)</strong>
+                                      <span className="text-[10px] text-slate-500">Touchless hemat 35% anti kerak sabun</span>
+                                    </div>
+                                  </label>
+                                  <label className="flex items-start gap-1.5 cursor-pointer bg-white border border-slate-200 p-2 rounded-lg hover:bg-slate-100">
+                                    <input
+                                      type="radio"
+                                      name="tipeDispenserWastafelOtomatis"
+                                      checked={formData.tipeDispenserWastafelOtomatis === 'AUTO_SP811_WALL'}
+                                      onChange={() => handleFieldChange('tipeDispenserWastafelOtomatis', 'AUTO_SP811_WALL')}
+                                      className="mt-0.5 accent-emerald-600"
+                                    />
+                                    <div>
+                                      <strong className="block text-slate-800">Seri SP811 / SP812 Wall</strong>
+                                      <span className="text-[10px] text-slate-500">4x AA (12.000 semprot), 800 ml</span>
+                                    </div>
+                                  </label>
+                                  <label className="flex items-start gap-1.5 cursor-pointer bg-white border border-slate-200 p-2 rounded-lg hover:bg-slate-100">
+                                    <input
+                                      type="radio"
+                                      name="tipeDispenserWastafelOtomatis"
+                                      checked={formData.tipeDispenserWastafelOtomatis === 'AUTO_STAINLESS'}
+                                      onChange={() => handleFieldChange('tipeDispenserWastafelOtomatis', 'AUTO_STAINLESS')}
+                                      className="mt-0.5 accent-emerald-600"
+                                    />
+                                    <div>
+                                      <strong className="block text-slate-800">AK1205 / AK1205C Stainless 304</strong>
+                                      <span className="text-[10px] text-slate-500">IPX5 waterproof, pompa peristaltik (RS & Fine Dining)</span>
+                                    </div>
+                                  </label>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Bilik Mandi / Shower Room */}
+                          <div className="space-y-1.5 p-2.5 rounded-xl border border-slate-200/80 bg-slate-50/50">
+                            <label className="flex items-start gap-2.5 cursor-pointer text-xs">
+                              <input
+                                type="checkbox"
+                                checked={Boolean(formData.butuhSabunMandiShower)}
+                                onChange={(e) =>
+                                  handleFieldChange('butuhSabunMandiShower', e.target.checked)
+                                }
+                                className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                              />
+                              <span className="text-slate-800 font-medium">
+                                Fasilitas memiliki kamar mandi bilas / shower room (Hotel, Gym, Fasilitas Olahraga, Clubhouse)
+                              </span>
+                            </label>
+                            {formData.butuhSabunMandiShower && (
+                              <div className="pl-6 pt-1 space-y-1.5 text-[11px]">
+                                <div className="text-[11px] text-slate-600 bg-emerald-50/80 p-2 rounded-lg border border-emerald-200/60">
+                                  <strong>Dispenser Terpasang:</strong> SP 829 (1.000 ml) atau SP 819 Mini (400 ml) 2-in-1 Hand & Body.
+                                </div>
+                                <span className="block font-semibold text-slate-600">Pilihan Varian Sabun Isi Ulang (Refill):</span>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                  <label className="flex items-start gap-1.5 cursor-pointer bg-white border border-slate-200 p-2 rounded-lg hover:bg-slate-100">
+                                    <input
+                                      type="radio"
+                                      name="tipeSabunShower"
+                                      checked={formData.tipeSabunShower !== 'LUXURY_MILK'}
+                                      onChange={() => handleFieldChange('tipeSabunShower', 'SABUN_3IN1')}
+                                      className="mt-0.5 accent-emerald-600"
+                                    />
+                                    <div>
+                                      <strong className="block text-slate-800">Sabun 3-in-1 Serbaguna</strong>
+                                      <span className="text-[10px] text-slate-500">Formula praktis Hand, Body & Shampoo untuk gym/hotel</span>
+                                    </div>
+                                  </label>
+                                  <label className="flex items-start gap-1.5 cursor-pointer bg-white border border-slate-200 p-2 rounded-lg hover:bg-slate-100">
+                                    <input
+                                      type="radio"
+                                      name="tipeSabunShower"
+                                      checked={formData.tipeSabunShower === 'LUXURY_MILK'}
+                                      onChange={() => handleFieldChange('tipeSabunShower', 'LUXURY_MILK')}
+                                      className="mt-0.5 accent-emerald-600"
+                                    />
+                                    <div>
+                                      <strong className="block text-slate-800">Luxury Soap 2-in-1 White Milk</strong>
+                                      <span className="text-[10px] text-slate-500">Khusus VIP & Golf Club (SOP: Dilarang di Mall Publik)</span>
+                                    </div>
+                                  </label>
+                                </div>
+                              </div>
+                            )}
+                          </div>
 
                           <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
                             <input
@@ -1503,6 +1786,85 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                             </label>
                           </div>
                         </div>
+
+                        {/* Additional Items: Coverage Scenting */}
+                        {formData.kondisiLobi !== 'NONE' && (
+                          <div className="pt-2 border-t border-slate-100">
+                            <label className="block text-xs font-bold text-slate-700 mb-1">
+                              Additional Items: Estimasi Luas / Volume Ruangan (Coverage Scenting)
+                            </label>
+                            <span className="text-[11px] text-slate-500 block mb-2">
+                              Menyesuaikan kapasitas unit SC-008 (A80), SC-006 (D300), SC-007 (S3000), atau SC-005 (B5000):
+                            </span>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                              <label
+                                className={`p-2.5 rounded-xl border text-xs cursor-pointer flex flex-col justify-between transition ${
+                                  !formData.coverageLobiScent || formData.coverageLobiScent === 'SMALL_100_300'
+                                    ? 'border-teal-600 bg-teal-50/70 font-semibold text-teal-950'
+                                    : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2 mb-1">
+                                  <input
+                                    type="radio"
+                                    name="coverageLobiScent"
+                                    checked={!formData.coverageLobiScent || formData.coverageLobiScent === 'SMALL_100_300'}
+                                    onChange={() => handleFieldChange('coverageLobiScent', 'SMALL_100_300')}
+                                    className="accent-teal-600"
+                                  />
+                                  <strong className="text-slate-900">Small Area (100 - 300 m³)</strong>
+                                </div>
+                                <span className="text-[11px] text-slate-500 pl-5">
+                                  SC-008 A80 (100 m³) / SC-006 D300 (300 m³) Stand Alone untuk meja resepsionis/lounge.
+                                </span>
+                              </label>
+
+                              <label
+                                className={`p-2.5 rounded-xl border text-xs cursor-pointer flex flex-col justify-between transition ${
+                                  formData.coverageLobiScent === 'MEDIUM_3000'
+                                    ? 'border-teal-600 bg-teal-50/70 font-semibold text-teal-950'
+                                    : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2 mb-1">
+                                  <input
+                                    type="radio"
+                                    name="coverageLobiScent"
+                                    checked={formData.coverageLobiScent === 'MEDIUM_3000'}
+                                    onChange={() => handleFieldChange('coverageLobiScent', 'MEDIUM_3000')}
+                                    className="accent-teal-600"
+                                  />
+                                  <strong className="text-slate-900">Free Standing (s/d 3.000 m³)</strong>
+                                </div>
+                                <span className="text-[11px] text-slate-500 pl-5">
+                                  SC-007 S3000 Free Standing berdaya jangkau luas untuk atrium tinggi tanpa koneksi AC sentral.
+                                </span>
+                              </label>
+
+                              <label
+                                className={`p-2.5 rounded-xl border text-xs cursor-pointer flex flex-col justify-between transition ${
+                                  formData.coverageLobiScent === 'LARGE_5000'
+                                    ? 'border-teal-600 bg-teal-50/70 font-semibold text-teal-950'
+                                    : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2 mb-1">
+                                  <input
+                                    type="radio"
+                                    name="coverageLobiScent"
+                                    checked={formData.coverageLobiScent === 'LARGE_5000'}
+                                    onChange={() => handleFieldChange('coverageLobiScent', 'LARGE_5000')}
+                                    className="accent-teal-600"
+                                  />
+                                  <strong className="text-slate-900">Large HVAC (s/d 5.000 m³)</strong>
+                                </div>
+                                <span className="text-[11px] text-slate-500 pl-5">
+                                  SC-005 B5000 terkoneksi langsung ke ducting AC Sentral lobi utama perkantoran/mall.
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

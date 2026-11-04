@@ -28,12 +28,39 @@ export type SegmenGedung =
 export type HariAktif = '5 Hari Kerja' | '7 Hari Kerja';
 
 export type KondisiPipa =
+  | 'NONE'        // Tidak Memerlukan Pembersih Pipa Kloset / Lewati
   | 'PIPA_MANUAL' // Pipa Luar Biasa (Bisa Dibor) -> EST
   | 'PIPA_TANAM'; // Pipa Tanam / Sensor / Marmer (Dilarang Bor) -> EDST
 
 export type TipeWastafel =
-  | 'TRAFIK_PADAT' // Pengunjung Ramai (>1.000 org/hari) -> ESD MS1000
+  | 'NONE'          // Tidak Memerlukan Dispenser Sabun Wastafel / Lewati
+  | 'TRAFIK_PADAT'  // Pengunjung Ramai (>1.000 org/hari) -> ESD MS1000
   | 'TRAFIK_GREEN'; // Area Kantor / Hemat Air -> EFS SP830
+
+export type TipeSanitaryBin =
+  | 'AUTOLID_SENSOR' // ESBD Digital Autolid Sensor
+  | 'MANUAL_PEDAL';  // ESB Manual Pedal Kaki
+
+export type TipeHandDryer =
+  | 'JET_MINI_AK2822' // Mini High-Speed AK2822 (Standar Hemat Ruang)
+  | 'HANDS_IN_DUAL'   // Dual Jet Hands-In (Bandara, Mall Mewah, Hotel Bintang 5)
+  | 'COFFEEMAKER';    // Coffeemaker Sedang 1.350W (Restoran, Kantor Menengah)
+
+export type TipeDispenserWastafelOtomatis =
+  | 'AUTO_AK1255'      // Auto Foam AK1255
+  | 'AUTO_1017T'       // Auto Foam 1017 T (Touchless Hemat 35% Anti-Kerak)
+  | 'AUTO_SP811_WALL'  // Seri SP811/SP812 Wall (EASD / EAFS 4 Baterai AA)
+  | 'AUTO_STAINLESS';  // AK1205 / AK1205C Stainless Steel 304 IPX5
+
+export type TipeSabunShower =
+  | 'LUXURY_MILK' // Luxury Soap 2-in-1 (White Milk / White Natural)
+  | 'SABUN_3IN1'; // Sabun 3-in-1 (Hand, Body & Shampoo)
+
+export type CoverageLobiScent =
+  | 'AUTO'          // Menyesuaikan otomatis tipe lobi
+  | 'SMALL_100_300' // Small Area (100 - 300 m³) -> SC-008 (A80) / SC-006 (D300)
+  | 'MEDIUM_3000'   // Free Standing (s/d 3.000 m³) -> SC-007 (S3000)
+  | 'LARGE_5000';   // HVAC AC Sentral (s/d 5.000 m³) -> SC-005 (B5000)
 
 export type KondisiLobi =
   | 'NONE' // Tidak Perlu Pengharum Lobi
@@ -73,7 +100,9 @@ export interface SurveyObservationInput {
   tipeWastafel: TipeWastafel;
   khawatirBakteriKloset: boolean;
   butuhSanitaryBin: boolean;
+  tipeSanitaryBin?: TipeSanitaryBin;
   keluhanSampahTisu: boolean;
+  tipeHandDryer?: TipeHandDryer;
   jumlahUrinoirKloset: number;
   jumlahWastafel: number;
   jumlahKubikalWanita: number;
@@ -81,12 +110,16 @@ export interface SurveyObservationInput {
   pasangUrinalScreen?: boolean;
   autoSeatCleanerTouchless?: boolean;
   autoDispenserTouchlessArea1?: boolean;
+  tipeDispenserWastafelOtomatis?: TipeDispenserWastafelOtomatis;
+  butuhSabunMandiShower?: boolean;
+  tipeSabunShower?: TipeSabunShower;
   blowerToiletKipas?: boolean;
   handSanitizerToilet?: boolean;
 
   // AREA 2: Pintu Masuk dan Lobi Utama
   pintuMasukLicinDebu: boolean;
   kondisiLobi: KondisiLobi;
+  coverageLobiScent?: CoverageLobiScent;
   handSanitizerLobi?: boolean;
 
   // AREA 3: Koridor, Lift, dan Ruang Rapat
