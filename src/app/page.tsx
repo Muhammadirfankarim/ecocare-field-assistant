@@ -689,7 +689,12 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
               ),
             },
           ];
-    return baseGroups.filter((group) => group.units && group.units.length > 0);
+    return baseGroups
+      .filter((group) => group.units && group.units.length > 0)
+      .map((group) => ({
+        ...group,
+        units: [...group.units].sort((a, b) => b.matchScore - a.matchScore),
+      }));
   }, [diagnosticResult]);
 
   const filteredAreaGroups = useMemo(() => {

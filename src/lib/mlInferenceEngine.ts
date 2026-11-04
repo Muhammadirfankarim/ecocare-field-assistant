@@ -1099,8 +1099,13 @@ export function predictWithHistoricalML(
   }
 
   // ==========================================================================
-  // KELOMPOKKAN KE DALAM 4 AREA
+  // KELOMPOKKAN KE DALAM 4 AREA (URUT TINGKAT KECOCOKAN DESCENDING)
   // ==========================================================================
+  const sortByMatchScoreDesc = (
+    units: HygieneProductRecommendation[]
+  ): HygieneProductRecommendation[] =>
+    [...units].sort((a, b) => b.matchScore - a.matchScore);
+
   const areaGroups: AreaRecommendationGroup[] = [
     {
       areaId: 'AREA_1_TOILET',
@@ -1108,7 +1113,7 @@ export function predictWithHistoricalML(
       areaTitle: 'Area 1: Toilet dan Kamar Mandi',
       areaFokus:
         'Sanitasi kloset/urinoir, pembuangan limbah sensitif wanita, cuci tangan wastafel, dan kesegaran udara toilet.',
-      units: area1Units,
+      units: sortByMatchScoreDesc(area1Units),
     },
     {
       areaId: 'AREA_2_LOBBY',
@@ -1116,7 +1121,7 @@ export function predictWithHistoricalML(
       areaTitle: 'Area 2: Pintu Masuk dan Lobi Utama',
       areaFokus:
         'Penampilan visual & prestise gedung, pencegahan kotoran masuk lewat alas kaki, dan aroma mewah cakupan luas.',
-      units: area2Units,
+      units: sortByMatchScoreDesc(area2Units),
     },
     {
       areaId: 'AREA_3_CORRIDOR',
@@ -1124,7 +1129,7 @@ export function predictWithHistoricalML(
       areaTitle: 'Area 3: Koridor, Lift, dan Ruang Rapat',
       areaFokus:
         'Sirkulasi udara stabil, tingkat kebisingan rendah (silent operation), bebas kuman, dan kesegaran ruang kerja.',
-      units: area3Units,
+      units: sortByMatchScoreDesc(area3Units),
     },
     {
       areaId: 'AREA_4_PANTRY',
@@ -1132,7 +1137,7 @@ export function predictWithHistoricalML(
       areaTitle: 'Area 4: Dapur, Kantin, dan Pantry',
       areaFokus:
         'Higienitas olahan makanan, penyerapan minyak & lemak lantai dapur, serta pengendalian serangga terbang ramah pangan.',
-      units: area4Units,
+      units: sortByMatchScoreDesc(area4Units),
     },
   ];
 
