@@ -31,6 +31,7 @@ import {
   SlidersHorizontal,
   FileText,
   Download,
+  Filter,
 } from 'lucide-react';
 import {
   AreaRecommendationGroup,
@@ -381,6 +382,39 @@ export default function EcoCareHygieMatchPage() {
   const [isQuotationModalOpen, setIsQuotationModalOpen] = useState<boolean>(false);
   const [copiedSummary, setCopiedSummary] = useState<boolean>(false);
   const [engineMode, setEngineMode] = useState<'ML_HISTORICAL' | 'RULE_BASED'>('ML_HISTORICAL');
+  const [selectedResultArea, setSelectedResultArea] = useState<string>('ALL');
+  const [expandedResultAreas, setExpandedResultAreas] = useState<Record<string, boolean>>({
+    AREA_1_TOILET: true,
+    AREA_2_LOBBY: false,
+    AREA_3_CORRIDOR: false,
+    AREA_4_PANTRY: false,
+  });
+
+  const toggleResultAreaAccordion = (areaId: string) => {
+    setExpandedResultAreas((prev) => ({
+      ...prev,
+      [areaId]: !prev[areaId],
+    }));
+  };
+
+  const handleSelectResultArea = (areaId: string) => {
+    setSelectedResultArea(areaId);
+    if (areaId !== 'ALL') {
+      setExpandedResultAreas((prev) => ({
+        ...prev,
+        [areaId]: true,
+      }));
+    }
+  };
+
+  const handleToggleAllAreas = (open: boolean) => {
+    setExpandedResultAreas({
+      AREA_1_TOILET: open,
+      AREA_2_LOBBY: open,
+      AREA_3_CORRIDOR: open,
+      AREA_4_PANTRY: open,
+    });
+  };
 
   const resultPanelRef = useRef<HTMLDivElement | null>(null);
 
@@ -427,6 +461,15 @@ export default function EcoCareHygieMatchPage() {
       ? predictWithHistoricalML(formData)
       : evaluateDiagnostic(formData);
     setDiagnosticResult(res);
+
+    // Reset dropdown & akordeon: Area 1 terbuka, area lain tertutup agar tidak panjang scroll
+    setSelectedResultArea('ALL');
+    setExpandedResultAreas({
+      AREA_1_TOILET: true,
+      AREA_2_LOBBY: false,
+      AREA_3_CORRIDOR: false,
+      AREA_4_PANTRY: false,
+    });
 
     setTimeout(() => {
       resultPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -576,6 +619,61 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
       return matchSearch && matchSegmen;
     });
   }, [savedRecords, searchQuery, filterSegmen]);
+
+  const renderedAreaGroups = useMemo(() => {
+    if (!diagnosticResult) return [];
+    const baseGroups =
+      diagnosticResult.areaGroups && diagnosticResult.areaGroups.length > 0
+        ? diagnosticResult.areaGroups
+        : [
+            {
+              areaId: 'AREA_1_TOILET' as const,
+              areaNumber: 1,
+              areaTitle: 'Area 1: Toilet dan Kamar Mandi',
+              areaFokus:
+                'Sanitasi kloset/urinoir, limbah pembalut, cuci tangan wastafel, dan kesegaran toilet.',
+              units: diagnosticResult.kategori1_Restroom || [],
+            },
+            {
+              areaId: 'AREA_2_LOBBY' as const,
+              areaNumber: 2,
+              areaTitle: 'Area 2: Pintu Masuk dan Lobi Utama',
+              areaFokus:
+                'Penampilan visual & prestise gedung, proteksi debu/lantai licin, dan aroma mewah lobi.',
+              units: (diagnosticResult.kategori3_SmartScenting || []).filter(
+                (u) => u.kodeUnit.includes('B5000') || u.kodeUnit.includes('D300')
+              ),
+            },
+            {
+              areaId: 'AREA_3_CORRIDOR' as const,
+              areaNumber: 3,
+              areaTitle: 'Area 3: Koridor, Lift, dan Ruang Rapat',
+              areaFokus:
+                'Sirkulasi udara stabil, hening tanpa suara semprotan, dan bebas kuman.',
+              units: (diagnosticResult.kategori2_Secondary || []).filter(
+                (u) =>
+                  !u.kodeUnit.includes('EFL') && !u.kodeUnit.includes('EDM-Kitchen')
+              ),
+            },
+            {
+              areaId: 'AREA_4_PANTRY' as const,
+              areaNumber: 4,
+              areaTitle: 'Area 4: Dapur, Kantin, dan Pantry',
+              areaFokus:
+                'Higienitas olahan makanan, penyerapan minyak & lemak lantai dapur.',
+              units: (diagnosticResult.kategori2_Secondary || []).filter(
+                (u) =>
+                  u.kodeUnit.includes('EFL') || u.kodeUnit.includes('EDM-Kitchen')
+              ),
+            },
+          ];
+    return baseGroups.filter((group) => group.units && group.units.length > 0);
+  }, [diagnosticResult]);
+
+  const filteredAreaGroups = useMemo(() => {
+    if (selectedResultArea === 'ALL') return renderedAreaGroups;
+    return renderedAreaGroups.filter((g) => g.areaId === selectedResultArea);
+  }, [renderedAreaGroups, selectedResultArea]);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
@@ -1695,11 +1793,6 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                   <div className="bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 rounded-2xl p-4 sm:p-5 text-white shadow-md border border-emerald-800/50 space-y-3">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <span className="text-[11px] font-bold tracking-wider text-emerald-300 uppercase block">
-                          {diagnosticResult.engineType === 'MACHINE_LEARNING'
-                            ? 'Model ML (1.000 Data Historis • Akurasi 99.6%)'
-                            : 'Paket Rekomendasi SOP Standar'}
-                        </span>
                         <h3 className="text-base sm:text-lg font-bold text-white truncate max-w-[260px]">
                           {diagnosticResult.namaGedung}
                         </h3>
@@ -1748,85 +1841,101 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                     )}
                   </div>
 
-                  {/* DAFTAR PRODUK BERDASARKAN 4 AREA GEDUNG */}
-                  <div className="space-y-4 max-h-[600px] overflow-y-auto pr-1">
-                    {(diagnosticResult.areaGroups && diagnosticResult.areaGroups.length > 0
-                      ? diagnosticResult.areaGroups
-                      : [
-                          {
-                            areaId: 'AREA_1_TOILET' as const,
-                            areaNumber: 1,
-                            areaTitle: 'Area 1: Toilet dan Kamar Mandi',
-                            areaFokus:
-                              'Sanitasi kloset/urinoir, limbah pembalut, cuci tangan wastafel, dan kesegaran toilet.',
-                            units: diagnosticResult.kategori1_Restroom || [],
-                          },
-                          {
-                            areaId: 'AREA_2_LOBBY' as const,
-                            areaNumber: 2,
-                            areaTitle: 'Area 2: Pintu Masuk dan Lobi Utama',
-                            areaFokus:
-                              'Penampilan visual & prestise gedung, proteksi debu/lantai licin, dan aroma mewah lobi.',
-                            units: (diagnosticResult.kategori3_SmartScenting || []).filter(
-                              (u) => u.kodeUnit.includes('B5000') || u.kodeUnit.includes('D300')
-                            ),
-                          },
-                          {
-                            areaId: 'AREA_3_CORRIDOR' as const,
-                            areaNumber: 3,
-                            areaTitle: 'Area 3: Koridor, Lift, dan Ruang Rapat',
-                            areaFokus:
-                              'Sirkulasi udara stabil, hening tanpa suara semprotan, dan bebas kuman.',
-                            units: (diagnosticResult.kategori2_Secondary || []).filter(
-                              (u) =>
-                                !u.kodeUnit.includes('EFL') && !u.kodeUnit.includes('EDM-Kitchen')
-                            ),
-                          },
-                          {
-                            areaId: 'AREA_4_PANTRY' as const,
-                            areaNumber: 4,
-                            areaTitle: 'Area 4: Dapur, Kantin, dan Pantry',
-                            areaFokus:
-                              'Higienitas olahan makanan, penyerapan minyak & lemak lantai dapur.',
-                            units: (diagnosticResult.kategori2_Secondary || []).filter(
-                              (u) =>
-                                u.kodeUnit.includes('EFL') || u.kodeUnit.includes('EDM-Kitchen')
-                            ),
-                          },
-                        ]
-                    )
-                      .filter((group) => group.units && group.units.length > 0)
-                      .map((group) => {
-                        const styleInfo = getAreaHeaderBadge(group.areaId);
-                        const GroupIcon = styleInfo.icon;
+                  {/* KONTROL PILIHAN AREA (DROPDOWN LIST & AKORDEON) */}
+                  <div className="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                    <div className="flex items-center gap-2 flex-1">
+                      <div className="p-1.5 rounded-lg bg-emerald-100 text-emerald-800 shrink-0">
+                        <Filter className="h-4 w-4" />
+                      </div>
+                      <span className="text-xs font-bold text-slate-700 whitespace-nowrap">
+                        Pilih Area:
+                      </span>
+                      <select
+                        value={selectedResultArea}
+                        onChange={(e) => handleSelectResultArea(e.target.value)}
+                        className="flex-1 rounded-xl border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-800 bg-slate-50 hover:bg-white focus:bg-white focus:border-emerald-600 outline-none cursor-pointer transition shadow-xs"
+                      >
+                        <option value="ALL">
+                          Semua Area ({diagnosticResult.totalUnitRekomendasi} Unit Disarankan)
+                        </option>
+                        {renderedAreaGroups.map((g) => (
+                          <option key={g.areaId} value={g.areaId}>
+                            {g.areaTitle} ({g.units.length} Unit)
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
-                        return (
-                          <div
-                            key={group.areaId}
-                            className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden"
+                    <div className="flex items-center justify-end gap-1.5 shrink-0 pl-1">
+                      <button
+                        type="button"
+                        onClick={() => handleToggleAllAreas(true)}
+                        className="text-[11px] font-semibold text-emerald-700 hover:text-emerald-900 px-2 py-1 rounded-md hover:bg-emerald-50 transition cursor-pointer"
+                      >
+                        Buka Semua
+                      </button>
+                      <span className="text-slate-300 text-xs">|</span>
+                      <button
+                        type="button"
+                        onClick={() => handleToggleAllAreas(false)}
+                        className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 px-2 py-1 rounded-md hover:bg-slate-100 transition cursor-pointer"
+                      >
+                        Tutup Semua
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* DAFTAR PRODUK BERDASARKAN 4 AREA GEDUNG (DROPDOWN ACCORDION) */}
+                  <div className="space-y-3">
+                    {filteredAreaGroups.map((group) => {
+                      const styleInfo = getAreaHeaderBadge(group.areaId);
+                      const GroupIcon = styleInfo.icon;
+                      const isAreaOpen = Boolean(expandedResultAreas[group.areaId]);
+
+                      return (
+                        <div
+                          key={group.areaId}
+                          className="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden transition-all duration-200"
+                        >
+                          {/* TOMBOL DROPDOWN AREA */}
+                          <button
+                            type="button"
+                            onClick={() => toggleResultAreaAccordion(group.areaId)}
+                            className={`w-full bg-gradient-to-r ${styleInfo.bgGradient} px-4 py-3 flex items-center justify-between text-left hover:brightness-95 transition cursor-pointer select-none`}
                           >
-                            <div
-                              className={`bg-gradient-to-r ${styleInfo.bgGradient} px-4 py-3 border-b border-slate-200/80 flex items-center justify-between`}
-                            >
+                            <div className="flex items-center gap-2.5">
+                              <div className={`p-1.5 rounded-lg ${styleInfo.badgeBg}`}>
+                                <GroupIcon className="h-4 w-4" />
+                              </div>
                               <div>
                                 <span
-                                  className={`text-xs font-extrabold ${styleInfo.textColor} uppercase tracking-wider flex items-center gap-1.5`}
+                                  className={`text-xs font-extrabold ${styleInfo.textColor} uppercase tracking-wider block`}
                                 >
-                                  <GroupIcon className="h-4 w-4" />
                                   {group.areaTitle} ({group.units.length} Unit)
                                 </span>
                                 <p className="text-[10px] text-slate-600 mt-0.5 line-clamp-1">
                                   {group.areaFokus}
                                 </p>
                               </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 shrink-0">
                               <span
-                                className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${styleInfo.badgeBg} shrink-0`}
+                                className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${styleInfo.badgeBg}`}
                               >
                                 {styleInfo.tag}
                               </span>
+                              <ChevronDown
+                                className={`h-4 w-4 text-slate-600 transition-transform duration-200 ${
+                                  isAreaOpen ? 'rotate-180' : ''
+                                }`}
+                              />
                             </div>
+                          </button>
 
-                            <div className="p-3.5 space-y-3">
+                          {/* KONTEN UNIT (MUNCUL SAAT DROPDOWN TERBUKA) */}
+                          {isAreaOpen && (
+                            <div className="p-3.5 space-y-3 border-t border-slate-200/80 bg-white">
                               {group.units.map((unit) => (
                                 <div
                                   key={unit.id}
@@ -1888,9 +1997,10 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                                 </div>
                               ))}
                             </div>
-                          </div>
-                        );
-                      })}
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
 
                   {/* TOMBOL AKSI SIMPAN */}

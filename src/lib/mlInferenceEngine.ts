@@ -91,9 +91,9 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Mencegah timbulnya bau pesing dan kerak urine di pipa saluran kloset, hemat biaya karena tidak memerlukan daya listrik.',
       estimasiUnit: `${input.jumlahUrinoirKloset || 1} Titik Urinoir/Kloset`,
-      keteranganTipe: `ML Match: ${score}% (Akurasi F1: 100%)`,
+      keteranganTipe: 'Sistem Bilas Otomatis Mekanis (Tanpa Baterai)',
     });
-    summaryHighlights.push('Pipa standar: Model ML memilih unit EST Manual (F1: 100%).');
+    summaryHighlights.push('Pipa standar: EST Manual bekerja tanpa baterai.');
   } else {
     // PIPA_TANAM / Marmer
     const score = f1['EDST'] ?? 97.2;
@@ -123,9 +123,9 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Menjaga kebersihan dan aroma toilet tetap wangi tanpa merusak dinding marmer mewah atau sistem sensor otomatis gedung.',
       estimasiUnit: `${input.jumlahUrinoirKloset || 1} Titik Urinoir/Kloset`,
-      keteranganTipe: `ML Match: ${score}% (Akurasi F1: 97.2%)`,
+      keteranganTipe: 'Sistem Tetes Digital (Baterai)',
     });
-    summaryHighlights.push('Pipa tanam/marmer: Model ML memvalidasi unit EDST Digital (F1: 97.2%).');
+    summaryHighlights.push('Pipa tanam/marmer: Unit EDST Digital melindungi dinding.');
   }
 
   // B. Urinal Screen (Supporting Product)
@@ -179,7 +179,7 @@ export function predictWithHistoricalML(
         keunggulanGedung:
           'Standar higienitas tertinggi tanpa sentuh tangan, membunuh 99,9% kuman pada dudukan kloset seketika.',
         estimasiUnit: `${input.jumlahKubikalWanita || Math.max(1, Math.ceil(input.jumlahUrinoirKloset / 2))} Bilik Kloset Duduk`,
-        keteranganTipe: `ML Match: ${score}% (Sensor Touch-Free)`,
+        keteranganTipe: 'Sensor Otomatis Tanpa Sentuh (Touch-Free)',
       });
     } else {
       area1Units.push({
@@ -199,7 +199,7 @@ export function predictWithHistoricalML(
         keunggulanGedung:
           'Memberikan rasa nyaman dan kepastian higienis bebas kuman bagi para pengunjung dan tamu penting.',
         estimasiUnit: `${input.jumlahKubikalWanita || Math.max(1, Math.ceil(input.jumlahUrinoirKloset / 2))} Bilik Kloset Duduk`,
-        keteranganTipe: `ML Match: ${score}%`,
+        keteranganTipe: 'Cairan Disinfektan Cepat Kering',
       });
     }
   }
@@ -231,7 +231,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Menjaga toilet wanita tetap bersih tanpa disentuh tangan dan mencegah saluran kloset tersumbat pembalut.',
       estimasiUnit: `${input.jumlahKubikalWanita || 1} Bilik Toilet Wanita`,
-      keteranganTipe: `ML Match: ${score}% (Sensor Otomatis)`,
+      keteranganTipe: 'Sensor Otomatis Touchless + Antibakteri',
     });
   }
 
@@ -254,7 +254,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Mencegah kontaminasi kuman silang antar pengguna wastafel dengan busa lembut mewah dan higienis.',
       estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
-      keteranganTipe: 'ML Match: 97.5% (Sensor Otomatis)',
+      keteranganTipe: 'Busa Otomatis Tanpa Sentuh (Sensor)',
     });
   } else if (input.tipeWastafel === 'TRAFIK_PADAT') {
     const score = f1['ESD_Liquid'] ?? 99.2;
@@ -282,7 +282,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Kapasitas besar mencegah sabun cepat habis di wastafel ramai, meringankan pekerjaan tim kebersihan.',
       estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
-      keteranganTipe: `ML Match: ${score}% (Kapasitas Besar)`,
+      keteranganTipe: 'Sabun Cair 1.000 ml (Trafik Tinggi)',
     });
   } else {
     // EFS Foam
@@ -311,9 +311,9 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Busa lembut menghemat sabun dan air bilasan hingga 35%, sangat mendukung citra gedung perkantoran ramah lingkungan.',
       estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
-      keteranganTipe: `ML Match: ${score}% (Hemat Air 35%)`,
+      keteranganTipe: 'Sabun Busa Hemat Air & Sabun 35%',
     });
-    summaryHighlights.push('Konsep ramah lingkungan: Model ML memilih Foam Soap EFS-SP830 (F1: 97.8%).');
+    summaryHighlights.push('Konsep ramah lingkungan: Foam Soap EFS-SP830 hemat air 35%.');
   }
 
   // F. EHD Mini High-Speed AK2822
@@ -343,7 +343,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Mengeringkan tangan dalam 10-15 detik, memangkas biaya pembelian kertas tisu dan membuat wastafel bebas sampah kertas berserakan.',
       estimasiUnit: `${Math.max(1, Math.ceil((input.jumlahWastafel || 2) / 2))} Unit Area Wastafel`,
-      keteranganTipe: `ML Match: ${score}% (Bebas Sampah Tisu)`,
+      keteranganTipe: 'Hembusan Cepat 10-15 Detik (Bebas Tisu)',
     });
   }
 
@@ -424,7 +424,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Menyerap kotoran debu dan air dari sepatu hingga 70%, menjaga lobi tetap bersih dan mencegah risiko terpeleset saat hujan.',
       estimasiUnit: '2 - 4 Lembar Pintu Masuk / Lobi',
-      keteranganTipe: `ML Match: ${score}% (Layanan Rutin)`,
+      keteranganTipe: 'Layanan Rutin Ganti & Cuci Bersih',
     });
   }
 
@@ -478,9 +478,9 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Seluruh lobi gedung tercium harum mewah secara merata tanpa ada tetesan air atau lantai marmer yang menjadi licin.',
       estimasiUnit: '1 Sistem Terintegrasi Saluran AC Lobi',
-      keteranganTipe: `ML Match: ${score}% (AC Sentral HVAC)`,
+      keteranganTipe: 'Cold Air Diffusion (Koneksi HVAC)',
     });
-    summaryHighlights.push('Lobi HVAC Luas: Model ML memilih SC-005 B5000 (F1: 100%).');
+    summaryHighlights.push('Lobi HVAC Luas: SC-005 B5000 terintegrasi AC Sentral.');
   } else if (input.kondisiLobi === 'STANDALONE_300') {
     const score = f1['SmartScent_D300'] ?? 100.0;
     predictionsDetail.push({
@@ -507,7 +507,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Memberikan aroma khas hotel berbintang di area pintu masuk gedung secara praktis tanpa perlu modifikasi plafon.',
       estimasiUnit: '1 - 2 Unit Area Resepsionis',
-      keteranganTipe: `ML Match: ${score}% (Unit Mandiri)`,
+      keteranganTipe: 'Unit Berdiri Mandiri (Stand Alone)',
     });
   }
 
@@ -542,7 +542,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Memberikan keharuman lembut tanpa suara semprotan yang mengagetkan di dalam lift atau ruangan kecil tertutup.',
       estimasiUnit: '1 Unit per Lift / Ruang Tertutup',
-      keteranganTipe: `ML Match: ${score}% (Bebas Aerosol)`,
+      keteranganTipe: 'Blower Hening (Bebas Gas Aerosol)',
     });
   }
 
@@ -572,7 +572,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Koridor selalu wangi segar merata sepanjang jam kerja secara otomatis, takaran semprot terukur sehingga tidak boros.',
       estimasiUnit: '1 Unit per jarak 8-10 meter koridor',
-      keteranganTipe: `ML Match: ${score}% (Tiap ${calculatedIntervalMinutes} Menit)`,
+      keteranganTipe: `Semprot Tiap ${calculatedIntervalMinutes} Menit`,
       intervalSprayDetail: `Otomatis semprot tiap ${calculatedIntervalMinutes} menit (sesuai operasional ${input.jamOperasional} jam/hari).`,
     });
   }
@@ -604,7 +604,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Sangat aman untuk lingkungan klinik, ruang tunggu dokter anak, atau pasien yang sensitif terhadap wangi menyengat.',
       estimasiUnit: '1 Unit per Ruang Periksa / Rawat',
-      keteranganTipe: `ML Match: ${score}% (100% Waterbase)`,
+      keteranganTipe: '100% Berbahan Dasar Air (Bebas Alkohol)',
     });
   }
 
@@ -635,7 +635,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Menghadirkan suasana pertemuan yang prestisius, nyaman, dan tenang tanpa suara semprotan yang mengganggu jalannya diskusi.',
       estimasiUnit: '1 Unit Ruang Rapat Direksi / VIP',
-      keteranganTipe: `ML Match: ${score}% (Ultra Silent)`,
+      keteranganTipe: 'Operasional Ultra-Hening (<30 dB)',
     });
   }
 
@@ -739,7 +739,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Menjaga area kantin dan pantry bebas dari lalat yang mengganggu tanpa meninggalkan bau obat kimia pada makanan.',
       estimasiUnit: '1 - 2 Unit Dekat Pintu Kantin / Dapur',
-      keteranganTipe: `ML Match: ${score}% (Ramah Pangan)`,
+      keteranganTipe: 'Pengusir Lalat Ramah Pangan',
     });
   }
 
@@ -762,7 +762,7 @@ export function predictWithHistoricalML(
       keunggulanGedung:
         'Praktis dan higienis untuk staf saat mencuci tangan dan perlengkapan makan di area pantry.',
       estimasiUnit: '1 - 2 Unit Pantry',
-      keteranganTipe: 'ML Match: 92.5% (Kompak 500 ml)',
+      keteranganTipe: 'Ukuran Ringkas 500 ml',
     });
   }
 
