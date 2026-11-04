@@ -430,30 +430,12 @@ export default function EcoCareHygieMatchPage() {
 
   const handleSelectResultArea = (areaId: string) => {
     setSelectedResultArea(areaId);
-    if (areaId === 'ALL') {
-      handleToggleAllAreas(true);
-    } else {
+    if (areaId !== 'ALL') {
       setExpandedResultAreas((prev) => ({
         ...prev,
         [areaId]: true,
       }));
     }
-  };
-
-  const handleToggleAllAreas = (open: boolean) => {
-    if (open) {
-      setSelectedResultArea('ALL');
-    }
-    const updated: Record<string, boolean> = {
-      AREA_1_TOILET: open,
-      AREA_2_LOBBY: open,
-      AREA_3_CORRIDOR: open,
-      AREA_4_PANTRY: open,
-    };
-    renderedAreaGroups.forEach((g) => {
-      updated[g.areaId] = open;
-    });
-    setExpandedResultAreas(updated);
   };
 
   const resultPanelRef = useRef<HTMLDivElement | null>(null);
@@ -2162,24 +2144,6 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           </option>
                         ))}
                       </select>
-                    </div>
-
-                    <div className="flex items-center justify-end gap-1.5 shrink-0 pl-1">
-                      <button
-                        type="button"
-                        onClick={() => handleToggleAllAreas(true)}
-                        className="text-[11px] font-semibold text-emerald-700 hover:text-emerald-900 px-2 py-1 rounded-md hover:bg-emerald-50 transition cursor-pointer"
-                      >
-                        Buka Semua
-                      </button>
-                      <span className="text-slate-300 text-xs">|</span>
-                      <button
-                        type="button"
-                        onClick={() => handleToggleAllAreas(false)}
-                        className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 px-2 py-1 rounded-md hover:bg-slate-100 transition cursor-pointer"
-                      >
-                        Tutup Semua
-                      </button>
                     </div>
                   </div>
 
