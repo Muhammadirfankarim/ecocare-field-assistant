@@ -721,14 +721,9 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
               />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center">
-                  Hycare
-                </h1>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-400/20 text-emerald-200 border border-emerald-300/30">
-                  smart hygiene recommendation
-                </span>
-              </div>
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center">
+                Hycare
+              </h1>
               <p className="text-xs text-emerald-100/80">
                 PT EcoCare Indo Pasifik Tbk
               </p>
