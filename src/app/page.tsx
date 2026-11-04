@@ -1087,10 +1087,10 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Sabun cair
+                                  Traffic yang tinggi
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
-                                  Dispenser sabun cair (ESD-MS1000) kapasitas 1 Liter untuk pencucian tangan higienis.
+                                  Penggunaan wastafel padat dan berfrekuensi tinggi.
                                 </span>
                               </div>
                             </label>
@@ -1111,10 +1111,10 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Sabun busa
+                                  Ingin hemat air dan ramah lingkungan
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
-                                  Dispenser sabun busa (EFS-SP830), hemat air bilasan dan sabun hingga 35%.
+                                  Mengutamakan efisiensi pemakaian air bilasan dan konsep ramah lingkungan.
                                 </span>
                               </div>
                             </label>
@@ -1124,7 +1124,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                         {/* 3. Fasilitas Tambahan di Toilet */}
                         <div className="space-y-2 pt-1 border-t border-slate-100">
                           <label className="block text-xs font-bold text-slate-700">
-                            3. Kebutuhan Tambahan di Toilet:
+                            Kebutuhan tambahan di toilet
                           </label>
 
                           <div className="space-y-1.5 p-2.5 rounded-xl border border-slate-200/80 bg-slate-50/50">
@@ -1137,9 +1137,8 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                                 }
                                 className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                               />
-                              <span className="text-slate-800">
-                                Butuh pembersih dudukan kloset agar pengguna merasa higienis{' '}
-                                <strong className="text-emerald-700">&rarr; Pembersih Dudukan Kloset (ESC)</strong>
+                              <span className="text-slate-800 font-medium">
+                                Butuh pembersih dudukan kloset
                               </span>
                             </label>
                             {formData.khawatirBakteriKloset && (
@@ -1153,7 +1152,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                                   className="h-3.5 w-3.5 rounded border-slate-300 text-purple-600 focus:ring-purple-500"
                                 />
                                 <span className="font-medium bg-purple-50 border border-purple-200 px-2 py-0.5 rounded">
-                                  Tipe Otomatis Tanpa Sentuh &rarr; <strong>Auto Seat Cleaner (T900 Touchless)</strong>
+                                  Opsi otomatis tanpa sentuh (touchless)
                                 </span>
                               </label>
                             )}
@@ -1168,9 +1167,8 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               }
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
-                            <span className="text-slate-800">
-                              Toilet wanita membutuhkan tempat pembuangan pembalut otomatis touchless{' '}
-                              <strong className="text-emerald-700">&rarr; ESBD Digital Autolid Sanitary Bin</strong>
+                            <span className="text-slate-800 font-medium">
+                              Membutuhkan tempat pembuangan pembalut wanita
                             </span>
                           </label>
 
@@ -1183,9 +1181,8 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               }
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
-                            <span className="text-slate-800">
-                              Ingin memangkas biaya tisu dan bebas sampah kertas berserakan{' '}
-                              <strong className="text-emerald-700">&rarr; Mini High-Speed Hand Dryer (AK2822)</strong>
+                            <span className="text-slate-800 font-medium">
+                              Ingin memangkas biaya tisu dan mengurangi sampah kertas
                             </span>
                           </label>
 
@@ -1198,9 +1195,8 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               }
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
-                            <span className="text-slate-800">
-                              Urinoir pria butuh saringan pencegah sumbatan & anti percikan{' '}
-                              <strong className="text-emerald-700">&rarr; Urinal Screen Pengharum (Anti-Splash)</strong>
+                            <span className="text-slate-800 font-medium">
+                              Urinoir pria butuh saringan anti percikan & pencegah sumbatan
                             </span>
                           </label>
 
@@ -1213,9 +1209,8 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               }
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
-                            <span className="text-slate-800">
-                              Wastafel menghendaki dispenser sabun otomatis tanpa sentuh{' '}
-                              <strong className="text-purple-700">&rarr; Touchless Foam Soap (Auto AK1255)</strong>
+                            <span className="text-slate-800 font-medium">
+                              Wastafel menghendaki dispenser otomatis tanpa sentuh
                             </span>
                           </label>
 
@@ -1228,9 +1223,8 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               }
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
-                            <span className="text-slate-800">
-                              Toilet membutuhkan pengharum udara konstan bebas semprotan gas{' '}
-                              <strong className="text-emerald-700">&rarr; Ecocare Air Freshener Blower (EAF)</strong>
+                            <span className="text-slate-800 font-medium">
+                              Toilet membutuhkan pengharum udara konstan bebas semprotan gas
                             </span>
                           </label>
 
@@ -1243,25 +1237,24 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               }
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
-                            <span className="text-slate-800">
-                              Pintu keluar toilet dilengkapi pembersih tangan gel antiseptik{' '}
-                              <strong className="text-emerald-700">&rarr; Ecocare Hand Sanitizer (EHS)</strong>
+                            <span className="text-slate-800 font-medium">
+                              Butuh pembersih tangan gel antiseptik
                             </span>
                           </label>
                         </div>
 
-                        {/* 4. Jumlah Titik Fasilitas */}
+                        {/* 4. Jumlah Titik Fasilitas (17. Kloset Wanita, 18. Wastafel, 19. Urinoir) */}
                         <div className="grid grid-cols-3 gap-2.5 pt-2 border-t border-slate-100">
                           <div>
                             <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                              Jumlah Urinoir/Kloset
+                              Jumlah kloset wanita
                             </label>
                             <input
                               type="number"
                               min={0}
-                              value={formData.jumlahUrinoirKloset}
+                              value={formData.jumlahKubikalWanita}
                               onChange={(e) =>
-                                handleFieldChange('jumlahUrinoirKloset', Number(e.target.value))
+                                handleFieldChange('jumlahKubikalWanita', Number(e.target.value))
                               }
                               className="w-full rounded-xl border border-slate-300 px-3 py-1.5 text-xs sm:text-sm font-semibold focus:border-emerald-600 outline-none"
                             />
@@ -1269,7 +1262,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
 
                           <div>
                             <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                              Jumlah Wastafel
+                              Jumlah wastafel
                             </label>
                             <input
                               type="number"
@@ -1284,14 +1277,14 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
 
                           <div>
                             <label className="block text-[11px] font-semibold text-slate-600 mb-1">
-                              Bilik Toilet Wanita
+                              Jumlah urinoir
                             </label>
                             <input
                               type="number"
                               min={0}
-                              value={formData.jumlahKubikalWanita}
+                              value={formData.jumlahUrinoirKloset}
                               onChange={(e) =>
-                                handleFieldChange('jumlahKubikalWanita', Number(e.target.value))
+                                handleFieldChange('jumlahUrinoirKloset', Number(e.target.value))
                               }
                               className="w-full rounded-xl border border-slate-300 px-3 py-1.5 text-xs sm:text-sm font-semibold focus:border-emerald-600 outline-none"
                             />
@@ -1318,9 +1311,6 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           <h3 className="text-sm font-bold text-slate-900">
                             Area 2: Pintu Masuk & Lobi Utama
                           </h3>
-                          <p className="text-[11px] text-slate-500">
-                            Pilihan keset karpet penahan kotoran dan pengharum suasana lobi
-                          </p>
                         </div>
                       </div>
                       <ChevronDown
@@ -1343,10 +1333,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Pintu masuk berisiko licin saat hujan atau banyak debu terbawa sepatu
-                            </span>
-                            <span className="text-[11px] text-teal-700 font-medium">
-                              &rarr; Rekomendasi: Layanan Sewa & Cuci Bersih Rutin Keset Karpet Penyerap Debu/Air (EDM).
+                              Pintu masuk berisiko licin / berdebu
                             </span>
                           </div>
                         </label>
@@ -1362,10 +1349,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Penyediaan hand sanitizer touchless otomatis di area lobi / meja resepsionis
-                            </span>
-                            <span className="text-[11px] text-purple-700 font-medium">
-                              &rarr; Rekomendasi: Touchless Hand Sanitizer Dispenser (Auto SP811 / SP812 Standing).
+                              Kebutuhan fasilitas pembersih tangan (hand sanitizer) di lobi / resepsionis
                             </span>
                           </div>
                         </label>
@@ -1413,10 +1397,10 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                                 />
                                 <div>
                                   <span className="font-bold text-slate-900 block">
-                                    Lobi Sedang / Meja Resepsionis (Unit Berdiri Sendiri)
+                                    Lobi Sedang / Meja Resepsionis (Unit Mandiri Stand Alone)
                                   </span>
                                   <span className="text-[11px] text-slate-500">
-                                    Cocok untuk lobi tanpa AC sentral &rarr; Menggunakan mesin pengharum mandiri elegan di sudut ruangan.
+                                    Cocok untuk lobi tanpa koneksi ke AC sentral gedung.
                                   </span>
                                 </div>
                               </div>
@@ -1442,7 +1426,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                                     Lobi Gedung Luas (Tersambung ke Saluran AC Sentral)
                                   </span>
                                   <span className="text-[11px] text-slate-500">
-                                    Aroma disebarkan merata melalui saluran udara AC gedung tanpa perlu meletakkan banyak unit di lantai.
+                                    Aroma disebarkan merata melalui saluran udara AC sentral (HVAC).
                                   </span>
                                 </div>
                               </div>
@@ -1470,9 +1454,6 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           <h3 className="text-sm font-bold text-slate-900">
                             Area 3: Koridor, Lift, & Ruang Rapat
                           </h3>
-                          <p className="text-[11px] text-slate-500">
-                            Pengharum hening untuk lift, ruang rapat direksi, dan koridor umum
-                          </p>
                         </div>
                       </div>
                       <ChevronDown
@@ -1495,10 +1476,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Ada Ruang Tertutup Sempit (Lift atau Toilet Karyawan Kecil)
-                            </span>
-                            <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>Pengharum Kipas Blower</strong> dengan baterai, wangi lembut terus menerus tanpa suara semprotan.
+                              Terdapat lift atau ruang tertutup sempit yang membutuhkan sirkulasi aroma lembut konstan
                             </span>
                           </div>
                         </label>
@@ -1514,10 +1492,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Koridor / Area Publik Terbuka membutuhkan semprotan wangi berkala
-                            </span>
-                            <span className="text-[11px] text-cyan-700 font-medium">
-                              Sistem otomatis menghitung interval: <strong>Semprot setiap {liveInterval} menit</strong> (agar wangi pas selama masa servis 2 bulan).
+                              Area koridor atau lorong publik terbuka dengan sirkulasi udara aktif
                             </span>
                           </div>
                         </label>
@@ -1533,10 +1508,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Ruang Sensitif (Klinik, RS, Ruang Bayi & Anak yang menghindari aroma menyengat)
-                            </span>
-                            <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>Pengharum Berbahan Dasar Air (Waterbase)</strong> 100% bebas alkohol dan gas pemicu bersin.
+                              Ruang sensitif (klinik, RS, ruang anak) yang menghindari aroma menyengat
                             </span>
                           </div>
                         </label>
@@ -1552,10 +1524,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Ruang Rapat Direksi / Ruang VIP (Butuh aroma mewah dan tidak bersuara)
-                            </span>
-                            <span className="text-[11px] text-cyan-700 font-medium">
-                              &rarr; Rekomendasi <strong>Mini Scent Diffuser (SC-008 A80)</strong> ultra-hening (&lt;30 dB) tanpa suara semprotan.
+                              Ruang rapat direksi / VIP yang membutuhkan aroma mewah dan hening tanpa suara semprotan
                             </span>
                           </div>
                         </label>
@@ -1571,10 +1540,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Ruang kerja eksekutif butuh aroma essential oil relaksasi
-                            </span>
-                            <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>Ecocare Microburst (EMB)</strong> aroma essential oil premium tahan lama.
+                              Ruang kerja eksekutif membutuhkan aroma essential oil relaksasi
                             </span>
                           </div>
                         </label>
@@ -1590,10 +1556,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Dinding depan pintu ruang rapat / akses lift butuh hand sanitizer
-                            </span>
-                            <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>Ecocare Hand Sanitizer Dinding (EHS / AK1205)</strong> steril sebelum meeting.
+                              Dinding akses lorong / depan pintu ruang rapat membutuhkan hand sanitizer
                             </span>
                           </div>
                         </label>
@@ -1609,10 +1572,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Pintu masuk ruang rapat karpet membutuhkan keset penyaring debu
-                            </span>
-                            <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>Ecocare Doormats (EDM)</strong> pelindung karpet ruang rapat.
+                              Pintu masuk ruang rapat atau lorong berkarpet membutuhkan keset pelindung
                             </span>
                           </div>
                         </label>
@@ -1637,9 +1597,6 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           <h3 className="text-sm font-bold text-slate-900">
                             Area 4: Dapur, Kantin, & Pantry
                           </h3>
-                          <p className="text-[11px] text-slate-500">
-                            Pengendalian lalat ramah makanan dan sabun cuci tangan pantry staf
-                          </p>
                         </div>
                       </div>
                       <ChevronDown
@@ -1664,9 +1621,6 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                             <span className="font-semibold text-slate-900 block">
                               Area kantin atau dapur sering terganggu lalat berterbangan
                             </span>
-                            <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>Semprotan Pengusir Lalat Alami (Ecoflies)</strong> berbahan alami yang aman untuk area makan.
-                            </span>
                           </div>
                         </label>
 
@@ -1681,10 +1635,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Wastafel dapur/pantry membutuhkan dispenser sabun cuci tangan staf
-                            </span>
-                            <span className="text-[11px] text-slate-500">
-                              &rarr; Rekomendasi <strong>Dispenser Sabun Pantry Kompak (Fave 701W - 500 ml)</strong> hemat tempat.
+                              Wastafel dapur / pantry membutuhkan dispenser sabun cuci tangan staf
                             </span>
                           </div>
                         </label>
@@ -1700,10 +1651,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Jalan masuk dapur/kantin butuh keset khusus serap minyak & lemak
-                            </span>
-                            <span className="text-[11px] text-amber-700 font-medium">
-                              &rarr; Rekomendasi <strong>Ecocare Doormats Dapur (EDM Kitchen Anti-Slip)</strong> karet nitril anti-licin.
+                              Jalan masuk dapur atau kantin membutuhkan keset khusus penyerap minyak & lemak
                             </span>
                           </div>
                         </label>
@@ -1719,10 +1667,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Area persiapan makanan butuh cuci tangan / sanitizer otomatis tanpa sentuh
-                            </span>
-                            <span className="text-[11px] text-purple-700 font-medium">
-                              &rarr; Rekomendasi <strong>Auto Foam Soap & Sanitizer (AK1255)</strong> cegah kontaminasi silang pangan.
+                              Area penyiapan makanan membutuhkan fasilitas cuci tangan / sanitizer otomatis tanpa sentuh
                             </span>
                           </div>
                         </label>
@@ -2186,9 +2131,9 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           </strong>
                         </div>
                         <div>
-                          <span className="text-slate-500 font-semibold">Sabun Wastafel: </span>
+                          <span className="text-slate-500 font-semibold">Kebutuhan Sabun: </span>
                           <span className="text-slate-800">
-                            {rec.input.tipeWastafel === 'TRAFIK_PADAT' ? 'Sabun Cair 1 Liter' : 'Sabun Busa (Foam) Hemat Air'}
+                            {rec.input.tipeWastafel === 'TRAFIK_PADAT' ? 'Traffic Tinggi' : 'Hemat Air & Ramah Lingkungan'}
                           </span>
                         </div>
                         {rec.input.kondisiLobi !== 'NONE' && (
