@@ -2071,12 +2071,12 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                 <>
                   {/* RINGKASAN REKOMENDASI GEDUNG */}
                   <div className="bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 rounded-2xl p-4 sm:p-5 text-white shadow-md border border-emerald-800/50 space-y-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <h3 className="text-base sm:text-lg font-bold text-white truncate max-w-[260px]">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-base sm:text-lg font-bold text-white break-words">
                           {diagnosticResult.namaGedung}
                         </h3>
-                        <p className="text-xs text-emerald-200/80">
+                        <p className="text-xs text-emerald-200/80 mt-0.5">
                           {diagnosticResult.segmen} • {formData.hariAktif} ({formData.jamOperasional} Jam/Hari)
                         </p>
                       </div>
