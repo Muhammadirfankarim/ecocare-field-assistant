@@ -267,6 +267,28 @@ const PRESET_OTHER: SurveyObservationInput = {
 
 function getPICSuggestion(segmen: SegmenGedung): string {
   switch (segmen) {
+    case 'Bank & Finance (BAF)':
+    case 'Commercial Office (COF)':
+    case 'Education (EDS)':
+      return 'GA / Bagian Umum';
+    case 'Commercial Building (COB)':
+    case 'Shopping Mall (SHM)':
+      return 'Manager Building / HK';
+    case 'Hospital & Clinic (HOC)':
+      return 'GA / Umum / Kessling / RT';
+    case 'Hotel, Motel, Inn (HMI)':
+      return 'Executive Housekeeping';
+    case 'Restaurant & Entertainment (REN)':
+    case 'Recreation / Health Club (RHC)':
+      return 'Manager Outlet / Owner';
+    case 'Manufacture & Industrial (MAI)':
+      return 'GA / General Service';
+    case 'Government / Institutions (GOI)':
+      return 'Kabag Umum / Karumga';
+    case 'Public Religion (POR)':
+      return 'Bagian Umum';
+    case 'Other (OTH)':
+      return 'Owner Rumah';
     case 'Corporate & Financial':
       return 'GA / Bagian Umum / Building Manager';
     case 'Healthcare & Education':
@@ -579,11 +601,11 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                   Hycare
                 </h1>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-400/20 text-emerald-200 border border-emerald-300/30">
-                  Solusi Kebersihan Gedung
+                  smart hygiene recommendation
                 </span>
               </div>
               <p className="text-xs text-emerald-100/80">
-                PT EcoCare Indo Pasifik Tbk • Smart Hygiene Recommendation System
+                PT EcoCare Indo Pasifik Tbk
               </p>
             </div>
           </div>
@@ -639,12 +661,12 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
             {/* KOLOM KIRI: FORM SURVEI (7 KOLOM)                         */}
             {/* --------------------------------------------------------- */}
             <div className="lg:col-span-7 space-y-5">
-              {/* PILIH SEGMENT MARKET (5 KELOMPOK RESMI ECOCARE) */}
+              {/* SEGMEN (5 KELOMPOK RESMI ECOCARE) */}
               <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-sm space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                     <SlidersHorizontal className="h-3.5 w-3.5 text-teal-600" />
-                    PILIH SEGMENT MARKET
+                    Segmen
                   </span>
                   <span className="text-[10px] text-slate-400 font-semibold hidden sm:inline">
                     5 Kelompok Pasar (13 Sektor Pelanggan)
@@ -795,7 +817,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                       </div>
                       <div>
                         <h2 className="text-sm sm:text-base font-bold text-slate-900">
-                          Profil Gedung & Kebutuhan Kunjungan
+                          Profil gedung dan kebutuhan
                         </h2>
                         <p className="text-xs text-slate-500">
                           Data dasar gedung untuk menentukan pilihan paket kebersihan terbaik
@@ -833,7 +855,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs sm:text-sm">
                     <div className="sm:col-span-2">
                       <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Nama Gedung / Perusahaan Klien *
+                        Nama gedung *
                       </label>
                       <input
                         type="text"
@@ -847,7 +869,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
 
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Alamat / Lokasi Gedung
+                        Alamat
                       </label>
                       <div className="relative">
                         <MapPin className="h-4 w-4 text-slate-400 absolute left-3 top-3" />
@@ -863,20 +885,20 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
 
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Nama PIC yang Ditemui
+                        Nama PIC
                       </label>
                       <input
                         type="text"
                         value={formData.picNama || ''}
                         onChange={(e) => handleFieldChange('picNama', e.target.value)}
-                        placeholder="Nama Manajer Gedung / Purchasing"
+                        placeholder={`Contoh: ${getPICSuggestion(formData.segmen)}`}
                         className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-emerald-600 outline-none"
                       />
                     </div>
 
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Jenis Gedung / Segmen
+                        Segmen
                       </label>
                       <select
                         value={formData.segmen}
@@ -888,11 +910,28 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                         }
                         className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:border-emerald-600 outline-none font-medium"
                       >
-                        <option value="Office Tower">Gedung Perkantoran (Office Tower)</option>
-                        <option value="Mall/Public Area">Pusat Perbelanjaan / Mall / Publik</option>
-                        <option value="Hotel">Hotel & Akomodasi</option>
-                        <option value="RS/Klinik">Rumah Sakit / Fasilitas Kesehatan</option>
-                        <option value="Resto/F&B">Restoran & Kafe F&B</option>
+                        <optgroup label="13 Market Segments (Resmi EcoCare)">
+                          <option value="Bank & Finance (BAF)">Bank & Finance (BAF)</option>
+                          <option value="Commercial Office (COF)">Commercial Office (COF)</option>
+                          <option value="Commercial Building (COB)">Commercial Building (COB)</option>
+                          <option value="Hospital & Clinic (HOC)">Hospital & Clinic (HOC)</option>
+                          <option value="Education (EDS)">Education (EDS)</option>
+                          <option value="Hotel, Motel, Inn (HMI)">Hotel, Motel, Inn (HMI)</option>
+                          <option value="Shopping Mall (SHM)">Shopping Mall (SHM)</option>
+                          <option value="Restaurant & Entertainment (REN)">Restaurant & Entertainment (REN)</option>
+                          <option value="Recreation / Health Club (RHC)">Recreation / Health Club (RHC)</option>
+                          <option value="Manufacture & Industrial (MAI)">Manufacture & Industrial (MAI)</option>
+                          <option value="Government / Institutions (GOI)">Government / Institutions (GOI)</option>
+                          <option value="Public Religion (POR)">Public Religion (POR)</option>
+                          <option value="Other (OTH)">Other (OTH)</option>
+                        </optgroup>
+                        <optgroup label="5 Kelompok Kebutuhan Customer">
+                          <option value="Corporate & Financial">Corporate & Financial (BAF, COF, COB)</option>
+                          <option value="Healthcare & Education">Healthcare & Education (HOC, EDS)</option>
+                          <option value="Hospitality & Lifestyle">Hospitality & Lifestyle (HMI, REN, SHM, RHC)</option>
+                          <option value="Industrial & Institutional">Industrial & Institutional (MAI, GOI, POR)</option>
+                          <option value="Other">Other (OTH - Hunian / Khusus)</option>
+                        </optgroup>
                       </select>
                     </div>
 
@@ -918,7 +957,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
 
                       <div>
                         <label className="block text-xs font-semibold text-slate-700 mb-1">
-                          Jam Buka / Hari
+                          Jam operasional
                         </label>
                         <div className="relative">
                           <Clock className="h-4 w-4 text-slate-400 absolute left-2.5 top-3" />
@@ -952,16 +991,13 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                       className="w-full px-5 py-3.5 bg-gradient-to-r from-emerald-50/80 to-teal-50/50 flex items-center justify-between text-left hover:bg-emerald-100/40 transition"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-xl bg-emerald-700 text-white font-bold text-xs">
-                          Area 1
+                        <div className="p-2 rounded-xl bg-emerald-700 text-white">
+                          <Droplets className="h-4 w-4" />
                         </div>
                         <div>
                           <h3 className="text-sm font-bold text-slate-900">
                             Area 1: Toilet & Kamar Mandi
                           </h3>
-                          <p className="text-[11px] text-slate-500">
-                            Pilihan kloset, urinoir, wastafel, tempat pembalut, dan pengering tangan
-                          </p>
                         </div>
                       </div>
                       <ChevronDown
@@ -973,10 +1009,10 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
 
                     {activeZoneAccordion === 1 && (
                       <div className="p-5 space-y-4 border-t border-slate-100">
-                        {/* 1. Kondisi Pipa Kloset/Urinoir */}
+                        {/* 1. Kondisi Pipa Kloset */}
                         <div>
                           <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                            1. Kondisi Pipa Kloset / Urinoir:
+                            Kondisi pipa kloset
                           </label>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                             <label
@@ -995,7 +1031,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Pipa Biasa (Bisa Dibor)
+                                  Pipa biasa (bor)
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
                                   Saluran pipa luar standar, menggunakan alat pembersih otomatis mekanis tanpa perlu baterai.
@@ -1019,7 +1055,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Pipa Tanam / Dinding Marmer (Dilarang Dibor)
+                                  Pipa tanam
                                 </strong>
                                 <span className="text-[11px] text-amber-700">
                                   Toilet dengan sensor otomatis atau dinding marmer. Menggunakan alat tetes digital dengan baterai tanpa melubangi dinding.
@@ -1029,10 +1065,10 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           </div>
                         </div>
 
-                        {/* 2. Tipe Wastafel */}
+                        {/* 2. Kebutuhan Sabun */}
                         <div>
                           <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                            2. Kebutuhan Sabun di Wastafel:
+                            Kebutuhan sabun
                           </label>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                             <label
@@ -1051,10 +1087,10 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Pengunjung Ramai (&gt;1.000 orang/hari)
+                                  Sabun cair
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
-                                  Menggunakan dispenser sabun cair kapasitas besar (1 Liter) agar tidak sering habis.
+                                  Dispenser sabun cair (ESD-MS1000) kapasitas 1 Liter untuk pencucian tangan higienis.
                                 </span>
                               </div>
                             </label>
@@ -1075,10 +1111,10 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Perkantoran / Ramah Lingkungan
+                                  Sabun busa
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
-                                  Menggunakan sabun busa (foam soap) yang menghemat air bilasan dan sabun hingga 35%.
+                                  Dispenser sabun busa (EFS-SP830), hemat air bilasan dan sabun hingga 35%.
                                 </span>
                               </div>
                             </label>
@@ -1275,8 +1311,8 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                       className="w-full px-5 py-3.5 bg-gradient-to-r from-teal-50/80 to-emerald-50/50 flex items-center justify-between text-left hover:bg-teal-100/40 transition"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-xl bg-teal-700 text-white font-bold text-xs">
-                          Area 2
+                        <div className="p-2 rounded-xl bg-teal-700 text-white">
+                          <Building2 className="h-4 w-4" />
                         </div>
                         <div>
                           <h3 className="text-sm font-bold text-slate-900">
@@ -1427,8 +1463,8 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                       className="w-full px-5 py-3.5 bg-gradient-to-r from-cyan-50/80 to-teal-50/40 flex items-center justify-between text-left hover:bg-cyan-100/40 transition"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-xl bg-cyan-700 text-white font-bold text-xs">
-                          Area 3
+                        <div className="p-2 rounded-xl bg-cyan-700 text-white">
+                          <Wind className="h-4 w-4" />
                         </div>
                         <div>
                           <h3 className="text-sm font-bold text-slate-900">
@@ -1594,8 +1630,8 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                       className="w-full px-5 py-3.5 bg-gradient-to-r from-amber-50/80 to-emerald-50/30 flex items-center justify-between text-left hover:bg-amber-100/40 transition"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-xl bg-amber-700 text-white font-bold text-xs">
-                          Area 4
+                        <div className="p-2 rounded-xl bg-amber-700 text-white">
+                          <ShieldCheck className="h-4 w-4" />
                         </div>
                         <div>
                           <h3 className="text-sm font-bold text-slate-900">
@@ -2060,12 +2096,29 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                   onChange={(e) => setFilterSegmen(e.target.value)}
                   className="rounded-xl border border-slate-300 px-3 py-2 text-xs sm:text-sm bg-white outline-none focus:border-emerald-600 font-medium"
                 >
-                  <option value="ALL">Semua Segment Market</option>
-                  <option value="Corporate & Financial">Corporate & Financial (BAF, COF, COB)</option>
-                  <option value="Healthcare & Education">Healthcare & Education (HOC, EDS)</option>
-                  <option value="Hospitality & Lifestyle">Hospitality & Lifestyle (HMI, REN, SHM, RHC)</option>
-                  <option value="Industrial & Institutional">Industrial & Institutional (MAI, GOI, POR)</option>
-                  <option value="Other">Other (OTH - Khusus)</option>
+                  <option value="ALL">Semua Segmen</option>
+                  <optgroup label="13 Market Segments (Resmi EcoCare)">
+                    <option value="Bank & Finance (BAF)">Bank & Finance (BAF)</option>
+                    <option value="Commercial Office (COF)">Commercial Office (COF)</option>
+                    <option value="Commercial Building (COB)">Commercial Building (COB)</option>
+                    <option value="Hospital & Clinic (HOC)">Hospital & Clinic (HOC)</option>
+                    <option value="Education (EDS)">Education (EDS)</option>
+                    <option value="Hotel, Motel, Inn (HMI)">Hotel, Motel, Inn (HMI)</option>
+                    <option value="Shopping Mall (SHM)">Shopping Mall (SHM)</option>
+                    <option value="Restaurant & Entertainment (REN)">Restaurant & Entertainment (REN)</option>
+                    <option value="Recreation / Health Club (RHC)">Recreation / Health Club (RHC)</option>
+                    <option value="Manufacture & Industrial (MAI)">Manufacture & Industrial (MAI)</option>
+                    <option value="Government / Institutions (GOI)">Government / Institutions (GOI)</option>
+                    <option value="Public Religion (POR)">Public Religion (POR)</option>
+                    <option value="Other (OTH)">Other (OTH)</option>
+                  </optgroup>
+                  <optgroup label="5 Kelompok Kebutuhan Customer">
+                    <option value="Corporate & Financial">Corporate & Financial (BAF, COF, COB)</option>
+                    <option value="Healthcare & Education">Healthcare & Education (HOC, EDS)</option>
+                    <option value="Hospitality & Lifestyle">Hospitality & Lifestyle (HMI, REN, SHM, RHC)</option>
+                    <option value="Industrial & Institutional">Industrial & Institutional (MAI, GOI, POR)</option>
+                    <option value="Other">Other (OTH - Khusus)</option>
+                  </optgroup>
                 </select>
               </div>
 

@@ -2,7 +2,23 @@
 
 export type SurveyType = 'NEW_CUSTOMER' | 'RENEWAL';
 
+export type Segmen13Sektor =
+  | 'Bank & Finance (BAF)'
+  | 'Commercial Office (COF)'
+  | 'Commercial Building (COB)'
+  | 'Hospital & Clinic (HOC)'
+  | 'Education (EDS)'
+  | 'Hotel, Motel, Inn (HMI)'
+  | 'Shopping Mall (SHM)'
+  | 'Restaurant & Entertainment (REN)'
+  | 'Recreation / Health Club (RHC)'
+  | 'Manufacture & Industrial (MAI)'
+  | 'Government / Institutions (GOI)'
+  | 'Public Religion (POR)'
+  | 'Other (OTH)';
+
 export type SegmenGedung =
+  | Segmen13Sektor
   | 'Corporate & Financial'
   | 'Healthcare & Education'
   | 'Hospitality & Lifestyle'
