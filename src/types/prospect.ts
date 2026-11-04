@@ -62,6 +62,11 @@ export type CoverageLobiScent =
   | 'MEDIUM_3000'   // Free Standing (s/d 3.000 m³) -> SC-007 (S3000)
   | 'LARGE_5000';   // HVAC AC Sentral (s/d 5.000 m³) -> SC-005 (B5000)
 
+export type DayaListrikScent =
+  | 'AUTO'        // Menyesuaikan otomatis (Rekomendasi AI)
+  | 'LOW_POWER'   // Daya Rendah / Hemat Listrik (A80 0,0015 kWh / D300 0,0060 kWh)
+  | 'HIGH_POWER'; // Daya Tinggi / Output HVAC Maksimal (B5000 0,0310 kWh / S3000)
+
 export type KondisiLobi =
   | 'NONE' // Tidak Perlu Pengharum Lobi
   | 'STANDALONE_300' // Lobi Sedang (SC-006 D300 Stand Alone)
@@ -120,6 +125,7 @@ export interface SurveyObservationInput {
   pintuMasukLicinDebu: boolean;
   kondisiLobi: KondisiLobi;
   coverageLobiScent?: CoverageLobiScent;
+  dayaListrikScent?: DayaListrikScent;
   handSanitizerLobi?: boolean;
 
   // AREA 3: Koridor, Lift, dan Ruang Rapat

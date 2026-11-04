@@ -98,7 +98,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
   }
 
   // 2. Urinal Screen (Supporting Product)
-  if (input.pasangUrinalScreen || (input.jumlahUrinoirKloset && input.jumlahUrinoirKloset >= 4)) {
+  if (input.pasangUrinalScreen) {
     area1Units.push({
       id: 'A1-URINAL-SCREEN',
       kodeUnit: 'Urinal Screen',
@@ -122,7 +122,16 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
 
   // 3. Seat Cleaner (ESC vs Auto Seat Cleaner T900)
   if (input.khawatirBakteriKloset) {
-    if (input.autoSeatCleanerTouchless) {
+    const isTouchlessSegment =
+      input.autoSeatCleanerTouchless ||
+      input.segmen === 'Corporate & Financial' ||
+      input.segmen === 'Commercial Office (COF)' ||
+      input.segmen === 'Hospital & Clinic (HOC)' ||
+      input.segmen === 'Healthcare & Education' ||
+      input.segmen === 'Hotel, Motel, Inn (HMI)' ||
+      input.segmen === 'Hospitality & Lifestyle';
+
+    if (isTouchlessSegment) {
       area1Units.push({
         id: 'A1-AUTO-SEAT-T900',
         kodeUnit: 'Auto Seat Cleaner T900',
@@ -167,7 +176,14 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
 
   // 4. Sanitary Bin (ESB Manual Pedal vs ESBD Digital Autolid Sensor) - Main Products
   if (input.butuhSanitaryBin) {
-    if (input.tipeSanitaryBin === 'MANUAL_PEDAL') {
+    const isBudgetOrIndustrial =
+      input.tipeSanitaryBin === 'MANUAL_PEDAL' ||
+      (!input.tipeSanitaryBin &&
+        (input.segmen === 'Industrial & Institutional' ||
+          input.segmen === 'Manufacture & Industrial (MAI)' ||
+          input.segmen === 'Other'));
+
+    if (isBudgetOrIndustrial) {
       area1Units.push({
         id: 'A1-ESB-PEDAL',
         kodeUnit: 'ESB',
@@ -212,7 +228,40 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
 
   // 5. Sabun Wastafel (ESD MS1000 / EFS SP830 / Auto Foam AK1255 / Auto 1017 T / SP811 Wall / AK1205 Stainless)
   if (input.autoDispenserTouchlessArea1) {
-    if (input.tipeDispenserWastafelOtomatis === 'AUTO_1017T') {
+    const isHealthcare =
+      input.tipeDispenserWastafelOtomatis === 'AUTO_STAINLESS' ||
+      (!input.tipeDispenserWastafelOtomatis &&
+        (input.segmen === 'Healthcare & Education' || input.segmen === 'Hospital & Clinic (HOC)'));
+    const isHospitality =
+      input.tipeDispenserWastafelOtomatis === 'AUTO_1017T' ||
+      (!input.tipeDispenserWastafelOtomatis &&
+        (input.segmen === 'Hospitality & Lifestyle' || input.segmen === 'Shopping Mall (SHM)'));
+    const isIndustrial =
+      input.tipeDispenserWastafelOtomatis === 'AUTO_SP811_WALL' ||
+      (!input.tipeDispenserWastafelOtomatis &&
+        (input.segmen === 'Industrial & Institutional' || input.segmen === 'Manufacture & Industrial (MAI)'));
+
+    if (isHealthcare) {
+      area1Units.push({
+        id: 'A1-AUTO-STAINLESS',
+        kodeUnit: 'AK1205 / AK1205C',
+        namaUnit: 'Auto Soap Dispenser Stainless Steel (AK1205 / AK1205C)',
+        namaSpesifikAlat: 'AK1205 / AK1205C – Auto Soap & Sanitizer Dispenser Stainless Steel 304',
+        kategori: 'Toilet & Sanitasi Utama',
+        targetArea: 'AREA_1_TOILET',
+        namaArea: 'Area 1: Toilet dan Kamar Mandi',
+        posisiSpesifik: 'Dinding Wastafel Ruang Medis, ICU, Laboratorium, dan Restoran Fine Dining',
+        hierarchy: 'FLAGSHIP_PRODUCT',
+        hierarchyLabel: 'Produk Unggulan (Touchless Stainless)',
+        matchScore: 98,
+        petunjukPemasangan:
+          'Bodi Stainless Steel SUS 304 anti karat dengan proteksi kedap air IPX5. Sensor inframerah dengan pompa peristaltik teruji >200.000 kali siklus semprot.',
+        keunggulanGedung:
+          'Standar higienitas tertinggi bebas korosi bahan kimia medis/disinfektan, elegan, tahan benturan, dan kedap air IPX5.',
+        estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
+        keteranganTipe: 'Stainless Steel 304 IPX5 (Hospital & Fine Dining)',
+      });
+    } else if (isHospitality) {
       area1Units.push({
         id: 'A1-AUTO-1017T',
         kodeUnit: 'Auto 1017 T',
@@ -232,7 +281,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
         keteranganTipe: 'Sensor Touchless Hemat Air 35% (Anti-Kerak)',
       });
-    } else if (input.tipeDispenserWastafelOtomatis === 'AUTO_SP811_WALL') {
+    } else if (isIndustrial) {
       area1Units.push({
         id: 'A1-AUTO-SP811-WALL',
         kodeUnit: 'EASD / EAFS',
@@ -241,42 +290,22 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         kategori: 'Toilet & Sanitasi Utama',
         targetArea: 'AREA_1_TOILET',
         namaArea: 'Area 1: Toilet dan Kamar Mandi',
-        posisiSpesifik: 'Dinding Menggantung (Wall-Mounted) di Atas Meja Wastafel',
-        hierarchy: 'MAIN_PRODUCT',
-        hierarchyLabel: 'Produk Utama (Otomatis Dinding)',
-        matchScore: 96,
-        petunjukPemasangan:
-          'Pemasangan dinding dengan penguncian ganda. Ditenagai 4 baterai AA Alkaline dengan masa pakai hingga 12.000 kali semprot (~4 bulan). Tangki 800 ml (2.000 semprotan/1L), respon 2 detik.',
-        keunggulanGedung:
-          'Baterai AA praktis tahan lama hingga 12.000 semprotan. Kapasitas 800 ml sangat ideal untuk wastafel kantor modern dan toilet publik.',
-        estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
-        keteranganTipe: 'Dinding Baterai 4x AA (12.000 Semprot)',
-      });
-    } else if (input.tipeDispenserWastafelOtomatis === 'AUTO_STAINLESS') {
-      area1Units.push({
-        id: 'A1-AUTO-STAINLESS-AK1205',
-        kodeUnit: 'AK1205 / AK1205C',
-        namaUnit: 'Auto Soap Dispenser Stainless Steel (AK1205/C)',
-        namaSpesifikAlat: 'AK1205 / AK1205C – Auto Soap Dispenser Stainless Steel 304 (Waterproof IPX5)',
-        kategori: 'Toilet & Sanitasi Utama',
-        targetArea: 'AREA_1_TOILET',
-        namaArea: 'Area 1: Toilet dan Kamar Mandi',
-        posisiSpesifik: 'Dinding Meja Wastafel Toilet Eksekutif, Fine Dining & RS',
+        posisiSpesifik: 'Dinding Wastafel Toilet Karyawan & Area Produksi',
         hierarchy: 'FLAGSHIP_PRODUCT',
-        hierarchyLabel: 'Produk Unggulan (Stainless Steel)',
-        matchScore: 98,
+        hierarchyLabel: 'Produk Unggulan (Touchless Dinding)',
+        matchScore: 95,
         petunjukPemasangan:
-          'Bodi Stainless Steel 304 tahan karat. Pompa peristaltik berdaya tahan >200.000 kali pakai. Tangki 800 ml dengan 5 level dosis (0,5–2,5 ml). Dilengkapi proteksi semprotan air bersertifikasi IPX5.',
+          'Ditenagai 4 baterai AA dengan daya tahan hingga 12.000 kali semprotan. Kapasitas 800 ml dengan sistem penguncian ganda (double lock).',
         keunggulanGedung:
-          'Material stainless steel 304 premium bebas korosi dan bersertifikasi tahan cipratan air IPX5, standar tertinggi untuk rumah sakit dan restoran mewah.',
+          'Pengoperasian otomatis touch-free dengan masa pakai baterai sangat panjang, mengurangi frekuensi pergantian baterai oleh tim teknis.',
         estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
-        keteranganTipe: 'Stainless Steel 304 & Kedap Air IPX5',
+        keteranganTipe: 'Sensor Dinding 4x AA 12.000 Semprot (Double Lock)',
       });
     } else {
       area1Units.push({
-        id: 'A1-AUTO-FOAM-AK1255',
+        id: 'A1-AUTO-FOAM',
         kodeUnit: 'Auto Foam AK1255',
-        namaUnit: 'Touchless Foam Soap Dispenser (Auto AK1255)',
+        namaUnit: 'Touchless Auto Foam Soap (AK1255)',
         namaSpesifikAlat: 'Auto Foam (AK1255) – Touchless Foam Soap Dispenser',
         kategori: 'Toilet & Sanitasi Utama',
         targetArea: 'AREA_1_TOILET',
@@ -284,13 +313,13 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Dinding di Atas Meja Wastafel Toilet',
         hierarchy: 'FLAGSHIP_PRODUCT',
         hierarchyLabel: 'Produk Unggulan (Touchless)',
-        matchScore: 97,
+        matchScore: 96,
         petunjukPemasangan:
-          'Dispenser otomatis bertenaga baterai dengan sensor tangan presisi di bawah moncong dispenser.',
+          'Sensor inframerah mengeluarkan busa sabun tebal secara instan tanpa sentuhan. Baterai tahan lama dengan proteksi tetesan.',
         keunggulanGedung:
-          'Mencegah kontaminasi kuman silang antar pengguna wastafel dengan busa lembut mewah dan higienis.',
+          'Pengalaman mencuci tangan mewah tanpa sentuhan, menghemat air bilasan wastafel dan menjaga dinding wastafel tetap kering bersih.',
         estimasiUnit: `${input.jumlahWastafel || 1} Titik Wastafel`,
-        keteranganTipe: 'Busa Otomatis Tanpa Sentuh (Sensor)',
+        keteranganTipe: 'Sensor Busa Otomatis Tanpa Sentuh (Touch-Free)',
       });
     }
   } else if (input.tipeWastafel === 'TRAFIK_PADAT') {
@@ -338,7 +367,22 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
 
   // 6. Hand Dryer (EHD AK2822 vs Dual-Jet Hands-In vs Coffeemaker) - Flagship & Main Products
   if (input.keluhanSampahTisu) {
-    if (input.tipeHandDryer === 'HANDS_IN_DUAL') {
+    const isLuxuryOrHighTraffic =
+      input.tipeHandDryer === 'HANDS_IN_DUAL' ||
+      (!input.tipeHandDryer &&
+        (input.segmen === 'Hospitality & Lifestyle' ||
+          input.segmen === 'Shopping Mall (SHM)' ||
+          input.segmen === 'Hotel, Motel, Inn (HMI)' ||
+          (input.tipeWastafel === 'TRAFIK_PADAT' && input.jumlahWastafel >= 12)));
+    const isCorporate =
+      input.tipeHandDryer === 'COFFEEMAKER' ||
+      (!input.tipeHandDryer &&
+        (input.segmen === 'Corporate & Financial' ||
+          input.segmen === 'Commercial Office (COF)' ||
+          input.segmen === 'Commercial Building (COB)' ||
+          input.segmen === 'Restaurant & Entertainment (REN)'));
+
+    if (isLuxuryOrHighTraffic) {
       area1Units.push({
         id: 'A1-EHD-DUALJET',
         kodeUnit: 'EHD Dual-Jet',
@@ -358,7 +402,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         estimasiUnit: `${Math.max(1, Math.ceil((input.jumlahWastafel || 2) / 2))} Unit Area Wastafel`,
         keteranganTipe: 'Dual-Jet Hands-In 95 m/s (5-10 Detik)',
       });
-    } else if (input.tipeHandDryer === 'COFFEEMAKER') {
+    } else if (isCorporate) {
       area1Units.push({
         id: 'A1-EHD-COFFEEMAKER',
         kodeUnit: 'EHD-Coffee',
@@ -423,7 +467,14 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       keteranganTipe: 'Sabun Mandi 2-in-1 (Shower Room)',
     });
 
-    if (input.tipeSabunShower === 'LUXURY_MILK') {
+    const isLuxuryRefill =
+      input.tipeSabunShower === 'LUXURY_MILK' ||
+      (!input.tipeSabunShower &&
+        (input.segmen === 'Other' ||
+          input.segmen === 'Corporate & Financial' ||
+          input.segmen === 'Recreation / Health Club (RHC)'));
+
+    if (isLuxuryRefill) {
       area1Units.push({
         id: 'A1-REFILL-LUXURY',
         kodeUnit: 'Luxury Soap 2-in-1',
@@ -443,7 +494,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         estimasiUnit: 'Refill Rutin Sesuai Kebutuhan Dispenser',
         keteranganTipe: 'Refill Premium White Milk (Eksklusif VIP)',
       });
-    } else if (input.tipeSabunShower === 'SABUN_3IN1') {
+    } else {
       area1Units.push({
         id: 'A1-REFILL-3IN1',
         kodeUnit: 'Sabun 3-in-1',
@@ -565,7 +616,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
   }
 
   // 3. Large Area Scent Diffuser (SC-005 B5000 / SC-006 D300 / SC-007 S3000 / SC-008 A80)
-  if (input.kondisiLobi === 'HVAC_LUAS') {
+  if (input.kondisiLobi === 'HVAC_LUAS' || input.coverageLobiScent === 'LARGE_5000') {
     area2Units.push({
       id: 'A2-SCENT-B5000',
       kodeUnit: 'SC-005 (B5000)',
@@ -581,13 +632,13 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       petunjukPemasangan:
         'Pipa injeksi mikro dihubungkan ke saluran ducting AC Sentral AHU gedung. Dilengkapi timer digital & kontrol konsentrasi uap nano cold air diffusion.',
       keunggulanGedung:
-        'Teknologi Cold Air Diffusion menyebarkan aroma mewah bintang lima hingga cakupan 5.000 m³ ke seluruh atrium/lobi luas tanpa membuat lantai licin.',
+        'Teknologi Cold Air Diffusion menyebarkan aroma mewah bintang lima hingga cakupan 5.000 m³ ke seluruh atrium/lobi luas tanpa membuat lantai licin. Konsumsi daya 0,0310 kWh (estimasi biaya listrik operasional sangat hemat Rp16.128/bulan).',
       estimasiUnit: '1 Sistem Terkoneksi Saluran AC Lobi',
-      keteranganTipe: 'Cold Air Diffusion (Koneksi HVAC - 5.000 m³)',
+      keteranganTipe: 'Daya 0,0310 kWh (~Rp16.128/bln) • HVAC Sentral 5.000 m³',
     });
-    summaryHighlights.push('Lobi Utama HVAC: SC-005 (B5000) terintegrasi AC Sentral (Coverage 5.000 m³).');
-  } else if (input.kondisiLobi === 'STANDALONE_300') {
-    if (input.coverageLobiScent === 'MEDIUM_3000') {
+    summaryHighlights.push('Lobi Utama HVAC: SC-005 (B5000) terintegrasi AC Sentral (Coverage 5.000 m³, Daya 0,0310 kWh).');
+  } else if (input.kondisiLobi === 'STANDALONE_300' || input.coverageLobiScent === 'MEDIUM_3000' || input.coverageLobiScent === 'SMALL_100_300') {
+    if (input.coverageLobiScent === 'MEDIUM_3000' || input.dayaListrikScent === 'HIGH_POWER') {
       area2Units.push({
         id: 'A2-SCENT-S3000',
         kodeUnit: 'SC-007 (S3000)',
@@ -605,7 +656,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         keunggulanGedung:
           'Cakupan aroma sangat luas hingga 3.000 m³ dalam satu mesin mandiri berdiri, menghadirkan aroma mewah merata di lobi tinggi tanpa membongkar plafon.',
         estimasiUnit: '1 - 2 Unit Free Standing Lobi',
-        keteranganTipe: 'Free Standing (Coverage 3.000 m³)',
+        keteranganTipe: 'Portable Standing Mandiri (Coverage 3.000 m³)',
       });
       summaryHighlights.push('Lobi Free Standing: SC-007 (S3000) mencakup area hingga 3.000 m³.');
     } else {
@@ -624,9 +675,9 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         petunjukPemasangan:
           'Unit berdiri mandiri dengan desain modern compact. Pengaturan timer digital otomatis via panel tombol untuk cakupan hingga 300 m³.',
         keunggulanGedung:
-          'Menghadirkan aroma eksklusif di lobi dan area resepsionis secara instan tanpa perlu instalasi kabel atau membongkar plafon.',
+          'Menghadirkan aroma eksklusif di lobi dan area resepsionis secara instan. Konsumsi daya ultra-rendah 0,0060 kWh dengan estimasi biaya listrik hanya Rp3.096/bulan (Rp103,20/hari).',
         estimasiUnit: '1 - 2 Unit Area Resepsionis Lobi',
-        keteranganTipe: 'Unit Berdiri Mandiri (Coverage 300 m³)',
+        keteranganTipe: 'Daya Hemat 0,0060 kWh (~Rp3.096/bln) • Coverage 300 m³',
       });
     }
   }
