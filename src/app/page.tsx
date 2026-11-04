@@ -1645,72 +1645,14 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                   </div>
                 </div>
 
-                {/* PILIHAN METODE ANALISIS: MACHINE LEARNING (1.000 DATA) VS SOP STANDAR */}
-                <div className="bg-gradient-to-r from-emerald-50 via-teal-50 to-cyan-50 p-3.5 rounded-2xl border border-emerald-200/90 space-y-2.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                      <Sparkles className="h-4 w-4 text-emerald-700" />
-                      Pilihan Mesin Rekomendasi (Client-Side Engine):
-                    </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold border border-emerald-200">
-                      Zero Server • 0ms Latency
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setEngineMode('ML_HISTORICAL')}
-                      className={`p-2.5 rounded-xl border text-left transition ${
-                        engineMode === 'ML_HISTORICAL'
-                          ? 'bg-emerald-800 text-white border-emerald-900 shadow-sm'
-                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                      }`}
-                    >
-                      <div className="text-xs font-bold flex items-center gap-1">
-                        <span>Machine Learning Model</span>
-                      </div>
-                      <div
-                        className={`text-[10px] ${
-                          engineMode === 'ML_HISTORICAL' ? 'text-emerald-200' : 'text-slate-500'
-                        }`}
-                      >
-                        Model 1.000 data survei (Akurasi 99.6%)
-                      </div>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setEngineMode('RULE_BASED')}
-                      className={`p-2.5 rounded-xl border text-left transition ${
-                        engineMode === 'RULE_BASED'
-                          ? 'bg-teal-800 text-white border-teal-900 shadow-sm'
-                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                      }`}
-                    >
-                      <div className="text-xs font-bold">SOP Standar (Aturan)</div>
-                      <div
-                        className={`text-[10px] ${
-                          engineMode === 'RULE_BASED' ? 'text-teal-200' : 'text-slate-500'
-                        }`}
-                      >
-                        Katalog resmi teknis EcoCare
-                      </div>
-                    </button>
-                  </div>
-                </div>
-
                 {/* TOMBOL UTAMA: LIHAT REKOMENDASI SOLUSI */}
-                <div className="pt-1">
+                <div className="pt-2">
                   <button
                     type="submit"
                     className="w-full bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-700 hover:from-emerald-900 hover:to-teal-800 text-white font-bold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
                   >
                     <Sparkles className="h-5 w-5 text-emerald-200" />
-                    <span>
-                      {engineMode === 'ML_HISTORICAL'
-                        ? 'Analisis dengan Model Machine Learning'
-                        : 'Lihat Rekomendasi Solusi Kebersihan'}
-                    </span>
+                    <span>Lihat Rekomendasi Solusi</span>
                   </button>
                 </div>
               </form>
@@ -1951,21 +1893,12 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                       })}
                   </div>
 
-                  {/* DUA TOMBOL AKSI BAWAH */}
-                  <div className="space-y-2 pt-1">
-                    <button
-                      type="button"
-                      onClick={() => setIsQuotationModalOpen(true)}
-                      className="w-full bg-gradient-to-r from-emerald-800 to-teal-800 hover:from-emerald-900 hover:to-teal-900 text-white font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 text-xs sm:text-sm"
-                    >
-                      <FileText className="h-4 w-4" />
-                      <span>Buat Ringkasan Penawaran (Quotation)</span>
-                    </button>
-
+                  {/* TOMBOL AKSI SIMPAN */}
+                  <div className="pt-2">
                     <button
                       type="button"
                       onClick={handleSaveDraft}
-                      className="w-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-xs"
+                      className="w-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-bold py-3 px-4 rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 text-xs sm:text-sm"
                     >
                       <Save className="h-4 w-4 text-emerald-700" />
                       <span>Simpan Hasil Survei Ini</span>
