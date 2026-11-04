@@ -1058,7 +1058,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                                   Pipa tanam
                                 </strong>
                                 <span className="text-[11px] text-amber-700">
-                                  Toilet dengan sensor otomatis atau dinding marmer. Menggunakan alat tetes digital dengan baterai tanpa melubangi dinding.
+                                  Toilet dengan sensor otomatis atau dinding marmer.
                                 </span>
                               </div>
                             </label>
@@ -1111,7 +1111,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               />
                               <div>
                                 <strong className="block text-slate-900">
-                                  Ingin hemat air dan ramah lingkungan
+                                  Mengutamakan efisiensi air dan ramah lingkungan
                                 </strong>
                                 <span className="text-[11px] text-slate-500">
                                   Mengutamakan efisiensi pemakaian air bilasan dan konsep ramah lingkungan.
@@ -1168,7 +1168,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                               className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
                             <span className="text-slate-800 font-medium">
-                              Membutuhkan tempat pembuangan pembalut wanita
+                              Butuh tempat pembuangan pembalut wanita
                             </span>
                           </label>
 
@@ -1183,34 +1183,6 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                             />
                             <span className="text-slate-800 font-medium">
                               Ingin memangkas biaya tisu dan mengurangi sampah kertas
-                            </span>
-                          </label>
-
-                          <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
-                            <input
-                              type="checkbox"
-                              checked={Boolean(formData.pasangUrinalScreen)}
-                              onChange={(e) =>
-                                handleFieldChange('pasangUrinalScreen', e.target.checked)
-                              }
-                              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-                            />
-                            <span className="text-slate-800 font-medium">
-                              Urinoir pria butuh saringan anti percikan & pencegah sumbatan
-                            </span>
-                          </label>
-
-                          <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-xs">
-                            <input
-                              type="checkbox"
-                              checked={Boolean(formData.autoDispenserTouchlessArea1)}
-                              onChange={(e) =>
-                                handleFieldChange('autoDispenserTouchlessArea1', e.target.checked)
-                              }
-                              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-                            />
-                            <span className="text-slate-800 font-medium">
-                              Wastafel menghendaki dispenser otomatis tanpa sentuh
                             </span>
                           </label>
 
@@ -1476,7 +1448,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Terdapat lift atau ruang tertutup sempit yang membutuhkan sirkulasi aroma lembut konstan
+                              Ruang tertutup sempit yang butuh sirkulasi
                             </span>
                           </div>
                         </label>
@@ -1532,22 +1504,6 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                         <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer">
                           <input
                             type="checkbox"
-                            checked={Boolean(formData.essentialOilMeeting)}
-                            onChange={(e) =>
-                              handleFieldChange('essentialOilMeeting', e.target.checked)
-                            }
-                            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
-                          />
-                          <div>
-                            <span className="font-semibold text-slate-900 block">
-                              Ruang kerja eksekutif membutuhkan aroma essential oil relaksasi
-                            </span>
-                          </div>
-                        </label>
-
-                        <label className="flex items-start gap-2.5 p-2 rounded-lg hover:bg-slate-50 cursor-pointer">
-                          <input
-                            type="checkbox"
                             checked={Boolean(formData.handSanitizerKoridor)}
                             onChange={(e) =>
                               handleFieldChange('handSanitizerKoridor', e.target.checked)
@@ -1556,7 +1512,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Dinding akses lorong / depan pintu ruang rapat membutuhkan hand sanitizer
+                              Dinding depan pintu ruangan/lift butuh hand sanitizer
                             </span>
                           </div>
                         </label>
@@ -1572,7 +1528,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Pintu masuk ruang rapat atau lorong berkarpet membutuhkan keset pelindung
+                              Pintu masuk ruangan membutuhkan keset
                             </span>
                           </div>
                         </label>
@@ -1619,7 +1575,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Area kantin atau dapur sering terganggu lalat berterbangan
+                              Area kantin terganggu dengan serangga terbang
                             </span>
                           </div>
                         </label>
@@ -1651,7 +1607,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           />
                           <div>
                             <span className="font-semibold text-slate-900 block">
-                              Jalan masuk dapur atau kantin membutuhkan keset khusus penyerap minyak & lemak
+                              Jalan masuk dapur/kantin butuh keset penyerap air
                             </span>
                           </div>
                         </label>
