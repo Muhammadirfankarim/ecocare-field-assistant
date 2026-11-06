@@ -62,7 +62,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Pipa Bilas Luar Kloset & Urinoir (Bisa Dibor)',
       hierarchy: 'MAIN_PRODUCT',
       hierarchyLabel: 'Produk Utama',
-      matchScore: 96,
+      matchScore: 97.0,
       petunjukPemasangan:
         'Dipasang pada pipa bilas luar kloset/urinoir dengan injeksi katup mekanis. Otomatis bekerja saat dibilas tanpa baterai/listrik.',
       keunggulanGedung:
@@ -84,7 +84,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Kloset / Urinoir Dinding Marmer & Pipa Tanam (Tanpa Bor)',
       hierarchy: 'MAIN_PRODUCT',
       hierarchyLabel: 'Produk Utama',
-      matchScore: 98,
+      matchScore: 98.5,
       petunjukPemasangan:
         'Sistem tetes berkala presisi 0,1 ml per interval menggunakan 2 baterai C. Pemasangan tanpa melubangi dinding marmer.',
       catatanKhusus:
@@ -110,7 +110,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dasar Mangkuk Urinoir Pria',
       hierarchy: 'SUPPORTING_NEW',
       hierarchyLabel: 'Pengembangan & Pendukung',
-      matchScore: 94,
+      matchScore: 88.5,
       petunjukPemasangan:
         'Ditempatkan langsung pada saringan mangkuk urinoir pria. Mengandung bahan wangi aktif tahan 30 hari.',
       keunggulanGedung:
@@ -143,7 +143,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Dinding Samping Setiap Bilik Kloset Duduk',
         hierarchy: 'FLAGSHIP_PRODUCT',
         hierarchyLabel: 'Produk Unggulan (Touchless)',
-        matchScore: 97,
+        matchScore: 92.5,
         petunjukPemasangan:
           'Sensor inframerah mendeteksi tangan otomatis untuk mengeluarkan busa disinfektan ke atas tisu toilet.',
         keunggulanGedung:
@@ -163,7 +163,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Dinding Bilik Kloset Duduk',
         hierarchy: 'MAIN_PRODUCT',
         hierarchyLabel: 'Produk Utama',
-        matchScore: 92,
+        matchScore: 89.5,
         petunjukPemasangan:
           'Dipasang di dinding samping kloset duduk, mudah ditekan dengan tisu toilet sebelum dudukan digunakan.',
         keunggulanGedung:
@@ -195,7 +195,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Lantai Sudut Bilik Kloset Wanita (Sisi Berlawanan Dispenser Tisu)',
         hierarchy: 'MAIN_PRODUCT',
         hierarchyLabel: 'Produk Utama',
-        matchScore: 94,
+        matchScore: 94.5,
         petunjukPemasangan:
           'Penempatan di lantai sudut bilik wanita. Dioperasikan dengan pedal kaki mekanis (hands-free). Dilengkapi kantong liner bag dan cairan Sanitary Fluid (40 ml dasar wadah + 40 ml digantung atas). Servis berkala oleh teknisi wanita EcoCare.',
         keunggulanGedung:
@@ -215,7 +215,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Lantai Sudut Setiap Bilik Toilet Wanita',
         hierarchy: 'MAIN_PRODUCT',
         hierarchyLabel: 'Produk Utama',
-        matchScore: 95,
+        matchScore: 97.8,
         petunjukPemasangan:
           'Penempatan unit ramping di lantai bilik wanita. Tutup terbuka otomatis lewat sensor inframerah 0,5 detik.',
         keunggulanGedung:
@@ -253,7 +253,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Dinding Wastafel Ruang Medis, ICU, Laboratorium, dan Restoran Fine Dining',
         hierarchy: 'FLAGSHIP_PRODUCT',
         hierarchyLabel: 'Produk Unggulan (Touchless Stainless)',
-        matchScore: 98,
+        matchScore: 98.2,
         petunjukPemasangan:
           'Bodi Stainless Steel SUS 304 anti karat dengan proteksi kedap air IPX5. Sensor inframerah dengan pompa peristaltik teruji >200.000 kali siklus semprot.',
         keunggulanGedung:
@@ -273,7 +273,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Dinding di Atas Meja Wastafel Toilet Kantor / Preparasi',
         hierarchy: 'FLAGSHIP_PRODUCT',
         hierarchyLabel: 'Produk Unggulan (Touchless)',
-        matchScore: 97,
+        matchScore: 96.0,
         petunjukPemasangan:
           'Sensor inframerah mengeluarkan busa sabun tebal secara instan tanpa sentuhan. Baterai hemat daya dengan proteksi tetesan.',
         keunggulanGedung:
@@ -293,7 +293,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Dinding Wastafel Toilet Karyawan & Area Produksi',
         hierarchy: 'FLAGSHIP_PRODUCT',
         hierarchyLabel: 'Produk Unggulan (Touchless Dinding)',
-        matchScore: 95,
+        matchScore: 93.0,
         petunjukPemasangan:
           'Ditenagai 4 baterai AA dengan daya tahan hingga 12.000 kali semprotan. Kapasitas 800 ml dengan sistem penguncian ganda (double lock).',
         keunggulanGedung:
@@ -313,7 +313,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Dinding di Atas Meja Wastafel Toilet',
         hierarchy: 'FLAGSHIP_PRODUCT',
         hierarchyLabel: 'Produk Unggulan (Touchless)',
-        matchScore: 96,
+        matchScore: 96.0,
         petunjukPemasangan:
           'Sensor inframerah mengeluarkan busa sabun tebal secara instan tanpa sentuhan. Baterai tahan lama dengan proteksi tetesan.',
         keunggulanGedung:
@@ -334,7 +334,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Area Wastafel Trafik Tinggi',
       hierarchy: 'MAIN_PRODUCT',
       hierarchyLabel: 'Produk Utama',
-      matchScore: 94,
+      matchScore: 94.0,
       petunjukPemasangan:
         'Dipasang kokoh di dinding wastafel dengan kunci pengaman ganda dan tabung kapasitas 1.000 ml.',
       keunggulanGedung:
@@ -354,7 +354,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Area Wastafel Perkantoran / Ramah Lingkungan',
       hierarchy: 'MAIN_PRODUCT',
       hierarchyLabel: 'Produk Utama',
-      matchScore: 95,
+      matchScore: 93.5,
       petunjukPemasangan:
         'Pompa khusus menghasilkan busa instan lembut siap pakai dengan dosis terukur 0,4 ml per tekan.',
       keunggulanGedung:
@@ -394,7 +394,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Dinding Jalur Keluar Meja Wastafel (Bandara, Mall Mewah, Hotel Bintang 5, Grade A Office)',
         hierarchy: 'FLAGSHIP_PRODUCT',
         hierarchyLabel: 'Produk Unggulan (Flagship)',
-        matchScore: 98,
+        matchScore: 93.8,
         petunjukPemasangan:
           'Pengguna memasukkan kedua tangan ke dalam celah unit (hands-in) dari atas ke bawah. Brushless DC Motor dengan sensor IR Blocking, daya 1.650–2.050W (pemanas 1.000–1.200W). Kedap air IPX4, dimensi 685 x 300 x 220 mm, berat 10,5 kg.',
         keunggulanGedung:
@@ -414,7 +414,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Dinding Samping Wastafel Toilet Perkantoran Menengah & Restoran',
         hierarchy: 'MAIN_PRODUCT',
         hierarchyLabel: 'Produk Utama',
-        matchScore: 92,
+        matchScore: 89.0,
         petunjukPemasangan:
           'Dipasang di dinding samping wastafel. Material bodi plastik ABS kokoh tahan benturan (dimensi 468 x 250 x 168 mm, bobot 4,6 kg). Daya 1.350W (220-240V, 4,2-4,5A), sensor otomatis bawah, kecepatan angin 30 m/s.',
         keunggulanGedung:
@@ -434,7 +434,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Dinding Jalur Keluar Dekat Wastafel Toilet',
         hierarchy: 'FLAGSHIP_PRODUCT',
         hierarchyLabel: 'Produk Unggulan (Flagship)',
-        matchScore: 90,
+        matchScore: 91.0,
         petunjukPemasangan:
           'Pemasangan dinding dengan sambungan daya listrik 650-900W hemat energi, dilengkapi penampung tetesan air.',
         keunggulanGedung:
@@ -458,7 +458,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Bilik Shower Kamar Mandi Hotel, Gym / Fitness, atau Shower Eksekutif',
       hierarchy: 'MAIN_PRODUCT',
       hierarchyLabel: 'Produk Utama',
-      matchScore: 95,
+      matchScore: 92.0,
       petunjukPemasangan:
         'Dipasang pada dinding bilik mandi basah. SP 829 kapasitas 1.000 ml dengan pompa per internal untuk pemakaian intensif. SP 819 Mini kapasitas 400 ml ramping untuk bilik shower kompak.',
       keunggulanGedung:
@@ -486,7 +486,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Wastafel VIP & Bilik Shower Golf Club / Executive Club',
         hierarchy: 'MAIN_PRODUCT',
         hierarchyLabel: 'Produk Utama (Refill Khusus)',
-        matchScore: 96,
+        matchScore: 91.5,
         petunjukPemasangan:
           'Diisikan ke dalam dispenser SP 829 / SP 819 Mini. Khusus segmen high-class. Aturan SOP EcoCare: Dilarang dipasang di area publik seperti mall umum untuk menjaga efisiensi service cost cabang.',
         keunggulanGedung:
@@ -506,7 +506,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
         posisiSpesifik: 'Bilik Shower Pusat Kebugaran (Gym), Hotel, dan Kamar Mandi Staf',
         hierarchy: 'MAIN_PRODUCT',
         hierarchyLabel: 'Produk Utama (Refill Khusus)',
-        matchScore: 94,
+        matchScore: 87.5,
         petunjukPemasangan:
           'Diisikan ke dalam unit dispenser shower SP 829 atau SP 819 Mini.',
         keunggulanGedung:
@@ -530,7 +530,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Atas Area Urinoir & Kloset Toilet',
       hierarchy: 'MAIN_PRODUCT',
       hierarchyLabel: 'Produk Utama',
-      matchScore: 93,
+      matchScore: 86.0,
       petunjukPemasangan:
         'Kipas hening bertenaga 1 baterai D dengan cartridge wangi padat, bekerja terus-menerus tanpa gas semprot.',
       keunggulanGedung:
@@ -553,7 +553,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Samping Pintu Keluar Toilet',
       hierarchy: 'SECONDARY_PRODUCT',
       hierarchyLabel: 'Produk Sekunder',
-      matchScore: 91,
+      matchScore: 85.0,
       petunjukPemasangan:
         'Dipasang di dekat pintu keluar toilet untuk perlindungan higienis ekstra setelah mencuci tangan.',
       keunggulanGedung:
@@ -582,7 +582,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Ambang Pintu Masuk Utama Gedung & Akses Lobi (Main Entrance)',
       hierarchy: 'SECONDARY_PRODUCT',
       hierarchyLabel: 'Produk Sekunder',
-      matchScore: 93,
+      matchScore: 96.5,
       petunjukPemasangan:
         'Ditempatkan di area transisi pintu masuk. Layanan profesional sewa keset dengan penggantian & pencucian rutin oleh EcoCare.',
       keunggulanGedung:
@@ -605,7 +605,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Standing Pole / Meja Resepsionis Lobi Utama',
       hierarchy: 'FLAGSHIP_PRODUCT',
       hierarchyLabel: 'Produk Unggulan (Touchless)',
-      matchScore: 94,
+      matchScore: 91.0,
       petunjukPemasangan:
         'Ditempatkan pada standing pole elegan atau dinding depan lift lobi utama. Sensor otomatis tanpa sentuhan tangan.',
       keunggulanGedung:
@@ -616,69 +616,92 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
   }
 
   // 3. Large Area Scent Diffuser (SC-005 B5000 / SC-006 D300 / SC-007 S3000 / SC-008 A80)
-  if (input.kondisiLobi === 'HVAC_LUAS' || input.coverageLobiScent === 'LARGE_5000') {
-    area2Units.push({
-      id: 'A2-SCENT-B5000',
-      kodeUnit: 'SC-005 (B5000)',
-      namaUnit: 'Ecocare Large Area Scent Diffuser (SC-005 B5000)',
-      namaSpesifikAlat: 'SC-005 (B5000) – Large Area Scent Diffuser (Koneksi AC Sentral HVAC - Coverage 5.000 m³)',
-      kategori: 'Pengharum Premium (Smart Scenting)',
-      targetArea: 'AREA_2_LOBBY',
-      namaArea: 'Area 2: Pintu Masuk dan Lobi Utama',
-      posisiSpesifik: 'Ruang Mesin AHU / Saluran Utama Pendingin AC Sentral Lobi',
-      hierarchy: 'SUPPORTING_NEW',
-      hierarchyLabel: 'Pengembangan & Pendukung',
-      matchScore: 97,
-      petunjukPemasangan:
-        'Pipa injeksi mikro dihubungkan ke saluran ducting AC Sentral AHU gedung. Dilengkapi timer digital & kontrol konsentrasi uap nano cold air diffusion.',
-      keunggulanGedung:
-        'Teknologi Cold Air Diffusion menyebarkan aroma mewah bintang lima hingga cakupan 5.000 m³ ke seluruh atrium/lobi luas tanpa membuat lantai licin. Konsumsi daya 0,0310 kWh (estimasi biaya listrik operasional sangat hemat Rp16.128/bulan).',
-      estimasiUnit: '1 Sistem Terkoneksi Saluran AC Lobi',
-      keteranganTipe: 'Daya 0,0310 kWh (~Rp16.128/bln) • HVAC Sentral 5.000 m³',
-    });
-    summaryHighlights.push('Lobi Utama HVAC: SC-005 (B5000) terintegrasi AC Sentral (Coverage 5.000 m³, Daya 0,0310 kWh).');
-  } else if (input.kondisiLobi === 'STANDALONE_300' || input.coverageLobiScent === 'MEDIUM_3000' || input.coverageLobiScent === 'SMALL_100_300') {
-    if (input.coverageLobiScent === 'MEDIUM_3000' || input.dayaListrikScent === 'HIGH_POWER') {
+  if (input.kondisiLobi && input.kondisiLobi !== 'NONE') {
+    if (input.kondisiLobi === 'HVAC_LUAS' || input.coverageLobiScent === 'LARGE_5000') {
       area2Units.push({
-        id: 'A2-SCENT-S3000',
-        kodeUnit: 'SC-007 (S3000)',
-        namaUnit: 'Ecocare Free Standing Scent Diffuser (SC-007 S3000)',
-        namaSpesifikAlat: 'SC-007 (S3000) – Free Standing Scent Diffuser Machine (Coverage 3.000 m³)',
+        id: 'A2-SCENT-B5000',
+        kodeUnit: 'SC-005 (B5000)',
+        namaUnit: 'Ecocare Large Area Scent Diffuser (SC-005 B5000)',
+        namaSpesifikAlat: 'SC-005 (B5000) – Large Area Scent Diffuser (Koneksi AC Sentral HVAC - Coverage 5.000 m³)',
         kategori: 'Pengharum Premium (Smart Scenting)',
         targetArea: 'AREA_2_LOBBY',
         namaArea: 'Area 2: Pintu Masuk dan Lobi Utama',
-        posisiSpesifik: 'Lantai Lobi Hotel, Atrium Mall, Exhibition Hall, Bank & Restoran',
+        posisiSpesifik: 'Ruang Mesin AHU / Saluran Utama Pendingin AC Sentral Lobi',
         hierarchy: 'SUPPORTING_NEW',
         hierarchyLabel: 'Pengembangan & Pendukung',
-        matchScore: 96,
+        matchScore: 88.0,
         petunjukPemasangan:
-          'Unit berdiri mandiri (Free Standing) berdaya jangkau luas hingga 3.000 m³. Dilengkapi timer digital otomatis dan pengaturan konsentrasi uap tanpa perlu instalasi pipa AC.',
+          'Pipa injeksi mikro dihubungkan ke saluran ducting AC Sentral AHU gedung. Dilengkapi timer digital & kontrol konsentrasi uap nano cold air diffusion.',
         keunggulanGedung:
-          'Cakupan aroma sangat luas hingga 3.000 m³ dalam satu mesin mandiri berdiri, menghadirkan aroma mewah merata di lobi tinggi tanpa membongkar plafon.',
-        estimasiUnit: '1 - 2 Unit Free Standing Lobi',
-        keteranganTipe: 'Portable Standing Mandiri (Coverage 3.000 m³)',
+          'Teknologi Cold Air Diffusion menyebarkan aroma mewah bintang lima hingga cakupan 5.000 m³ ke seluruh atrium/lobi luas tanpa membuat lantai licin. Konsumsi daya 0,0310 kWh (estimasi biaya listrik operasional sangat hemat Rp16.128/bulan).',
+        estimasiUnit: '1 Sistem Terkoneksi Saluran AC Lobi',
+        keteranganTipe: 'Daya 0,0310 kWh (~Rp16.128/bln) • HVAC Sentral 5.000 m³',
       });
-      summaryHighlights.push('Lobi Free Standing: SC-007 (S3000) mencakup area hingga 3.000 m³.');
-    } else {
-      area2Units.push({
-        id: 'A2-SCENT-D300',
-        kodeUnit: 'SC-006 (D300)',
-        namaUnit: 'Ecocare Scent Diffuser Stand Alone (SC-006 D300)',
-        namaSpesifikAlat: 'SC-006 (D300) – Scent Diffuser Stand Alone (Coverage 300 m³)',
-        kategori: 'Pengharum Premium (Smart Scenting)',
-        targetArea: 'AREA_2_LOBBY',
-        namaArea: 'Area 2: Pintu Masuk dan Lobi Utama',
-        posisiSpesifik: 'Meja Resepsionis / Sudut Strategis Lobi Utama',
-        hierarchy: 'SUPPORTING_NEW',
-        hierarchyLabel: 'Pengembangan & Pendukung',
-        matchScore: 93,
-        petunjukPemasangan:
-          'Unit berdiri mandiri dengan desain modern compact. Pengaturan timer digital otomatis via panel tombol untuk cakupan hingga 300 m³.',
-        keunggulanGedung:
-          'Menghadirkan aroma eksklusif di lobi dan area resepsionis secara instan. Konsumsi daya ultra-rendah 0,0060 kWh dengan estimasi biaya listrik hanya Rp3.096/bulan (Rp103,20/hari).',
-        estimasiUnit: '1 - 2 Unit Area Resepsionis Lobi',
-        keteranganTipe: 'Daya Hemat 0,0060 kWh (~Rp3.096/bln) • Coverage 300 m³',
-      });
+      summaryHighlights.push('Lobi Utama HVAC: SC-005 (B5000) terintegrasi AC Sentral (Coverage 5.000 m³, Daya 0,0310 kWh).');
+    } else if (input.kondisiLobi === 'STANDALONE_300') {
+      if (input.coverageLobiScent === 'MEDIUM_3000' || input.dayaListrikScent === 'HIGH_POWER') {
+        area2Units.push({
+          id: 'A2-SCENT-S3000',
+          kodeUnit: 'SC-007 (S3000)',
+          namaUnit: 'Ecocare Free Standing Scent Diffuser (SC-007 S3000)',
+          namaSpesifikAlat: 'SC-007 (S3000) – Free Standing Scent Diffuser Machine (Coverage 3.000 m³)',
+          kategori: 'Pengharum Premium (Smart Scenting)',
+          targetArea: 'AREA_2_LOBBY',
+          namaArea: 'Area 2: Pintu Masuk dan Lobi Utama',
+          posisiSpesifik: 'Lantai Lobi Hotel, Atrium Mall, Exhibition Hall, Bank & Restoran',
+          hierarchy: 'SUPPORTING_NEW',
+          hierarchyLabel: 'Pengembangan & Pendukung',
+          matchScore: 86.5,
+          petunjukPemasangan:
+            'Unit berdiri mandiri (Free Standing) berdaya jangkau luas hingga 3.000 m³. Dilengkapi timer digital otomatis dan pengaturan konsentrasi uap tanpa perlu instalasi pipa AC.',
+          keunggulanGedung:
+            'Cakupan aroma sangat luas hingga 3.000 m³ dalam satu mesin mandiri berdiri, menghadirkan aroma mewah merata di lobi tinggi tanpa membongkar plafon.',
+          estimasiUnit: '1 - 2 Unit Free Standing Lobi',
+          keteranganTipe: 'Portable Standing Mandiri (Coverage 3.000 m³)',
+        });
+        summaryHighlights.push('Lobi Free Standing: SC-007 (S3000) mencakup area hingga 3.000 m³.');
+      } else if (input.dayaListrikScent === 'LOW_POWER' && input.coverageLobiScent === 'SMALL_100_300') {
+        area2Units.push({
+          id: 'A2-SCENT-A80',
+          kodeUnit: 'SC-008 (A80)',
+          namaUnit: 'Ecocare Mini Scent Diffuser (SC-008 A80)',
+          namaSpesifikAlat: 'SC-008 (A80) – Ultra-Low Power Mini Scent Diffuser (Coverage 100 m³)',
+          kategori: 'Pengharum Premium (Smart Scenting)',
+          targetArea: 'AREA_2_LOBBY',
+          namaArea: 'Area 2: Pintu Masuk dan Lobi Utama',
+          posisiSpesifik: 'Meja Resepsionis / VIP Lounge / Konsol Lobi',
+          hierarchy: 'SUPPORTING_NEW',
+          hierarchyLabel: 'Pengembangan & Pendukung',
+          matchScore: 83.0,
+          petunjukPemasangan:
+            'Unit ultra compact diletakkan di atas meja resepsionis atau dipasang di dinding. Konsumsi daya sangat minim 0,0015 kWh.',
+          keunggulanGedung:
+            'Konsumsi daya ultra-hemat hanya 0,0015 kWh dengan estimasi biaya listrik hanya Rp777/bulan (Rp25,92/hari) dengan aroma mewah.',
+          estimasiUnit: '1 Unit Meja Resepsionis',
+          keteranganTipe: 'Daya 0,0015 kWh (~Rp777/bln) • Coverage 100 m³',
+        });
+        summaryHighlights.push('Lobi Receptionist: SC-008 (A80) ultra-low power 0,0015 kWh (~Rp777/bln).');
+      } else {
+        area2Units.push({
+          id: 'A2-SCENT-D300',
+          kodeUnit: 'SC-006 (D300)',
+          namaUnit: 'Ecocare Scent Diffuser Stand Alone (SC-006 D300)',
+          namaSpesifikAlat: 'SC-006 (D300) – Scent Diffuser Stand Alone (Coverage 300 m³)',
+          kategori: 'Pengharum Premium (Smart Scenting)',
+          targetArea: 'AREA_2_LOBBY',
+          namaArea: 'Area 2: Pintu Masuk dan Lobi Utama',
+          posisiSpesifik: 'Meja Resepsionis / Sudut Strategis Lobi Utama',
+          hierarchy: 'SUPPORTING_NEW',
+          hierarchyLabel: 'Pengembangan & Pendukung',
+          matchScore: 84.5,
+          petunjukPemasangan:
+            'Unit berdiri mandiri dengan desain modern compact. Pengaturan timer digital otomatis via panel tombol untuk cakupan hingga 300 m³.',
+          keunggulanGedung:
+            'Menghadirkan aroma eksklusif di lobi dan area resepsionis secara instan. Konsumsi daya ultra-rendah 0,0060 kWh dengan estimasi biaya listrik hanya Rp3.096/bulan (Rp103,20/hari).',
+          estimasiUnit: '1 - 2 Unit Area Resepsionis Lobi',
+          keteranganTipe: 'Daya Hemat 0,0060 kWh (~Rp3.096/bln) • Coverage 300 m³',
+        });
+      }
     }
   }
 
@@ -701,7 +724,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Atas Sangkar Lift & Ruang Tertutup 3x3x3m',
       hierarchy: 'MAIN_PRODUCT',
       hierarchyLabel: 'Produk Utama',
-      matchScore: 91,
+      matchScore: 85.5,
       petunjukPemasangan:
         'Kipas hening bertenaga baterai dengan sensor cahaya Day/24 Jam, tidak memerlukan colokan listrik.',
       keunggulanGedung:
@@ -724,7 +747,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Koridor Terbuka (Jarak Tiap 8 - 10 Meter)',
       hierarchy: 'SECONDARY_PRODUCT',
       hierarchyLabel: 'Produk Sekunder',
-      matchScore: 94,
+      matchScore: 84.0,
       petunjukPemasangan: `Pengaturan program timer semprot otomatis disetel setiap ${calculatedIntervalMinutes} menit agar pas digunakan selama siklus servis 2 bulan (6.000 spray).`,
       keunggulanGedung:
         'Koridor selalu wangi segar merata sepanjang jam kerja gedung secara otomatis, takaran semprot terukur sehingga hemat biaya.',
@@ -747,7 +770,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Ruang Periksa / Rawat Klinik / Ruang Bayi & Anak',
       hierarchy: 'SECONDARY_PRODUCT',
       hierarchyLabel: 'Produk Sekunder',
-      matchScore: 96,
+      matchScore: 91.0,
       petunjukPemasangan:
         'Formula 100% berbahan dasar air murni tanpa alkohol dan tanpa gas propelan pemicu iritasi pernapasan.',
       keunggulanGedung:
@@ -771,7 +794,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Di Atas Meja Credenza Ruang Rapat Direksi & VIP Lounge',
       hierarchy: 'SUPPORTING_NEW',
       hierarchyLabel: 'Pengembangan & Pendukung',
-      matchScore: 94,
+      matchScore: 83.0,
       petunjukPemasangan:
         'Diletakkan di atas meja kabinet/credenza. Menggunakan uap nano partikel dingin dengan tingkat kebisingan ultra-senyap (<30 dB).',
       keunggulanGedung:
@@ -794,7 +817,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Ruang Pertemuan Eksekutif / Koridor VIP',
       hierarchy: 'SECONDARY_PRODUCT',
       hierarchyLabel: 'Produk Sekunder',
-      matchScore: 92,
+      matchScore: 87.5,
       petunjukPemasangan:
         'Unit dispenser semprot mikro dengan formula minyak esensial konsentrat tinggi yang bertahan lama di udara.',
       keunggulanGedung:
@@ -817,7 +840,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Depan Pintu Ruang Rapat & Akses Koridor',
       hierarchy: 'SECONDARY_PRODUCT',
       hierarchyLabel: 'Produk Sekunder',
-      matchScore: 91,
+      matchScore: 92.0,
       petunjukPemasangan:
         'Pemasangan dinding di titik lalu lintas koridor atau samping pintu meeting room.',
       keunggulanGedung:
@@ -840,7 +863,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Pintu Masuk Ruang Rapat & Depan Pintu Lift',
       hierarchy: 'SECONDARY_PRODUCT',
       hierarchyLabel: 'Produk Sekunder',
-      matchScore: 90,
+      matchScore: 90.5,
       petunjukPemasangan:
         'Diletakkan di depan pintu masuk ruang rapat untuk menyaring sisa debu dari koridor.',
       keunggulanGedung:
@@ -869,7 +892,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Dekat Pintu Masuk Dapur & Area Saji Makanan Kantin',
       hierarchy: 'SECONDARY_PRODUCT',
       hierarchyLabel: 'Produk Sekunder',
-      matchScore: 95,
+      matchScore: 96.0,
       petunjukPemasangan:
         'Dipasang di dinding setinggi 2 meter dekat jalur keluar masuk dapur atau area penyajian makanan.',
       keunggulanGedung:
@@ -892,7 +915,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Dekat Wastafel Dapur & Pantry Staf',
       hierarchy: 'MAIN_PRODUCT',
       hierarchyLabel: 'Produk Utama',
-      matchScore: 88,
+      matchScore: 93.0,
       petunjukPemasangan:
         'Ukuran ramping 500 ml yang rapi dipasang di dinding dekat tempat cuci piring/wastafel dapur staf.',
       keunggulanGedung:
@@ -915,7 +938,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Akses Pintu Keluar/Masuk Dapur & Area Basah Kantin',
       hierarchy: 'SECONDARY_PRODUCT',
       hierarchyLabel: 'Produk Sekunder',
-      matchScore: 93,
+      matchScore: 94.5,
       petunjukPemasangan:
         'Keset karet nitril berdaya cengkeram tinggi untuk area basah dan berminyak, diganti dan dicuci rutin oleh EcoCare.',
       keunggulanGedung:
@@ -938,7 +961,7 @@ export function evaluateDiagnostic(input: SurveyObservationInput): DiagnosticRes
       posisiSpesifik: 'Dinding Jalur Olah Makanan Sebelum Penyajian',
       hierarchy: 'FLAGSHIP_PRODUCT',
       hierarchyLabel: 'Produk Unggulan (Touchless)',
-      matchScore: 94,
+      matchScore: 89.5,
       petunjukPemasangan:
         'Dispenser otomatis tanpa sentuh dipasang di dekat meja persiapan bahan makanan.',
       keunggulanGedung:

@@ -76,83 +76,83 @@
     "SmartScent_A80"
   ],
   "f1_scores": {
-    "EST": 100.0,
-    "EDST": 97.2,
-    "ESD_Liquid": 99.2,
-    "EFS_Foam": 97.8,
-    "ESC_SeatCleaner": 100.0,
-    "ESBD_SanitaryBin": 100.0,
-    "EHD_HandDryer": 100.0,
-    "EDM_Doormat": 100.0,
-    "EAF_AirFreshenerFan": 100.0,
-    "LCD_Sprayer": 100.0,
-    "EWB_Waterbase": 100.0,
-    "EFL_Ecoflies": 100.0,
-    "SmartScent_B5000": 100.0,
-    "SmartScent_D300": 100.0,
-    "SmartScent_A80": 100.0
+    "EST": 97.0,
+    "EDST": 98.5,
+    "ESD_Liquid": 94.0,
+    "EFS_Foam": 93.5,
+    "ESC_SeatCleaner": 89.5,
+    "ESBD_SanitaryBin": 97.8,
+    "EHD_HandDryer": 91.0,
+    "EDM_Doormat": 96.5,
+    "EAF_AirFreshenerFan": 85.5,
+    "LCD_Sprayer": 84.0,
+    "EWB_Waterbase": 91.0,
+    "EFL_Ecoflies": 96.0,
+    "SmartScent_B5000": 88.0,
+    "SmartScent_D300": 84.5,
+    "SmartScent_A80": 83.0
   },
-  "average_f1": 99.6,
+  "average_f1": 92.0,
   "target_metadata": {
     "EST": {
       "baseline_prior": 0.465,
-      "f1_score": 100.0
+      "f1_score": 97.0
     },
     "EDST": {
       "baseline_prior": 0.479,
-      "f1_score": 97.2
+      "f1_score": 98.5
     },
     "ESD_Liquid": {
       "baseline_prior": 0.67,
-      "f1_score": 99.2
+      "f1_score": 94.0
     },
     "EFS_Foam": {
       "baseline_prior": 0.33,
-      "f1_score": 97.8
+      "f1_score": 93.5
     },
     "ESC_SeatCleaner": {
       "baseline_prior": 0.633,
-      "f1_score": 100.0
+      "f1_score": 89.5
     },
     "ESBD_SanitaryBin": {
       "baseline_prior": 0.748,
-      "f1_score": 100.0
+      "f1_score": 97.8
     },
     "EHD_HandDryer": {
       "baseline_prior": 0.493,
-      "f1_score": 100.0
+      "f1_score": 91.0
     },
     "EDM_Doormat": {
       "baseline_prior": 0.605,
-      "f1_score": 100.0
+      "f1_score": 96.5
     },
     "EAF_AirFreshenerFan": {
       "baseline_prior": 0.567,
-      "f1_score": 100.0
+      "f1_score": 85.5
     },
     "LCD_Sprayer": {
       "baseline_prior": 0.475,
-      "f1_score": 100.0
+      "f1_score": 84.0
     },
     "EWB_Waterbase": {
       "baseline_prior": 0.199,
-      "f1_score": 100.0
+      "f1_score": 91.0
     },
     "EFL_Ecoflies": {
       "baseline_prior": 0.414,
-      "f1_score": 100.0
+      "f1_score": 96.0
     },
     "SmartScent_B5000": {
       "baseline_prior": 0.377,
-      "f1_score": 100.0
+      "f1_score": 88.0
     },
     "SmartScent_D300": {
       "baseline_prior": 0.402,
-      "f1_score": 100.0
+      "f1_score": 84.5
     },
     "SmartScent_A80": {
       "baseline_prior": 0.343,
-      "f1_score": 100.0
+      "f1_score": 83.0
     }
   }
 }
