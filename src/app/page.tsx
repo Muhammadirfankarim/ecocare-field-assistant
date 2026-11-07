@@ -93,7 +93,7 @@ const PRESET_CORPORATE: SurveyObservationInput = {
   koridorPublikTerbuka: false,
   areaSensitifKlinik: false,
   ruangRapatVip: true,
-  essentialOilMeeting: true,
+  essentialOilMeeting: false,
   handSanitizerKoridor: true,
   kesetAksesMeeting: true,
   // Area 4: Dapur & Staf
@@ -286,7 +286,7 @@ const PRESET_OTHER: SurveyObservationInput = {
   koridorPublikTerbuka: false,
   areaSensitifKlinik: false,
   ruangRapatVip: true,
-  essentialOilMeeting: true,
+  essentialOilMeeting: false,
   handSanitizerKoridor: false,
   kesetAksesMeeting: true,
   // Area 4: Dapur & Staf
@@ -475,13 +475,17 @@ export default function EcoCareHygieMatchPage() {
 
   const handleRunDiagnostic = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    const errors = validateSurveyInput(formData);
+    const sanitizedInput: SurveyObservationInput = {
+      ...formData,
+      essentialOilMeeting: false,
+    };
+    const errors = validateSurveyInput(sanitizedInput);
     setValidationErrors(errors);
     if (errors.length > 0) return;
 
     const res = engineMode === 'ML_HISTORICAL'
-      ? predictWithHistoricalML(formData)
-      : evaluateDiagnostic(formData);
+      ? predictWithHistoricalML(sanitizedInput)
+      : evaluateDiagnostic(sanitizedInput);
     setDiagnosticResult(res);
 
     // Buka semua area agar rekomendasi langsung terlihat lengkap
@@ -499,21 +503,25 @@ export default function EcoCareHygieMatchPage() {
   };
 
   const handleSaveDraft = () => {
-    const errors = validateSurveyInput(formData);
+    const sanitizedInput: SurveyObservationInput = {
+      ...formData,
+      essentialOilMeeting: false,
+    };
+    const errors = validateSurveyInput(sanitizedInput);
     setValidationErrors(errors);
     if (errors.length > 0) return;
 
     const currentRes = diagnosticResult ?? (
       engineMode === 'ML_HISTORICAL'
-        ? predictWithHistoricalML(formData)
-        : evaluateDiagnostic(formData)
+        ? predictWithHistoricalML(sanitizedInput)
+        : evaluateDiagnostic(sanitizedInput)
     );
     setDiagnosticResult(currentRes);
 
     const newRecord: SavedDiagnosticRecord = {
       id: `SURVEY-${Date.now().toString().slice(-6)}`,
       createdAtUtc: new Date().toISOString(),
-      input: { ...formData },
+      input: { ...sanitizedInput },
       result: currentRes,
     };
 
@@ -539,7 +547,10 @@ export default function EcoCareHygieMatchPage() {
   };
 
   const handleLoadRecord = (record: SavedDiagnosticRecord) => {
-    setFormData(record.input);
+    setFormData({
+      ...record.input,
+      essentialOilMeeting: false,
+    });
     setDiagnosticResult(record.result);
     setValidationErrors([]);
     setActiveTab('survey');
