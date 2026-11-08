@@ -49,6 +49,13 @@ import {
   validateSurveyInput,
 } from '@/lib/scoringEngine';
 import { predictWithHistoricalML } from '@/lib/mlInferenceEngine';
+import {
+  initializeNativeApp,
+  triggerHaptic,
+  getCurrentCoordinates,
+  shareSurveyPayload,
+  isNativeMobile,
+} from '@/lib/nativeBridge';
 
 const STORAGE_KEY = 'hycare_records_v1';
 const LEGACY_STORAGE_KEY = 'ecocare_hygiematch_records_v1';
@@ -57,9 +64,9 @@ const LEGACY_STORAGE_KEY = 'ecocare_hygiematch_records_v1';
 // 5 MARKET SEGMENT PRESETS (SESUAI 13 SEKTOR ECOCARE TRAINING)
 // -------------------------------------------------------------
 const PRESET_CORPORATE: SurveyObservationInput = {
-  namaGedung: 'Menara Astra Ventura (Tower 1)',
-  alamatLokasi: 'Jl. Jend. Sudirman Kav. 5-6, Jakarta Pusat',
-  picNama: 'Ibu Ratna (GA / Bagian Umum)',
+  namaGedung: '',
+  alamatLokasi: '',
+  picNama: '',
   surveyType: 'NEW_CUSTOMER',
   segmen: 'Corporate & Financial',
   hariAktif: '5 Hari Kerja',
@@ -101,13 +108,13 @@ const PRESET_CORPORATE: SurveyObservationInput = {
   sabunPantryEkonomis: true,
   kesetMinyakDapur: false,
   handSanitizerKantinDapur: false,
-  catatanTeknis: 'Fokus pada standar kebersihan, kenyamanan karyawan & tamu, serta citra korporat. Dinding marmer mewah dilarang dibor.',
+  catatanTeknis: '',
 };
 
 const PRESET_HEALTHCARE: SurveyObservationInput = {
-  namaGedung: 'RS Hermina Premier Health Care',
-  alamatLokasi: 'Jl. Pemuda No. 12, Pulo Gadung, Jakarta Timur',
-  picNama: 'dr. Haryo, Sp.A (Komite PPI / Kessling / RT)',
+  namaGedung: '',
+  alamatLokasi: '',
+  picNama: '',
   surveyType: 'NEW_CUSTOMER',
   segmen: 'Healthcare & Education',
   hariAktif: '7 Hari Kerja',
@@ -149,13 +156,13 @@ const PRESET_HEALTHCARE: SurveyObservationInput = {
   sabunPantryEkonomis: true,
   kesetMinyakDapur: false,
   handSanitizerKantinDapur: true,
-  catatanTeknis: 'Prioritas sanitasi ketat, risiko kontaminasi, dan keselamatan pengguna. Wajib formula waterbase ramah anak dan touchless.',
+  catatanTeknis: '',
 };
 
 const PRESET_HOSPITALITY: SurveyObservationInput = {
-  namaGedung: 'Grand Metropolitan Promenade & Mall',
-  alamatLokasi: 'Kawasan Bisnis Boulevard No. 88, Bekasi Barat',
-  picNama: 'Bpk. Fajar (Executive HK / Building Manager)',
+  namaGedung: '',
+  alamatLokasi: '',
+  picNama: '',
   surveyType: 'RENEWAL',
   segmen: 'Hospitality & Lifestyle',
   hariAktif: '7 Hari Kerja',
@@ -197,13 +204,13 @@ const PRESET_HOSPITALITY: SurveyObservationInput = {
   sabunPantryEkonomis: true,
   kesetMinyakDapur: true,
   handSanitizerKantinDapur: true,
-  catatanTeknis: 'Fokus pada pengalaman pengunjung, kebersihan area publik & reputasi. Lobi utama terhubung pendingin sentral HVAC.',
+  catatanTeknis: '',
 };
 
 const PRESET_INDUSTRIAL: SurveyObservationInput = {
-  namaGedung: 'Kawasan Industri Mitra Karawang & Logistik',
-  alamatLokasi: 'Kawasan Industri KIIC Lot C-4, Karawang Barat',
-  picNama: 'Bpk. Agus (GA / General Service / Karumga)',
+  namaGedung: '',
+  alamatLokasi: '',
+  picNama: '',
   surveyType: 'NEW_CUSTOMER',
   segmen: 'Industrial & Institutional',
   hariAktif: '5 Hari Kerja',
@@ -245,13 +252,13 @@ const PRESET_INDUSTRIAL: SurveyObservationInput = {
   sabunPantryEkonomis: true,
   kesetMinyakDapur: true,
   handSanitizerKantinDapur: true,
-  catatanTeknis: 'Standar operasional pabrik & keselamatan kerja. Pengadaan efisien, dokumentasi rapi, keandalan vendor.',
+  catatanTeknis: '',
 };
 
 const PRESET_OTHER: SurveyObservationInput = {
-  namaGedung: 'Pakubuwono Residence & Private Clubhouse',
-  alamatLokasi: 'Jl. Bumi No. 15, Kebayoran Baru, Jakarta Selatan',
-  picNama: 'Ibu Cindy (Estate Manager / Owner)',
+  namaGedung: '',
+  alamatLokasi: '',
+  picNama: '',
   surveyType: 'NEW_CUSTOMER',
   segmen: 'Other',
   hariAktif: '7 Hari Kerja',
@@ -294,7 +301,7 @@ const PRESET_OTHER: SurveyObservationInput = {
   sabunPantryEkonomis: true,
   kesetMinyakDapur: false,
   handSanitizerKantinDapur: false,
-  catatanTeknis: 'Kebutuhan dinilai lebih spesifik (residensial mewah, komunitas privat, rumah tinggal & fasilitas khusus).',
+  catatanTeknis: '',
 };
 
 function getPICSuggestion(segmen: SegmenGedung): string {
@@ -439,9 +446,11 @@ export default function EcoCareHygieMatchPage() {
   };
 
   const resultPanelRef = useRef<HTMLDivElement | null>(null);
+  const [isDetectingGps, setIsDetectingGps] = useState(false);
 
-  // Ambil riwayat dari LocalStorage saat pertama buka
+  // Inisialisasi Native Mobile OS & Ambil riwayat dari LocalStorage saat pertama buka
   useEffect(() => {
+    initializeNativeApp();
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY) || window.localStorage.getItem(LEGACY_STORAGE_KEY);
       if (raw) {
@@ -454,6 +463,28 @@ export default function EcoCareHygieMatchPage() {
       console.error('[Hycare Storage] Catatan lokal belum ada:', err);
     }
   }, []);
+
+  const handleDetectGpsLocation = async () => {
+    setIsDetectingGps(true);
+    try {
+      await triggerHaptic('light');
+      const coords = await getCurrentCoordinates();
+      const formattedGps = `GPS: ${coords.latitude.toFixed(5)}, ${coords.longitude.toFixed(5)} (±${Math.round(coords.accuracy)}m)`;
+      setFormData((prev) => ({
+        ...prev,
+        alamatLokasi: prev.alamatLokasi
+          ? `${prev.alamatLokasi.replace(/\s*\[GPS:[^\]]+\]/, '')} [${formattedGps}]`
+          : formattedGps,
+      }));
+      await triggerHaptic('success');
+    } catch (err) {
+      console.error('GPS error:', err);
+      await triggerHaptic('warning');
+      alert((err as Error).message || 'Gagal membaca koordinat GPS.');
+    } finally {
+      setIsDetectingGps(false);
+    }
+  };
 
   const handleFieldChange = <K extends keyof SurveyObservationInput>(
     field: K,
@@ -469,7 +500,13 @@ export default function EcoCareHygieMatchPage() {
 
   const handleApplyPreset = (preset: SurveyObservationInput) => {
     setValidationErrors([]);
-    setFormData(preset);
+    setFormData((prev) => ({
+      ...preset,
+      namaGedung: prev.namaGedung || '',
+      alamatLokasi: prev.alamatLokasi || '',
+      picNama: prev.picNama || '',
+      catatanTeknis: prev.catatanTeknis || '',
+    }));
     setDiagnosticResult(null);
   };
 
@@ -556,8 +593,8 @@ export default function EcoCareHygieMatchPage() {
     setActiveTab('survey');
   };
 
-  // Format teks rapi dan mudah dibaca untuk WhatsApp / Email / Presentasi BOD
-  const handleCopyCleanSummary = () => {
+  // Format teks rapi dan mudah dibaca untuk WhatsApp / Email / Presentasi BOD (Native Share & Clipboard)
+  const handleCopyCleanSummary = async () => {
     if (!diagnosticResult) return;
 
     const areaGroupsToExport =
@@ -630,7 +667,15 @@ ${formData.catatanTeknis ? `*Catatan Khusus Lapangan:*\n${formData.catatanTeknis
 --------------------------------------------------
 _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
 
-    navigator.clipboard.writeText(summaryText);
+    try {
+      await shareSurveyPayload({
+        title: `Rekomendasi Hycare - ${formData.namaGedung}`,
+        text: summaryText,
+      });
+      await triggerHaptic('success');
+    } catch {
+      // Fallback already handled inside shareSurveyPayload
+    }
     setCopiedSummary(true);
     setTimeout(() => setCopiedSummary(false), 3000);
   };
@@ -999,9 +1044,20 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Alamat
-                      </label>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="block text-xs font-semibold text-slate-700">
+                          Alamat
+                        </label>
+                        <button
+                          type="button"
+                          onClick={handleDetectGpsLocation}
+                          disabled={isDetectingGps}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded-md transition border border-emerald-200"
+                        >
+                          <MapPin className="h-3 w-3 text-emerald-600" />
+                          <span>{isDetectingGps ? 'Mencari GPS...' : 'Deteksi GPS'}</span>
+                        </button>
+                      </div>
                       <div className="relative">
                         <MapPin className="h-4 w-4 text-slate-400 absolute left-3 top-3" />
                         <input
@@ -2085,7 +2141,7 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0 flex-1">
                         <h3 className="text-base sm:text-lg font-bold text-white break-words">
-                          {diagnosticResult.namaGedung}
+                          {diagnosticResult.namaGedung || 'Gedung Klien'}
                         </h3>
                         <p className="text-xs text-emerald-200/80 mt-0.5">
                           {diagnosticResult.segmen} • {formData.hariAktif} ({formData.jamOperasional} Jam/Hari)

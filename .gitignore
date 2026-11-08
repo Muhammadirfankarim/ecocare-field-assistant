@@ -32,3 +32,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# mobile & IDE
+/android/
+/ios/
+/assets/
+/.idea/
+capacitor.config.ts
+
+

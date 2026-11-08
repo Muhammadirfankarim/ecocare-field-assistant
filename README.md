@@ -25,9 +25,39 @@ Aplikasi Asisten Survei Lapangan khusus 1 lini bisnis (**EcoCare Hygiene**) untu
 
 ## 🚀 Cara Menjalankan
 
+### 1. Web Version (Development)
 ```bash
 npm install
 npm run dev
 ```
-
 Buka `http://localhost:3000` di browser.
+
+### 2. Mobile App Version (Android & iOS — Capacitor)
+Aplikasi Hycare menggunakan arsitektur **Unified Cross-Platform Capacitor** (1 Codebase untuk Web, Android, dan iOS):
+- **100% Offline-Ready**: Model ML (Random Forest) dan rule-based scoring dieksekusi langsung di perangkat client tanpa butuh server/koneksi internet.
+- **Native Hardware Access**: Mendukung auto-deteksi GPS lokasi gedung survei, haptic tactile feedback, kamera bukti survei, dan native system share sheet (WhatsApp/Email).
+- **Branded Splash & App Icons**: Terpasang otomatis untuk semua density Android (Adaptive icon mipmap) dan iOS (Assets.xcassets).
+
+#### Build Langsung File Installer APK (Android):
+Anda bisa langsung menghasilkan file installer `.apk` tanpa perlu membuka Android Studio:
+```bash
+# Otomatis compile Next.js statis, sync aset, dan build file APK
+npm run build:apk
+
+# Buka folder tempat file APK berada di Windows Explorer
+npm run open:apk
+```
+File APK siap instal berada di:
+`android/app/build/outputs/apk/debug/app-debug.apk` (dapat langsung dikirim ke HP Android via WhatsApp, Google Drive, atau kabel USB).
+
+#### Buka di Android Studio:
+```bash
+npm run cap:android
+```
+
+
+#### Shortcut Command:
+- `npm run cap:sync`: Memperbarui file web statis dan plugin ke folder `android/` dan `ios/`.
+- `npm run cap:run:android`: Menjalankan langsung ke perangkat Android / Emulator yang terhubung via ADB.
+- `npm run cap:run:ios`: Menjalankan langsung ke iPhone / iOS Simulator (memerlukan macOS).
+
