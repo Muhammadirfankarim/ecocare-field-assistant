@@ -32,6 +32,10 @@ import {
   FileText,
   Download,
   Filter,
+  Compass,
+  Loader2,
+  X,
+  Navigation,
 } from 'lucide-react';
 import {
   AreaRecommendationGroup,
@@ -55,6 +59,7 @@ import {
   getCurrentCoordinates,
   shareSurveyPayload,
   isNativeMobile,
+  reverseGeocodeCoords,
 } from '@/lib/nativeBridge';
 
 const STORAGE_KEY = 'hycare_records_v1';
@@ -447,6 +452,17 @@ export default function EcoCareHygieMatchPage() {
 
   const resultPanelRef = useRef<HTMLDivElement | null>(null);
   const [isDetectingGps, setIsDetectingGps] = useState(false);
+  const [gpsStatusText, setGpsStatusText] = useState('');
+  const [detectedGpsData, setDetectedGpsData] = useState<{
+    latitude: number;
+    longitude: number;
+    accuracy: number;
+    road: string;
+    region: string;
+    fullAddress: string;
+    mapsUrl: string;
+    activeFormat: 'FULL_WITH_GPS' | 'STREET_ONLY' | 'COORDS_ONLY';
+  } | null>(null);
 
   // Inisialisasi Native Mobile OS & Ambil riwayat dari LocalStorage saat pertama buka
   useEffect(() => {
@@ -466,16 +482,49 @@ export default function EcoCareHygieMatchPage() {
 
   const handleDetectGpsLocation = async () => {
     setIsDetectingGps(true);
+    setGpsStatusText('Mengunci satelit...');
     try {
       await triggerHaptic('light');
       const coords = await getCurrentCoordinates();
-      const formattedGps = `GPS: ${coords.latitude.toFixed(5)}, ${coords.longitude.toFixed(5)} (±${Math.round(coords.accuracy)}m)`;
+      setGpsStatusText('Membaca nama jalan...');
+
+      let roadName = '';
+      let regionName = '';
+      let formattedAddress = '';
+
+      try {
+        const geoResult = await reverseGeocodeCoords(coords.latitude, coords.longitude);
+        roadName = geoResult.road;
+        regionName = [geoResult.subdistrict, geoResult.city].filter(Boolean).join(', ');
+        formattedAddress = geoResult.fullAddress;
+      } catch (geoErr) {
+        console.warn('[ReverseGeocode] Fallback ke koordinat GPS mentah:', geoErr);
+      }
+
+      const coordString = `GPS: ${coords.latitude.toFixed(5)}, ${coords.longitude.toFixed(5)}`;
+      const accuracyString = `±${Math.round(coords.accuracy)}m`;
+      const combinedAddress = formattedAddress
+        ? `${formattedAddress} [${coordString} (${accuracyString})]`
+        : `${coordString} (${accuracyString})`;
+
+      const mapsUrl = `https://www.google.com/maps?q=${coords.latitude},${coords.longitude}`;
+
+      setDetectedGpsData({
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        accuracy: Math.round(coords.accuracy),
+        road: roadName || 'Titik Lokasi Lapangan',
+        region: regionName || 'Koordinat Satelit',
+        fullAddress: formattedAddress || combinedAddress,
+        mapsUrl,
+        activeFormat: 'FULL_WITH_GPS',
+      });
+
       setFormData((prev) => ({
         ...prev,
-        alamatLokasi: prev.alamatLokasi
-          ? `${prev.alamatLokasi.replace(/\s*\[GPS:[^\]]+\]/, '')} [${formattedGps}]`
-          : formattedGps,
+        alamatLokasi: combinedAddress,
       }));
+
       await triggerHaptic('success');
     } catch (err) {
       console.error('GPS error:', err);
@@ -483,7 +532,31 @@ export default function EcoCareHygieMatchPage() {
       alert((err as Error).message || 'Gagal membaca koordinat GPS.');
     } finally {
       setIsDetectingGps(false);
+      setGpsStatusText('');
     }
+  };
+
+  const handleApplyAddressFormat = (formatType: 'FULL_WITH_GPS' | 'STREET_ONLY' | 'COORDS_ONLY') => {
+    if (!detectedGpsData) return;
+    const coordString = `GPS: ${detectedGpsData.latitude.toFixed(5)}, ${detectedGpsData.longitude.toFixed(5)} (±${detectedGpsData.accuracy}m)`;
+    let targetText = '';
+
+    if (formatType === 'STREET_ONLY') {
+      targetText = detectedGpsData.fullAddress;
+    } else if (formatType === 'COORDS_ONLY') {
+      targetText = coordString;
+    } else {
+      targetText = detectedGpsData.fullAddress
+        ? `${detectedGpsData.fullAddress} [${coordString}]`
+        : coordString;
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      alamatLokasi: targetText,
+    }));
+    setDetectedGpsData((prev) => (prev ? { ...prev, activeFormat: formatType } : null));
+    triggerHaptic('light');
   };
 
   const handleFieldChange = <K extends keyof SurveyObservationInput>(
@@ -1052,10 +1125,19 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           type="button"
                           onClick={handleDetectGpsLocation}
                           disabled={isDetectingGps}
-                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded-md transition border border-emerald-200"
+                          className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100/90 px-2.5 py-1 rounded-lg transition border border-emerald-200 shadow-2xs cursor-pointer active:scale-95 disabled:opacity-60"
                         >
-                          <MapPin className="h-3 w-3 text-emerald-600" />
-                          <span>{isDetectingGps ? 'Mencari GPS...' : 'Deteksi GPS'}</span>
+                          {isDetectingGps ? (
+                            <>
+                              <Loader2 className="h-3 w-3 animate-spin text-emerald-600" />
+                              <span className="font-medium">{gpsStatusText || 'Mencari...'}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Compass className="h-3.5 w-3.5 text-emerald-600" />
+                              <span>Deteksi Lokasi GPS</span>
+                            </>
+                          )}
                         </button>
                       </div>
                       <div className="relative">
@@ -1068,6 +1150,99 @@ _Dianalisis menggunakan sistem rekomendasi cerdas Hycare_`;
                           className="w-full rounded-xl border border-slate-300 pl-9 pr-3.5 py-2.5 text-sm focus:border-emerald-600 outline-none"
                         />
                       </div>
+
+                      {/* KARTU VISUAL REVERSE GEOCODING HASIL GPS */}
+                      {detectedGpsData && (
+                        <div className="mt-2.5 p-3 rounded-2xl bg-gradient-to-r from-emerald-50 via-teal-50/70 to-emerald-50 border border-emerald-300/80 shadow-xs space-y-2 text-xs">
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
+                              </span>
+                              <span className="font-bold text-emerald-950 text-[11px] tracking-wide flex items-center gap-1">
+                                <Compass className="h-3.5 w-3.5 text-emerald-700" />
+                                Lokasi Gedung Terverifikasi
+                              </span>
+                              <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-emerald-200/90 text-emerald-900 border border-emerald-300/60">
+                                ±{detectedGpsData.accuracy}m
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-1 shrink-0">
+                              <a
+                                href={detectedGpsData.mapsUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 hover:text-emerald-900 bg-white hover:bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-200 transition shadow-2xs"
+                              >
+                                <span>Buka Maps</span>
+                                <ExternalLink className="h-2.5 w-2.5" />
+                              </a>
+                              <button
+                                type="button"
+                                onClick={() => setDetectedGpsData(null)}
+                                className="text-slate-400 hover:text-slate-600 p-0.5 rounded transition"
+                                title="Tutup kartu"
+                              >
+                                <X className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="bg-white/90 rounded-xl p-2.5 border border-emerald-200/70 space-y-0.5 shadow-2xs">
+                            <div className="font-bold text-slate-900 text-xs flex items-center gap-1.5">
+                              <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                              <span className="line-clamp-1">{detectedGpsData.road}</span>
+                            </div>
+                            <p className="text-[11px] text-slate-600 line-clamp-1 pl-5">
+                              {detectedGpsData.region}
+                            </p>
+                            <div className="flex items-center gap-2 text-[10px] text-emerald-800 font-mono pl-5 pt-0.5">
+                              <span>Lat: {detectedGpsData.latitude.toFixed(5)}</span>
+                              <span>•</span>
+                              <span>Lon: {detectedGpsData.longitude.toFixed(5)}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-wrap items-center gap-1 pt-0.5">
+                            <span className="text-[10px] text-slate-500 font-semibold mr-0.5">Pilihan Format:</span>
+                            <button
+                              type="button"
+                              onClick={() => handleApplyAddressFormat('FULL_WITH_GPS')}
+                              className={`px-2 py-0.5 rounded-md text-[10px] font-semibold transition border ${
+                                detectedGpsData.activeFormat === 'FULL_WITH_GPS'
+                                  ? 'bg-emerald-700 text-white border-emerald-800 shadow-xs'
+                                  : 'bg-white text-slate-700 border-slate-200 hover:bg-emerald-50'
+                              }`}
+                            >
+                              Jalan + GPS
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleApplyAddressFormat('STREET_ONLY')}
+                              className={`px-2 py-0.5 rounded-md text-[10px] font-semibold transition border ${
+                                detectedGpsData.activeFormat === 'STREET_ONLY'
+                                  ? 'bg-emerald-700 text-white border-emerald-800 shadow-xs'
+                                  : 'bg-white text-slate-700 border-slate-200 hover:bg-emerald-50'
+                              }`}
+                            >
+                              Nama Jalan Saja
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleApplyAddressFormat('COORDS_ONLY')}
+                              className={`px-2 py-0.5 rounded-md text-[10px] font-semibold transition border ${
+                                detectedGpsData.activeFormat === 'COORDS_ONLY'
+                                  ? 'bg-emerald-700 text-white border-emerald-800 shadow-xs'
+                                  : 'bg-white text-slate-700 border-slate-200 hover:bg-emerald-50'
+                              }`}
+                            >
+                              Koordinat Saja
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div>

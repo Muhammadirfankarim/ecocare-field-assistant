@@ -187,6 +187,76 @@ export async function getCurrentCoordinates(): Promise<NativeLocationResult> {
   });
 }
 
+export interface ReverseGeocodedAddress {
+  road: string;
+  subdistrict: string;
+  city: string;
+  state: string;
+  postcode: string;
+  fullAddress: string;
+  displayName: string;
+}
+
+/**
+ * Reverse geocodes latitude & longitude into a human-readable Indonesian street address
+ * using OpenStreetMap Nominatim with defensive fallback & timeout.
+ */
+export async function reverseGeocodeCoords(
+  latitude: number,
+  longitude: number
+): Promise<ReverseGeocodedAddress> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+  try {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&accept-language=id`;
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'HycareFieldAssistant/1.0 (EcoCare Hygiene Survey System)',
+      },
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Geocoding server status ${response.status}`);
+    }
+
+    const data = await response.json();
+    const addr = data.address || {};
+    const road =
+      addr.road || addr.street || addr.building || addr.amenity || addr.pedestrian || '';
+    const village =
+      addr.village || addr.suburb || addr.neighbourhood || addr.city_block || '';
+    const district = addr.city_district || addr.district || addr.county || '';
+    const city = addr.city || addr.town || addr.municipality || district || '';
+    const state = addr.state || '';
+    const postcode = addr.postcode || '';
+
+    const parts = [
+      road,
+      village,
+      district && district !== village ? `Kec. ${district}` : '',
+      city && city !== district ? city : '',
+      state,
+      postcode,
+    ].filter(Boolean);
+
+    const fullAddress = parts.length > 0 ? parts.join(', ') : data.display_name || '';
+
+    return {
+      road,
+      subdistrict: district || village,
+      city,
+      state,
+      postcode,
+      fullAddress,
+      displayName: data.display_name || fullAddress,
+    };
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 /**
  * Captures a site photo using device camera or gallery for survey evidence.
  */
